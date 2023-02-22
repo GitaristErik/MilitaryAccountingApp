@@ -34,4 +34,7 @@
     <dimen name="extra_large_vertical_padding">32dp</dimen>
     <dimen name="double_extra_large_horizontal_padding">40dp</dimen>
     <dimen name="double_extra_large_vertical_padding">40dp</dimen>
+
+    <!-- Other -->
+    <dimen name="tab_corner_radius">500dp</dimen>
 </resources>

@@ -8,42 +8,6 @@
     android:orientation="vertical"
     tools:context=".ui.home.HomeCategoriesFragment">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgCategories"
-        style="@style/Widget.Material3.ChipGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:chipSpacingHorizontal="@dimen/extra_small_horizontal_margin"
-        app:layout_anchor="@id/tab_layout"
-        app:singleLine="true">
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Recently" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Latest updated" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Biggest" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Smallest" />
-
-    </com.google.android.material.chip.ChipGroup>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"

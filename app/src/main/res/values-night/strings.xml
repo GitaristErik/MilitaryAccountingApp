@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="content_description_favorite">Favorite icon</string>
-    <string name="content_description_search">Search text</string>
-    <string name="content_description_more">more icon</string>
-    <string name="more">More</string>
-    <string name="favorite">Favorite</string>
-    <string name="f_home_title">Home</string>
-</resources>

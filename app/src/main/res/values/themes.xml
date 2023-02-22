@@ -1,5 +1,5 @@
-<resources>
-    <style name="Theme.MilitaryAccountingApp" parent="Theme.Material3.Light.NoActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.MilitaryAccountingApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
@@ -37,5 +37,11 @@
         <!-- Status bar color -->
 
         <!-- Customize your theme here -->
+    </style>
+
+    <style name="Theme.MilitaryAccountingApp" parent="Base.Theme.MilitaryAccountingApp">
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

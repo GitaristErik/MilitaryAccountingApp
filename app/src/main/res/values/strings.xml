@@ -10,4 +10,12 @@
     <string name="more">More</string>
     <string name="favorite">Favorite</string>
     <string name="f_home_title">Home</string>
+
+    <!-- Tab title -->
+    <string name="tab_title_categories">Categories</string>
+    <string name="tab_title_items">Items</string>
+    <string-array name="home_tab_title">
+        <item>@string/tab_title_categories</item>
+        <item>@string/tab_title_items</item>
+    </string-array>
 </resources>

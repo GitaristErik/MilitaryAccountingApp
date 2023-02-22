@@ -1,5 +1,6 @@
 <resources>
-    <style name="Theme.MilitaryAccountingApp" parent="Theme.Material3.Dark.NoActionBar">
+
+    <style name="Base.Theme.MilitaryAccountingApp" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
@@ -35,5 +36,10 @@
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
 
         <!-- Status bar color -->
+    </style>
+
+    <style name="Theme.MilitaryAccountingApp" parent="Base.Theme.MilitaryAccountingApp">
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>
