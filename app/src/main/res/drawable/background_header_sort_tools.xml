@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color of the view -->
+    <item android:drawable="@android:color/transparent" />
+
+    <!-- Stroke on the bottom side of the view -->
+    <item
+        android:bottom="1dp"
+        android:drawable="?colorSurface" />
+</layer-list>
