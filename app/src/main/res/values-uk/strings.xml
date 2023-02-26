@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">MilitaryAccountingApp</string>
+    <string name="title_home">Головна</string>
+
+    <string name="home.appbar.title">Головна</string>
+    <string name="home.search.content.description">Пошук</string>
+    <string name="home.search.title">Пошук</string>
+
+    <string name="home.item.category.label.all">Загалом:</string>
+    <plurals name="home.item.category.label.item" tools:ignore="UnusedQuantity">
+        <item quantity="one">%d елемент</item>
+        <item quantity="few">%d елементи</item>
+        <item quantity="many">%d елементів</item>
+        <item quantity="other">%d елементів</item>
+    </plurals>
+
+    <string name="tab_title_categories">Категорії</string>
+    <string name="tab_title_items">Елементи</string>
+    <string name="home.item.category.logo.content.description">Іконка категорії</string>
+</resources>

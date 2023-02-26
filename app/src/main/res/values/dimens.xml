@@ -3,37 +3,21 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- Divider -->
-    <dimen name="divider_horizontal_margin">16dp</dimen>
-    <dimen name="divider_vertical_margin">8dp</dimen>
-
     <!-- Margins -->
-    <dimen name="extra_small_horizontal_margin">4dp</dimen>
-    <dimen name="extra_small_vertical_margin">4dp</dimen>
-    <dimen name="small_horizontal_margin">8dp</dimen>
-    <dimen name="small_vertical_margin">8dp</dimen>
-    <dimen name="standard_horizontal_margin">16dp</dimen>
-    <dimen name="standard_vertical_margin">16dp</dimen>
-    <dimen name="large_horizontal_margin">24dp</dimen>
-    <dimen name="large_vertical_margin">24dp</dimen>
-    <dimen name="extra_large_horizontal_margin">32dp</dimen>
-    <dimen name="extra_large_vertical_margin">32dp</dimen>
-    <dimen name="double_extra_large_horizontal_margin">40dp</dimen>
-    <dimen name="double_extra_large_vertical_margin">40dp</dimen>
+    <dimen name="margin.small.extra">4dp</dimen>
+    <dimen name="margin.small">8dp</dimen>
+    <dimen name="margin.standard">16dp</dimen>
+    <dimen name="margin.large">24dp</dimen>
+    <dimen name="margin.large.extra">32dp</dimen>
+    <dimen name="margin.large.extra.double">40dp</dimen>
 
     <!-- Padding -->
-    <dimen name="extra_small_horizontal_padding">4dp</dimen>
-    <dimen name="extra_small_vertical_padding">4dp</dimen>
-    <dimen name="small_horizontal_padding">8dp</dimen>
-    <dimen name="small_vertical_padding">8dp</dimen>
-    <dimen name="standard_horizontal_padding">16dp</dimen>
-    <dimen name="standard_vertical_padding">16dp</dimen>
-    <dimen name="large_horizontal_padding">24dp</dimen>
-    <dimen name="large_vertical_padding">24dp</dimen>
-    <dimen name="extra_large_horizontal_padding">32dp</dimen>
-    <dimen name="extra_large_vertical_padding">32dp</dimen>
-    <dimen name="double_extra_large_horizontal_padding">40dp</dimen>
-    <dimen name="double_extra_large_vertical_padding">40dp</dimen>
+    <dimen name="padding.small.extra">4dp</dimen>
+    <dimen name="padding.small">8dp</dimen>
+    <dimen name="padding.standard">16dp</dimen>
+    <dimen name="padding.large">24dp</dimen>
+    <dimen name="padding.large.extra">32dp</dimen>
+    <dimen name="padding.large.extra.double">40dp</dimen>
 
     <!-- Other -->
     <dimen name="tab_corner_radius">500dp</dimen>

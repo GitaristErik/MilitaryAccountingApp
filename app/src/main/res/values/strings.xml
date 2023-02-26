@@ -1,15 +1,23 @@
 <resources>
     <string name="app_name">MilitaryAccountingApp</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="content_description_favorite">Favorite icon</string>
-    <string name="content_description_search">Search text</string>
-    <string name="content_description_more">more icon</string>
-    <string name="search">Search</string>
-    <string name="more">More</string>
-    <string name="favorite">Favorite</string>
-    <string name="f_home_title">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="home.appbar.title">Home</string>
+
+    <string name="home.search.content.description">Search text</string>
+    <string name="home.search.title">Search</string>
+
+    <string name="home.item.category.logo.content.description">Category Icon</string>
+    <string name="home.item.category.label.all">All:</string>
+    <plurals name="home.item.category.label.item">
+        <item quantity="zero">No items</item>
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
+    <!-- Content desc -->
+    <string name="content_desc_error_image" translatable="false">Error Image</string>
 
     <!-- Tab title -->
     <string name="tab_title_categories">Categories</string>
