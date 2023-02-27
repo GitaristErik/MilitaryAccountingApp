@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp
+package com.example.militaryaccountingapp.presenter
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors

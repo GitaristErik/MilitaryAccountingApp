@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.ui.dashboard
+package com.example.militaryaccountingapp.presenter.fragment.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

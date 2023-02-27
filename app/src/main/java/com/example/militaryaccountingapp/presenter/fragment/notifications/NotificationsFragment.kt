@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.ui.notifications
+package com.example.militaryaccountingapp.presenter.fragment.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

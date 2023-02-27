@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.ui.home
+package com.example.militaryaccountingapp.presenter.fragment.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeCategoriesBinding
 
 class HomeCategoriesFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.ui.home
+package com.example.militaryaccountingapp.presenter.fragment.home
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
