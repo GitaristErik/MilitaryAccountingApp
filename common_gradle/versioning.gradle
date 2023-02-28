@@ -1,0 +1,23 @@
+
+def versionPropertiesFile = rootProject.file("version.properties")
+def versionProperties
+if (versionPropertiesFile.exists()) {
+    versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(versionPropertiesFile))
+} else {
+    throw new Exception('version.properties file not Found')
+}
+
+
+//Manifest version information!
+int versionMajor = versionProperties['VERSION_MAJOR'] as int
+int versionMinor = versionProperties['VERSION_MINOR'] as int
+int versionPatch = versionProperties['VERSION_PATCH'] as int
+int versionBuild = versionProperties['VERSION_BUILD'] as int
+
+println("Version Custom:" +  System.getenv("CUSTOM_APP_VERSION_NAME"))
+
+ext {
+    appVersionCode = ((versionMajor * 10000000) + (versionMinor * 100000) + (versionPatch * 100) + versionBuild)
+    appVersionName = System.env.CUSTOM_APP_VERSION_NAME ? System.env.CUSTOM_APP_VERSION_NAME : "${versionMajor}.${versionMinor}.${versionPatch}"
+}
