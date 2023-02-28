@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.militaryaccountingapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.color.DynamicColors
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        DynamicColors.applyToActivityIfAvailable(this)
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController() ?: return
