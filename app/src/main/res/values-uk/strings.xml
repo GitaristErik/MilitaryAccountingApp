@@ -4,7 +4,7 @@
     <string name="title_home">Головна</string>
 
     <string name="home.appbar.title">Головна</string>
-    <string name="home.search.content.description">Пошук</string>
+    <string name="home.search.description">Пошук</string>
     <string name="home.search.title">Пошук</string>
 
     <string name="home.item.category.label.all">Загалом:</string>
@@ -15,7 +15,12 @@
         <item quantity="other">%d елементів</item>
     </plurals>
 
+    <string name="home.item.header.button.description">Змінити вигляд категорій</string>
     <string name="tab_title_categories">Категорії</string>
     <string name="tab_title_items">Елементи</string>
-    <string name="home.item.category.logo.content.description">Іконка категорії</string>
+    <string name="home.item.category.logo.description">Іконка категорії</string>
+    <string name="home.item.header.menu.oldest_first">Спершу старі</string>
+    <string name="home.item.header.menu.newest_first">Спершу нові</string>
+    <string name="home.item.header.menu.a_z">А-Я</string>
+    <string name="home.item.header.menu.z_a">Я-А</string>
 </resources>

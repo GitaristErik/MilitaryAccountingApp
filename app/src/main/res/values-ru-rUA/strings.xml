@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">MilitaryAccountingApp</string>
     <string name="title_home">Главная</string>
     <string name="home.appbar.title">Главная</string>
 
-    <string name="home.search.content.description">Поиск</string>
+    <string name="home.search.description">Поиск</string>
     <string name="home.search.title">Поиск</string>
 
     <string name="home.item.category.label.all">Всего:</string>
@@ -15,7 +15,12 @@
         <item quantity="other">%d элементов</item>
     </plurals>
 
+    <string name="home.item.header.button.description">Изменить вид категорий</string>
     <string name="tab_title_categories">Категории</string>
     <string name="tab_title_items">Элементы</string>
-    <string name="home.item.category.logo.content.description">Иконка категории</string>
+    <string name="home.item.category.logo.description">Иконка категории</string>
+    <string name="home.item.header.menu.oldest_first">Сначала старые</string>
+    <string name="home.item.header.menu.newest_first">Сначала новые</string>
+    <string name="home.item.header.menu.a_z">А-Я</string>
+    <string name="home.item.header.menu.z_a">Я-А</string>
 </resources>

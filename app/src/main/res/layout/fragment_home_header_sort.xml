@@ -25,8 +25,9 @@
         android:id="@+id/view_type_button"
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/home.search.title"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
-        app:icon="@drawable/ic_baseline_grid_view_24dp" />
+        app:icon="@drawable/ic_baseline_view_grid_24dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -21,7 +21,7 @@
             android:id="@+id/category_image"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:contentDescription="@string/home.item.category.logo.content.description"
+            android:contentDescription="@string/home.item.category.logo.description"
             android:scaleType="centerCrop"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"

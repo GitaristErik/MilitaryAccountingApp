@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/newest_first"
+        android:title="@string/home.item.header.menu.newest_first"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/oldest_first"
+        android:title="@string/home.item.header.menu.oldest_first"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/a_z"
+        android:title="@string/home.item.header.menu.a_z"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/z_a"
+        android:title="@string/home.item.header.menu.z_a"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>

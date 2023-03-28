@@ -3,18 +3,27 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="home.appbar.title">Home</string>
 
-    <string name="home.search.content.description">Search text</string>
+    <!-- Home fragment -->
+    <string name="home.appbar.title">Home</string>
+    <string name="home.search.description">Search text</string>
     <string name="home.search.title">Search</string>
 
-    <string name="home.item.category.logo.content.description">Category Icon</string>
+    <!-- : Item category -->
+    <string name="home.item.category.logo.description">Category Icon</string>
     <string name="home.item.category.label.all">All:</string>
     <plurals name="home.item.category.label.item">
         <item quantity="zero">No items</item>
         <item quantity="one">%d item</item>
         <item quantity="other">%d items</item>
     </plurals>
+
+    <!-- : Header sort tools -->
+    <string name="home.item.header.button.description">Change view type</string>
+    <string name="home.item.header.menu.oldest_first">Oldest first</string>
+    <string name="home.item.header.menu.newest_first">Newest first</string>
+    <string name="home.item.header.menu.a_z">A-Z</string>
+    <string name="home.item.header.menu.z_a">Z-A</string>
 
     <!-- Content desc -->
     <string name="content_desc_error_image" translatable="false">Error Image</string>
