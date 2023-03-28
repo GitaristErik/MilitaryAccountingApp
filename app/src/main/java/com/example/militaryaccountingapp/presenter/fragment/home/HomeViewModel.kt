@@ -1,13 +1,14 @@
 package com.example.militaryaccountingapp.presenter.fragment.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.militaryaccountingapp.presenter.BaseViewModel
+import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
+import timber.log.Timber
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel : BaseViewModel<ViewData>(ViewData()) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    init {
+        Timber.d("init")
     }
-    val text: LiveData<String> = _text
+
+    class ViewData
 }

@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.presenter.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,20 +12,35 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Timber.d("onCreate")
         super.onCreate(savedInstanceState)
 
-        installSplashScreen()
-        DynamicColors.applyToActivityIfAvailable(this)
+        startThemeJob()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setupNavController()
+    }
+
+    private fun startThemeJob() {
+        lifecycleScope.launch {
+            installSplashScreen()
+            DynamicColors.applyToActivityIfAvailable(this@MainActivity)
+        }
+    }
+
+    private fun setupNavController() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController() ?: return
         // Passing each menu ID as a set of Ids because each
@@ -36,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_notifications
             )
         )
-        // setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
