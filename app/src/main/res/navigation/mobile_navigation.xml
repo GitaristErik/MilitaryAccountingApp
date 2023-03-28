@@ -8,18 +8,24 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.militaryaccountingapp.presenter.fragment.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/home.title"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_history"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.history.HistoryFragment"
+        android:label="@string/history.title"
+        tools:layout="@layout/fragment_history" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_statistics"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.history.HistoryFragment"
+        android:label="@string/statistics.title"
+        tools:layout="@layout/fragment_statistics" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.profile.ProfileFragment"
+        android:label="@string/profile.title"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

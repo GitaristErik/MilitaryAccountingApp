@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MilitaryAccountingApp</string>
-    <string name="title_home">Головна</string>
+    <string name="home.title">Головна</string>
 
     <string name="home.appbar.title">Головна</string>
     <string name="home.search.description">Пошук</string>
@@ -23,4 +23,8 @@
     <string name="home.item.header.menu.newest_first">Спершу нові</string>
     <string name="home.item.header.menu.a_z">А-Я</string>
     <string name="home.item.header.menu.z_a">Я-А</string>
+
+    <string name="history.title">Історія</string>
+    <string name="statistics.title">Статистика</string>
+    <string name="profile.title">Профіль</string>
 </resources>
