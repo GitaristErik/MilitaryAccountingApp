@@ -18,10 +18,17 @@
 
     <!-- : Header sort tools -->
     <string name="home.item.header.button.description">Change view type</string>
-    <string name="home.item.header.menu.oldest_first">Oldest first</string>
-    <string name="home.item.header.menu.newest_first">Newest first</string>
-    <string name="home.item.header.menu.a_z">A-Z</string>
-    <string name="home.item.header.menu.z_a">Z-A</string>
+    <string name="home.item.header.sort.description">Change sort type</string>
+    <string name="home.item.header.menu.option1">Name</string>
+    <string name="home.item.header.menu.option2">Date</string>
+    <string name="home.item.header.menu.option3">Barcode</string>
+    <string name="home.item.header.menu.option4">Count</string>
+    <string-array name="home.item.header.menu">
+        <item>@string/home.item.header.menu.option1</item>
+        <item>@string/home.item.header.menu.option2</item>
+        <item>@string/home.item.header.menu.option3</item>
+        <item>@string/home.item.header.menu.option4</item>
+    </string-array>
 
     <!-- :Content desc -->
     <string name="content_desc_error_image" translatable="false">Error Image</string>
@@ -34,6 +41,17 @@
         <item>@string/tab_title_items</item>
     </string-array>
 
+    <!-- Loading layout -->
+    <string name="loading.preparing.title">Preparing the Data</string>
+    <string name="loading.refresh.title">Updating Data</string>
+    <string name="loading.more.title">Load More Data</string>
+
+    <!-- Error layout -->
+    <string name="error.button.retry">Retry</string>
+    <string name="error.message.empty">Data is empty for now, you can do another thing.</string>
+    <string name="error.message.server">Oops! Seems like some meteor hit the server.</string>
+    <string name="error.message.network">There is problem with your connection, failed to get the data!</string>
+    <string name="error.message.other">Something went wrong! Keep Calm.</string>
 
     <!-- History fragment -->
     <string name="history.title">History</string>

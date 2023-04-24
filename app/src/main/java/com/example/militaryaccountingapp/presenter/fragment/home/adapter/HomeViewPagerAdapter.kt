@@ -1,9 +1,11 @@
-package com.example.militaryaccountingapp.presenter.fragment.home
+package com.example.militaryaccountingapp.presenter.fragment.home.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.militaryaccountingapp.presenter.fragment.categories.HomeCategoriesFragment
+import com.example.militaryaccountingapp.presenter.fragment.items.HomeItemsFragment
 
 class HomeViewPagerAdapter(
     private val tabSize: Int,

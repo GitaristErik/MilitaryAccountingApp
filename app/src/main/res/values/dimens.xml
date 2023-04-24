@@ -20,5 +20,6 @@
     <dimen name="padding.large.extra.double">40dp</dimen>
 
     <!-- Other -->
-    <dimen name="tab_corner_radius">500dp</dimen>
+    <dimen name="corner.tabs">500dp</dimen>
+    <dimen name="corner.default">12dp</dimen>
 </resources>

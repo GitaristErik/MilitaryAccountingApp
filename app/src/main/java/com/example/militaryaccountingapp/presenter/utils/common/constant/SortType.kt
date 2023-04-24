@@ -3,32 +3,32 @@ package com.example.militaryaccountingapp.presenter.utils.common.constant
 import android.content.Context
 import com.example.militaryaccountingapp.R
 
-enum class SortConstant(val resId: Int?) {
+enum class SortType(val resId: Int?) {
 
-    NEWEST(R.id.newest_first) {
+    NAME(R.id.option1) {
         override fun getDisplayName(context: Context) =
-            context.getString(R.string.home_item_header_menu_newest_first)
+            context.getString(R.string.home_item_header_menu_option1)
     },
 
-    OLDEST(R.id.oldest_first) {
+    DATE(R.id.option2) {
         override fun getDisplayName(context: Context) =
-            context.getString(R.string.home_item_header_menu_oldest_first)
+            context.getString(R.string.home_item_header_menu_option2)
     },
 
-    AZ(R.id.a_z) {
+    BARCODE(R.id.option3) {
         override fun getDisplayName(context: Context) =
-            context.getString(R.string.home_item_header_menu_a_z)
+            context.getString(R.string.home_item_header_menu_option3)
     },
 
-    ZA(R.id.z_a) {
+    COUNT(R.id.option4) {
         override fun getDisplayName(context: Context) =
-            context.getString(R.string.home_item_header_menu_z_a)
+            context.getString(R.string.home_item_header_menu_option4)
     };
 
     abstract fun getDisplayName(context: Context): String?
 
     companion object {
-        fun fromResId(resId: Int): SortConstant? {
+        fun fromResId(resId: Int): SortType? {
             return values().firstOrNull { it.resId == resId }
         }
     }

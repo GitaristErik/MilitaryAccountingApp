@@ -3,26 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/newest_first"
-        android:title="@string/home.item.header.menu.newest_first"
+        android:id="@+id/option1"
+        android:title="@string/home.item.header.menu.option1"
         app:showAsAction="ifRoom"
         />
 
     <item
-        android:id="@+id/oldest_first"
-        android:title="@string/home.item.header.menu.oldest_first"
+        android:id="@+id/option2"
+        android:title="@string/home.item.header.menu.option2"
         app:showAsAction="ifRoom"
         />
 
     <item
-        android:id="@+id/a_z"
-        android:title="@string/home.item.header.menu.a_z"
+        android:id="@+id/option3"
+        android:title="@string/home.item.header.menu.option3"
         app:showAsAction="ifRoom"
         />
 
     <item
-        android:id="@+id/z_a"
-        android:title="@string/home.item.header.menu.z_a"
+        android:id="@+id/option4"
+        android:title="@string/home.item.header.menu.option4"
         app:showAsAction="ifRoom"
         />
 

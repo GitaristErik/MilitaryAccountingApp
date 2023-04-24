@@ -7,6 +7,8 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.home.adapter.HomeViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,13 +21,17 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
     override fun initializeView() {
         binding.apply {
             val tabTitles = resources.getStringArray(R.array.home_tab_title)
-            viewPager.adapter = HomeViewPagerAdapter(
-                tabTitles.size,
-                childFragmentManager,
-                lifecycle,
-            )
-
-            viewPager.offscreenPageLimit = tabTitles.size
+            viewPager.apply {
+                offscreenPageLimit = tabTitles.size
+                adapter = HomeViewPagerAdapter(
+                    tabTitles.size,
+                    childFragmentManager,
+                    lifecycle,
+                )
+            }
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = tabTitles[position]
+            }.attach()
         }
     }
 

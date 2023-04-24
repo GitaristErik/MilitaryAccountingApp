@@ -19,11 +19,20 @@
     <string name="tab_title_categories">Категорії</string>
     <string name="tab_title_items">Елементи</string>
     <string name="home.item.category.logo.description">Іконка категорії</string>
-    <string name="home.item.header.menu.oldest_first">Спершу старі</string>
-    <string name="home.item.header.menu.newest_first">Спершу нові</string>
-    <string name="home.item.header.menu.a_z">А-Я</string>
-    <string name="home.item.header.menu.z_a">Я-А</string>
+    <string name="home.item.header.sort.description">Змінити порядок сортирування</string>
+    <string name="home.item.header.menu.option1">Назва</string>
+    <string name="home.item.header.menu.option2">Дата</string>
+    <string name="home.item.header.menu.option3">Штрих-код</string>
+    <string name="home.item.header.menu.option4">Кількість</string>
 
+    <string name="loading.preparing.title">Підготовка даних</string>
+    <string name="loading.refresh.title">Оновлення даних</string>
+    <string name="loading.more.title">Загрузити більше</string>
+    <string name="error.button.retry">Повторити</string>
+    <string name="error.message.empty">Нічого немає</string>
+    <string name="error.message.server">Упс! Щось пішло не так, або на сервер впав метеорит</string>
+    <string name="error.message.network">Виникла проблема з підключенням, не вдалося отримати дані!</string>
+    <string name="error.message.other">Щось пішло не так! Зберігайте спокій</string>
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
     <string name="profile.title">Профіль</string>
