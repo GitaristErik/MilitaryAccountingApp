@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,18 +10,18 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        tools:layout="@layout/fragment_home_categories"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_home_categories" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -55,38 +56,40 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/home.search.title" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:background="@drawable/capsule_tab_background"
-            app:tabGravity="fill"
-            app:tabIndicator="@drawable/capsule_tab_item_indicator"
-            app:tabIndicatorColor="?colorSecondary"
-            app:tabIndicatorFullWidth="true"
-            app:tabIndicatorGravity="center"
-            app:tabIndicatorHeight="32dp"
-            app:tabMaxWidth="0dp"
-            app:tabMinWidth="100dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="?colorOnSecondary"
-            app:tabUnboundedRipple="true">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/tab_title_categories" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/tab_title_items" />
-        </com.google.android.material.tabs.TabLayout>
-
+            android:hint="@string/home.search.title"
+            app:elevation="1dp" />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height.tabs"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/capsule_tab_background"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|center_horizontal"
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/capsule_tab_item_indicator"
+        app:tabIndicatorColor="?colorSecondary"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorGravity="center"
+        app:tabIndicatorHeight="32dp"
+        app:tabMaxWidth="0dp"
+        app:tabMinWidth="100dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="?colorOnSecondary"
+        app:tabUnboundedRipple="true">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/tab_title_categories" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/tab_title_items" />
+    </com.google.android.material.tabs.TabLayout>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"

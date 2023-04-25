@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeHeaderSortBinding
@@ -23,6 +25,8 @@ class HeaderToolsAdapter(
 
     private var viewType: ViewType = ViewType.GRID
 
+    private var spaceTop: Int = 0
+
     init {
         setHasStableIds(true)
     }
@@ -40,6 +44,7 @@ class HeaderToolsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(
+            spaceTop,
             viewType,
             orderBy,
             sortType,
@@ -70,11 +75,32 @@ class HeaderToolsAdapter(
         notifyItemChanged(0)
     }
 
+    fun setSpaceTop(size: Int) {
+        if (spaceTop == size) return
+        spaceTop = size
+        notifyItemChanged(0)
+    }
+
+    fun updatingSpaceTopBasedOnView(rootView: View, calculatedSpace: () -> Int?) {
+        var calculatedSpaceValue = calculatedSpace() ?: 0
+        if (calculatedSpaceValue == 0) {
+            rootView.post {
+                calculatedSpaceValue = calculatedSpace() ?: 0
+                setSpaceTop(calculatedSpaceValue)
+            }
+        } else {
+            setSpaceTop(calculatedSpaceValue)
+        }
+    }
+
     class ViewHolder(
         private val binding: FragmentHomeHeaderSortBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val originalSpaceTop = binding.root.marginTop
+
         fun bind(
+            spaceTop: Int = 0,
             viewType: ViewType,
             orderBy: OrderBy,
             sortType: SortType,
@@ -83,6 +109,8 @@ class HeaderToolsAdapter(
             onNewSortOptionSelected: (SortType) -> Unit
         ) {
             with(binding) {
+                if (spaceTop > 0) addSpaceTop(spaceTop)
+
                 btnViewType.setOnClickListener { onChangeViewType() }
                 btnViewType.icon = viewType.getIcon(root.context)
 
@@ -94,6 +122,12 @@ class HeaderToolsAdapter(
                 sortOptionText.setOnClickListener {
                     showPopup(root, root.context, onNewSortOptionSelected)
                 }
+            }
+        }
+
+        private fun addSpaceTop(spaceTop: Int) {
+            binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = originalSpaceTop + spaceTop
             }
         }
 

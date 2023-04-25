@@ -1,6 +1,7 @@
 package com.example.militaryaccountingapp.presenter.fragment.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.militaryaccountingapp.R
@@ -10,6 +11,7 @@ import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.V
 import com.example.militaryaccountingapp.presenter.fragment.home.adapter.HomeViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeViewModel>() {
@@ -28,6 +30,8 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
                     childFragmentManager,
                     lifecycle,
                 )
+                overScrollMode = View.OVER_SCROLL_NEVER
+                getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
             }
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]

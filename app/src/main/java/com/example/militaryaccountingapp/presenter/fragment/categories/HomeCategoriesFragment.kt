@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeCategoriesBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.categories.CategoriesViewModel.ViewData
@@ -49,7 +50,11 @@ class HomeCategoriesFragment :
                 scrollToTop()
                 viewModel.changeSortType(it)
             }
-        )
+        ).apply {
+            updatingSpaceTopBasedOnView(binding.root) {
+                resources.getDimensionPixelSize(R.dimen.height_tabs)
+            }
+        }
     }
 
     private val categoriesAdapter: TempAdapter by lazy {
