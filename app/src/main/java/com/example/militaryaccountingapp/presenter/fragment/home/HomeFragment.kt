@@ -20,7 +20,7 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-    override fun initializeView() {
+    override fun initializeView()  {
         binding.apply {
             val tabTitles = resources.getStringArray(R.array.home_tab_title)
             viewPager.apply {

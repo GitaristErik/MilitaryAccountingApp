@@ -7,12 +7,22 @@
     <string name="home.search.description">Пошук</string>
     <string name="home.search.title">Пошук</string>
 
-    <string name="home.item.category.label.all">Загалом:</string>
+    <string name="home.item.category.label.all">Всього:</string>
+    <string name="home.item.category.label.item">Елементи:</string>
+    <string name="home.item.category.label.nested">Вкладені:</string>
     <plurals name="home.item.category.label.item" tools:ignore="UnusedQuantity">
+        <item quantity="zero">Без елементів</item>
         <item quantity="one">%d елемент</item>
         <item quantity="few">%d елементи</item>
         <item quantity="many">%d елементів</item>
         <item quantity="other">%d елементів</item>
+    </plurals>
+    <plurals name="home.item.category.label.nested" tools:ignore="UnusedQuantity">
+        <item quantity="zero">Без вкладених</item>
+        <item quantity="one">%d вкладений</item>
+        <item quantity="few">%d вкладені</item>
+        <item quantity="many">%d вкладених</item>
+        <item quantity="other">%d вкладених</item>
     </plurals>
 
     <string name="home.item.header.button.description">Змінити вигляд категорій</string>
@@ -36,4 +46,8 @@
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
     <string name="profile.title">Профіль</string>
+    <string name="category.title">Категорія</string>
+    <string name="category.appbar.title">Категорія</string>
+    <string name="item.appbar.title">Елемент</string>
+    <string name="item.title">Елемент</string>
 </resources>

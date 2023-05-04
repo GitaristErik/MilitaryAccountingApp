@@ -10,10 +10,18 @@
     <!-- : Item category -->
     <string name="home.item.category.logo.description">Category Icon</string>
     <string name="home.item.category.label.all">All:</string>
+    <string name="home.item.category.label.item">Items:</string>
+    <string name="home.item.category.label.nested">Nested:</string>
+
     <plurals name="home.item.category.label.item">
         <item quantity="zero">No items</item>
-        <item quantity="one">%d item</item>
+        <item quantity="one">1 item</item>
         <item quantity="other">%d items</item>
+    </plurals>
+    <plurals name="home.item.category.label.nested">
+        <item quantity="zero">No nested</item>
+        <item quantity="one">1 nested</item>
+        <item quantity="other">%d nested</item>
     </plurals>
 
     <!-- : Header sort tools -->
@@ -52,6 +60,15 @@
     <string name="error.message.server">Oops! Seems like some meteor hit the server.</string>
     <string name="error.message.network">There is problem with your connection, failed to get the data!</string>
     <string name="error.message.other">Something went wrong! Keep Calm.</string>
+
+    <!-- Category fragment -->
+    <string name="category.title">Category</string>
+    <string name="category.appbar.title">Category</string>
+
+    <!-- Item fragment -->
+    <string name="item.title">Item</string>
+    <string name="item.appbar.title">Item</string>
+
 
     <!-- History fragment -->
     <string name="history.title">History</string>

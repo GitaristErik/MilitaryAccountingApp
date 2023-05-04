@@ -1,0 +1,185 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Filled"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin.small"
+    android:layout_marginVertical="@dimen/margin.small"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin.small"
+        android:layout_marginTop="@dimen/margin.small"
+        android:layout_marginBottom="@dimen/margin.small">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/category_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/home.item.category.logo.description"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_group"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            tools:srcCompat="@drawable/ic_launcher_background" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/category_title"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin.small"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@id/item_count_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/category_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Category Title Cate gory Title Category Title Category Title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_count_label"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home.item.category.label.item"
+            android:textColor="?colorOnSurfaceVariant"
+            app:layout_constraintBottom_toTopOf="@id/nested_count_label"
+            app:layout_constraintEnd_toStartOf="@id/item_count"
+            app:layout_constraintStart_toStartOf="@id/category_title"
+            app:layout_constraintTop_toBottomOf="@id/category_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_count"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin.small.extra"
+            android:textColor="?colorOnTertiaryContainer"
+            app:layout_constraintBottom_toBottomOf="@id/item_count_label"
+            app:layout_constraintStart_toEndOf="@id/item_count_label"
+            app:layout_constraintTop_toTopOf="@id/item_count_label"
+            tools:text="5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nested_count_label"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home.item.category.label.nested"
+            android:textColor="?colorOnSurfaceVariant"
+            app:layout_constraintBottom_toTopOf="@id/all_count_label"
+            app:layout_constraintEnd_toStartOf="@id/nested_count"
+            app:layout_constraintStart_toStartOf="@id/category_title"
+            app:layout_constraintTop_toBottomOf="@id/item_count_label" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nested_count"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin.small.extra"
+            android:textColor="?colorOnTertiaryContainer"
+            app:layout_constraintBottom_toBottomOf="@id/nested_count_label"
+            app:layout_constraintStart_toEndOf="@id/nested_count_label"
+            app:layout_constraintTop_toTopOf="@id/nested_count_label"
+            tools:text="5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/all_count_label"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home.item.category.label.all"
+            android:textColor="?colorOnSurfaceVariant"
+            app:layout_constraintBottom_toTopOf="@id/avatar_group"
+            app:layout_constraintEnd_toStartOf="@id/all_count"
+            app:layout_constraintStart_toStartOf="@id/category_title"
+            app:layout_constraintTop_toBottomOf="@id/nested_count_label" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/all_count"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin.small.extra"
+            android:textColor="?colorOnTertiaryContainer"
+            app:layout_constraintBottom_toBottomOf="@id/all_count_label"
+            app:layout_constraintStart_toEndOf="@id/all_count_label"
+            app:layout_constraintTop_toTopOf="@id/all_count_label"
+            tools:text="24" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/qr_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/home.item.category.logo.description"
+            android:padding="@dimen/padding.small.extra"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/all_count_label"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/category_title"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            tools:srcCompat="@drawable/ic_launcher_background" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/avatar_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/category_title"
+            app:layout_constraintTop_toBottomOf="@id/all_count_label">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/margin.small.extra"
+                android:contentDescription="@string/home.item.category.logo.description"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
+                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+                tools:srcCompat="@drawable/ic_launcher_background" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/margin.small.extra"
+                android:contentDescription="@string/home.item.category.logo.description"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
+                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+                tools:srcCompat="@drawable/ic_launcher_background" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/home.item.category.logo.description"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
+                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+                tools:srcCompat="@drawable/ic_launcher_background" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+
