@@ -19,7 +19,7 @@ class CategoriesViewModel @Inject constructor(
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     data class ViewData(
-        val viewType: ViewType = ViewType.GRID,
+        val viewType: ViewType = ViewType.LIST,
         val orderBy: OrderBy = OrderBy.DESCENDING,
         val sortType: SortType = SortType.NAME,
         val categories: List<CategoryUi> = emptyList(),
@@ -50,29 +50,30 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun getCategories(): List<CategoryUi> {
-        val list = mutableListOf<CategoryUi>()
         val rand: (Int, Int) -> Int = { x1, x2 ->
             val f = random() / 1.0.nextDown()
             val x = x1 * (1.0 - f) + x2 * f
             x.toInt()
         }
 
-        for (i in 1..8) {
-            list.add(
-                CategoryUi(
-                    id = i,
-                    name = "Category #${i}",
-                    description = "Description for category #${i}",
-                    itemsCount = rand(0, 10),
-                    nestedCount = rand(0, 4),
-                    allCount = rand(0, 20),
-                    imageUrl = "",
-                    color = "#FFFFFF",
-                    parentId = null,
-                )
+        return List(8) { i ->
+            val avatars = List<String>(rand(0, 6)) {
+                "https://media.npr.org/assets/img/2016/10/26/hacksaw-ridge-hacksawridge_d22-10131_rgb_sq-9241d1a7ee125fdfde8abd5e8585484682c1efbf-s800-c85.jpg"
+            }
+            log.d("#${i} avatars count: ${avatars.size}")
+            CategoryUi(
+                id = i,
+                name = "Category #${i}",
+                description = "Description for category #${i}",
+                itemsCount = rand(0, 10),
+                nestedCount = rand(0, 4),
+                allCount = rand(0, 20),
+                imageUrl = "",
+                color = "#FFFFFF",
+                usersAvatars = avatars,
+                parentId = null,
             )
         }
-        return list
     }
 
     fun changeSortType(sortType: SortType) {

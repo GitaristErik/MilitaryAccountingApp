@@ -96,6 +96,7 @@ class CategoryAdapter(
                 thumbnail = thumbnailImage
                 imageOnLoadingDrawable = loadingDrawable
             }
+            avatarGroup.dataSource = data.usersAvatars.toMutableList()
 
             root.setOnClickListener { onCLickListener.invoke(data, categoryImage) }
         }

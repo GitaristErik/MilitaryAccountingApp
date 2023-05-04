@@ -125,6 +125,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+    // Avatars Group
+    implementation project(path: ':GroupAvatars')
+
+    // QR generator
+    implementation 'com.github.alexzhirkevich:custom-qr-generator:1.6.1'
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
