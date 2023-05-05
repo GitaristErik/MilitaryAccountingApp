@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_outline_edit_24dp"
+        android:contentDescription="@string/menu.app.bar.edit.description"
+        android:title="@string/menu.app.bar.edit" />
+
+    <item
+        android:id="@+id/more"
+        android:icon="@drawable/ic_more_vert_24dp"
+        app:showAsAction="never"
+        android:contentDescription="@string/menu.app.bar.more.description"
+        android:title="@string/menu.app.bar.more" />
+
+</menu>

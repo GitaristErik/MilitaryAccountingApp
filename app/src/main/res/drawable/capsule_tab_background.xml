@@ -7,6 +7,6 @@
         android:bottomRightRadius="@dimen/corner.tabs"
         android:topLeftRadius="@dimen/corner.tabs"
         android:topRightRadius="@dimen/corner.tabs" />
-    <solid android:color="@android:color/transparent" />
+    <solid android:color="?attr/colorSurface" />
 
 </shape>

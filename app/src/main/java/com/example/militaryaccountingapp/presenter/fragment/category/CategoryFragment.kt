@@ -29,21 +29,36 @@ class CategoryFragment :
 
     override fun initializeView() {
         setupActionBar()
-        initQr()
+        setupQrCode()
     }
 
     private fun setupActionBar() {
         with(requireActivity() as AppCompatActivity) {
-            setSupportActionBar(binding.toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-            binding.toolbar.setNavigationOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
+            binding.toolbar.apply {
+                setNavigationOnClickListener {
+                    onBackPressedDispatcher.onBackPressed()
+                }
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.edit -> {
+                            // Handle edit text press
+                            true
+                        }
+
+                        R.id.more -> {
+                            // Handle more item (inside overflow menu) press
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
             }
         }
     }
 
-    private fun initQr() {
+
+    private fun setupQrCode() {
         val data = "This is the test data for qr code"
         val qrData = QrData.Text(data)
 

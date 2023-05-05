@@ -50,4 +50,8 @@
     <string name="category.appbar.title">Категорія</string>
     <string name="item.appbar.title">Елемент</string>
     <string name="item.title">Елемент</string>
+    <string name="menu.app.bar.edit">Редагувати</string>
+    <string name="menu.app.bar.edit.description">Редагувати</string>
+    <string name="menu.app.bar.more.description">Більше</string>
+    <string name="menu.app.bar.more">Більше</string>
 </resources>

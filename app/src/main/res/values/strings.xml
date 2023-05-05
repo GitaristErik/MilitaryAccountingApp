@@ -64,6 +64,10 @@
     <!-- Category fragment -->
     <string name="category.title">Category</string>
     <string name="category.appbar.title">Category</string>
+    <string name="menu.app.bar.edit">Edit</string>
+    <string name="menu.app.bar.edit.description">Edit</string>
+    <string name="menu.app.bar.more.description">More</string>
+    <string name="menu.app.bar.more">More</string>
 
     <!-- Item fragment -->
     <string name="item.title">Item</string>

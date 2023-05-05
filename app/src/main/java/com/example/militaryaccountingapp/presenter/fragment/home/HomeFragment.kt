@@ -9,6 +9,7 @@ import com.example.militaryaccountingapp.databinding.FragmentHomeBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.fragment.home.adapter.HomeViewPagerAdapter
+import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +22,17 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
         get() = FragmentHomeBinding::inflate
 
     override fun initializeView()  {
+        setupActionBar()
+        setupViewPager()
+    }
+
+    private fun setupActionBar() {
+        binding.appBarLayout.statusBarForeground = MaterialShapeDrawable().apply {
+            setTint(resources.getColor(R.color.md_surface, null))
+        }
+    }
+
+    private fun setupViewPager() {
         binding.apply {
             val tabTitles = resources.getStringArray(R.array.home_tab_title)
             viewPager.apply {
