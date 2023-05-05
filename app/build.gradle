@@ -130,6 +130,7 @@ dependencies {
 
     // QR generator
     implementation 'com.github.alexzhirkevich:custom-qr-generator:1.6.1'
+//    implementation 'com.github.sumimakito:AwesomeQRCode:1.2.0'
 
     // Test
     testImplementation 'junit:junit:4.13.2'

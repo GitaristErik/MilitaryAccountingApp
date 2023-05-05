@@ -71,6 +71,7 @@ class CategoriesViewModel @Inject constructor(
                 imageUrl = "",
                 color = "#FFFFFF",
                 usersAvatars = avatars,
+                qrCode = "This is the test data for QR code",
                 parentId = null,
             )
         }

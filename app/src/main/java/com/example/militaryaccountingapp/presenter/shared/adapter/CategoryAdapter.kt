@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,13 @@ import com.example.militaryaccountingapp.presenter.utils.TransitionUtils
 import com.example.militaryaccountingapp.presenter.utils.common.constant.ViewType
 import com.example.militaryaccountingapp.presenter.utils.image.GlideUtils
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
+import com.github.alexzhirkevich.customqrgenerator.QrData
+import com.github.alexzhirkevich.customqrgenerator.vector.QrCodeDrawable
+import com.github.alexzhirkevich.customqrgenerator.vector.createQrVectorOptions
+import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorBallShape
+import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorColor
+import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorFrameShape
+import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorPixelShape
 
 class CategoryAdapter(
     private var viewType: ViewType,
@@ -82,9 +90,6 @@ class CategoryAdapter(
             thumbnailImage: RequestBuilder<Drawable>,
             onCLickListener: (CategoryUi, View) -> Unit,
         ) = binding.run {
-            val setQuantity: (Int, Int) -> String = { resId, count ->
-                root.context.resources.getQuantityString(resId, count)
-            }
 
             categoryTitle.text = data.name
             allCount.text = data.allCount.toString()
@@ -96,7 +101,35 @@ class CategoryAdapter(
                 thumbnail = thumbnailImage
                 imageOnLoadingDrawable = loadingDrawable
             }
+
             avatarGroup.dataSource = data.usersAvatars.toMutableList()
+
+            data.qrCode?.let {
+                val qrData = QrData.Text(it)
+                val options = createQrVectorOptions {
+                    colors {
+                        dark = QrVectorColor.Solid(
+                            ContextCompat.getColor(root.context, R.color.md_onSecondaryContainer)
+                        )
+                        ball = QrVectorColor.Solid(
+                            ContextCompat.getColor(root.context, R.color.md_onPrimaryContainer)
+                        )
+                        frame = QrVectorColor.Solid(
+                            ContextCompat.getColor(root.context, R.color.md_onPrimaryContainer)
+                        )
+                    }
+                    shapes {
+                        darkPixel = QrVectorPixelShape
+                            .Circle(.75f)
+                        ball = QrVectorBallShape
+                            .Circle(.5f)
+                        frame = QrVectorFrameShape
+                            .RoundCorners(.5f, .5f)
+                    }
+                }
+                val drawable: Drawable = QrCodeDrawable(qrData, options)
+                qrImage.setImageDrawable(drawable)
+            }
 
             root.setOnClickListener { onCLickListener.invoke(data, categoryImage) }
         }
