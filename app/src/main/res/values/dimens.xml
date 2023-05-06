@@ -22,5 +22,6 @@
     <!-- Other -->
     <dimen name="corner.tabs">500dp</dimen>
     <dimen name="corner.default">12dp</dimen>
+    <dimen name="corner.rectangle">20dp</dimen>
     <dimen name="height.tabs">32dp</dimen>
 </resources>
