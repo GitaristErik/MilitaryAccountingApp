@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginVertical="@dimen/margin.small"
+    android:paddingVertical="@dimen/padding.small"
     android:background="?attr/selectableItemBackground">
 
     <com.google.android.material.imageview.ShapeableImageView
