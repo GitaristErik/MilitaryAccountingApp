@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/navigation_statistics"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.history.HistoryFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsFragment"
         android:label="@string/statistics.title"
         tools:layout="@layout/fragment_statistics" />
 
