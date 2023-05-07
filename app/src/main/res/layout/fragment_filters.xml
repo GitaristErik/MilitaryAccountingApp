@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
     <!-- Users -->
@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin.standard"
-        app:layout_constraintHorizontal_bias="0"
         android:text="@string/filter.users.title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,18 +24,19 @@
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:layout_marginTop="@dimen/margin.standard"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:itemCount="3"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:background="@drawable/background_rounded_rect"
         android:backgroundTint="?colorSecondaryContainer"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
         android:elevation="1dp"
         android:paddingHorizontal="@dimen/padding.standard"
-        tools:listitem="@layout/item_filter_user"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/users_label" />
+        app:layout_constraintTop_toBottomOf="@id/users_label"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_filter_user" />
 
 
     <!-- Items -->
@@ -45,10 +46,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin.large.extra"
-        app:layout_constraintHorizontal_bias="0"
+        android:paddingVertical="2dp"
         android:text="@string/filter.items.title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_users" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:background="@drawable/background_rounded_rect"
+        android:backgroundTint="?colorSurfaceVariant"
+        android:elevation="1dp"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/items_label"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_tree_node_view" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
