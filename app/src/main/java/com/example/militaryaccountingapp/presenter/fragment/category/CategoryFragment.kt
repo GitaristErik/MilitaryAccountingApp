@@ -45,7 +45,7 @@ class CategoryFragment :
                             true
                         }
 
-                        R.id.more -> {
+                        R.id.delete -> {
                             // Handle more item (inside overflow menu) press
                             true
                         }
