@@ -87,9 +87,14 @@
     <string name="item.appbar.title">Item</string>
 
 
-    <!-- : Filters fragment -->
+    <!-- Filters fragment -->
     <string name="filter.users.title">Users</string>
     <string name="filter.items.title">Items</string>
+    <string name="filter.date.title">Date</string>
+    <string name="filter.date.pick">Pick Day</string>
+    <string name="filter.date.before">Before</string>
+    <string name="filter.date.after">After</string>
+    <string name="filter.date.range">Range</string>
 
 
     <!-- History fragment -->

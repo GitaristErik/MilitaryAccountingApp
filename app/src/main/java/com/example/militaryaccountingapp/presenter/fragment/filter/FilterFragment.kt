@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -19,6 +20,7 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.UsersFilterAda
 import com.gg.gapo.treeviewlib.GapoTreeView
 import com.gg.gapo.treeviewlib.model.NodeState
 import com.gg.gapo.treeviewlib.model.NodeViewData
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
 
@@ -34,6 +36,7 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
     override fun initializeView() {
         setupAdapter()
         setupTreeView()
+        setupDateButtons()
     }
 
     override fun render(data: ViewData) {
@@ -53,63 +56,17 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
         )
     }
 
-    /*    private fun setupTreeView() {
-            val nodes: MutableList<TreeNode<*>> = ArrayList()
-            val app: TreeNode<CategoryTree> = TreeNode<CategoryTree>(CategoryTree("app"))
-            nodes.add(app)
-            app.addChild(
-                TreeNode(CategoryTree("manifests"))
-                    .addChild(TreeNode(ItemTree("AndroidManifest.xml")))
-            )
-            app.addChild(
-                TreeNode(CategoryTree("java")).addChild(
-                    TreeNode(CategoryTree("tellh")).addChild(
-                        TreeNode(CategoryTree("com")).addChild(
-                            TreeNode(CategoryTree("recyclertreeview"))
-                                .addChild(TreeNode(ItemTree("CategoryTree")))
-                                .addChild(TreeNode(ItemTree("CategoryTreeectoryNodeBinder")))
-                                .addChild(TreeNode(ItemTree("ItemTree")))
-                                .addChild(TreeNode(ItemTree("ItemTreeNodeBinder")))
-                                .addChild(TreeNode(ItemTree("TreeViewBinder")))
-                        )
-                    )
-                )
-            )
-            val res: TreeNode<CategoryTree> = TreeNode<CategoryTree>(CategoryTree("res"))
-            nodes.add(res)
-            res.addChild(
-                TreeNode(CategoryTree("layout"))
-                    .addChild(TreeNode(ItemTree("activity_main.xml")))
-                    .addChild(TreeNode(ItemTree("item_CategoryTree.xml")))
-                    .addChild(TreeNode(ItemTree("item_ItemTree.xml")))
-            )
-            res.addChild(
-                TreeNode(CategoryTree("mipmap"))
-                    .addChild(TreeNode(ItemTree("ic_launcher.png")))
-            )
-
-            binding.rvItems.adapter = TreeViewAdapter(
-                nodes, listOf(
-                    CategoryNodeBinder(),
-                    ItemNodeBinder(),
-                )
-            ).apply {
-                setOnTreeNodeListener(object : TreeViewAdapter.OnTreeNodeListener {
-                    override fun onClick(node: TreeNode<*>, holder: RecyclerView.ViewHolder): Boolean {
-                        if (!node.isLeaf) {
-                            //Update and toggle the node.
-                            onToggle(!node.isExpand, holder)
-                        }
-                        return false
-                    }
-
-                    override fun onToggle(isExpand: Boolean, holder: RecyclerView.ViewHolder) {
-                        val categoryHolder = holder as CategoryNodeBinder.ViewHolder
-                        categoryHolder.setExpandState(isExpand)
-                    }
-                })
+    private fun setupDateButtons() {
+        binding.dateMode.apply {
+            addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+                toggleButton.findViewById<MaterialButton>(checkedId).icon =
+                    if (isChecked) ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_check_24dp
+                    ) else null
             }
-        }*/
+        }
+    }
 
     private val treeViewBuilder by lazy {
         GapoTreeView.Builder.plant<TreeNodeItem>(requireContext())

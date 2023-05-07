@@ -24,11 +24,11 @@
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never"
         android:layout_marginTop="@dimen/margin.standard"
         android:background="@drawable/background_rounded_rect"
         android:backgroundTint="?colorSecondaryContainer"
         android:elevation="1dp"
+        android:overScrollMode="never"
         android:paddingHorizontal="@dimen/padding.standard"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,5 +70,60 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_tree_node_view" />
 
+    <!-- Date -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/date_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.large.extra"
+        android:paddingVertical="2dp"
+        android:text="@string/filter.date.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_items" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/dateMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_label"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_pick_day"
+            style="@style/Widget.App.Button.SegmentedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.pick" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_before"
+            style="@style/Widget.App.Button.SegmentedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.before" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_after"
+            style="@style/Widget.App.Button.SegmentedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.after" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_range"
+            style="@style/Widget.App.Button.SegmentedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.range" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

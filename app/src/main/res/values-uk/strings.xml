@@ -44,6 +44,11 @@
     <string name="error.message.network">Виникла проблема з підключенням, не вдалося отримати дані!</string>
     <string name="error.message.other">Щось пішло не так! Зберігайте спокій</string>
     <string name="filter.users.title">Користувачі</string>
+    <string name="filter.date.title">Дата</string>
+    <string name="filter.date.pick">Конкретний День</string>
+    <string name="filter.date.before">До</string>
+    <string name="filter.date.after">Після</string>
+    <string name="filter.date.range">Діапазон</string>
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
     <string name="profile.title">Профіль</string>
