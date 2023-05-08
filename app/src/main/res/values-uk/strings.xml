@@ -51,6 +51,9 @@
     <string name="filter.date.range">Діапазон</string>
     <string name="filter.date.select">Вибрати День</string>
     <string name="filter.result.button">Встановити фільтри</string>
+    <string name="count.title">Кількість</string>
+    <string name="count.button.users">Користувачі</string>
+    <string name="count.button.items">Елементи</string>
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
     <string name="profile.title">Профіль</string>

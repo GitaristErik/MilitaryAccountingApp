@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -32,7 +32,7 @@ import kotlin.reflect.full.createInstance
 class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, FilterViewModel>(),
     GapoTreeView.Listener<TreeNodeItem> {
 
-    override val viewModel: FilterViewModel by viewModels()
+    override val viewModel: FilterViewModel by activityViewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFiltersBinding
         get() = FragmentFiltersBinding::inflate
@@ -48,7 +48,7 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
         usersAdapter.submitList(data.usersUi)
         userDateSelection = data.filterDate
         binding.selectedDate.text = userDateSelection.displayName
-        binding.buttonSetFilters.isEnabled = data.isFiltersSelected
+//        binding.buttonSetFilters.isEnabled = data.isFiltersSelected
     }
 
     private val usersAdapter by lazy {

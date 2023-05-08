@@ -98,13 +98,15 @@
     <string name="filter.date.select">Select Date</string>
     <string name="filter.result.button">Set Filters</string>
 
+    <!-- Statistics fragment -->
+    <string name="statistics.title">Statistics</string>
+    <string name="count.title">Count</string>
+    <string name="count.button.users">Users</string>
+    <string name="count.button.items">Items</string>
+
 
     <!-- History fragment -->
     <string name="history.title">History</string>
-
-
-    <!-- Statistics fragment -->
-    <string name="statistics.title">Statistics</string>
 
 
     <!-- Profile fragment -->

@@ -156,6 +156,7 @@
 
     <!-- Result -->
 
+<!--
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_set_filters"
             android:layout_width="match_parent"
@@ -167,12 +168,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_select_date" />
+-->
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin.large"
+        android:layout_margin="@dimen/margin.large.extra"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_select_date" />
