@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
+    android:layout_height="match_parent">
 
     <!-- Users -->
     <com.google.android.material.textview.MaterialTextView
@@ -98,28 +97,28 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_pick_day"
-            style="@style/Widget.App.Button.SegmentedButton"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/filter.date.pick" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_before"
-            style="@style/Widget.App.Button.SegmentedButton"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/filter.date.before" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_after"
-            style="@style/Widget.App.Button.SegmentedButton"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/filter.date.after" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_range"
-            style="@style/Widget.App.Button.SegmentedButton"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/filter.date.range" />

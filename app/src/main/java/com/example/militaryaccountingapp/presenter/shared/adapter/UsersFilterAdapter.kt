@@ -9,6 +9,7 @@ import com.example.militaryaccountingapp.presenter.model.filter.UserFilterUi
 import com.example.militaryaccountingapp.presenter.shared.adapter.UsersFilterAdapter.UserViewHolder
 import com.example.militaryaccountingapp.presenter.utils.TransitionUtils
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
+import com.google.android.material.checkbox.MaterialCheckBox
 
 class UsersFilterAdapter(
     private val onChange: ((Int, Boolean) -> Unit)?,
@@ -51,7 +52,14 @@ class UsersFilterAdapter(
 
             root.setOnClickListener {
                 checkbox.isChecked = !checkbox.isChecked
-                onChange?.invoke(data.id, checkbox.isChecked)
+            }
+
+            checkbox.addOnCheckedStateChangedListener { _, state ->
+                if (state == MaterialCheckBox.STATE_UNCHECKED) {
+                    onChange?.invoke(data.id, false)
+                } else if (state == MaterialCheckBox.STATE_CHECKED) {
+                    onChange?.invoke(data.id, true)
+                }
             }
         }
     }

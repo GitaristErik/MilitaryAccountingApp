@@ -65,15 +65,14 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
                 it - userId
             }
         }
-        val isFiltersSelected = (selectedUsersId.isNotEmpty() &&
-                (_data.value.selectedCategoriesIds.isNotEmpty() || _data.value.selectedItemsIds.isNotEmpty())
-                && _data.value.filterDate.displayName.isNotEmpty())
 
         _data.update {
             it.copy(
                 usersUi = usersUi,
+                selectedItemsIds = emptyList(),
+                selectedCategoriesIds = emptyList(),
                 selectedUsersId = selectedUsersId,
-                isFiltersSelected = isFiltersSelected,
+                isFiltersSelected = false,
             )
         }
 
@@ -88,9 +87,10 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
                 this - id
             }
         }
-        val isFiltersSelected = (_data.value.selectedUsersId.isNotEmpty() &&
+        val isFiltersSelected = (
                 (_data.value.selectedCategoriesIds.isNotEmpty() || itemsId.isNotEmpty()) &&
-                _data.value.filterDate.displayName.isNotEmpty())
+                        _data.value.filterDate.displayName.isNotEmpty()
+                )
 
         _data.update {
             it.copy(
@@ -131,9 +131,10 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
             )
         }
 
-        val isFiltersSelected = (_data.value.selectedUsersId.isNotEmpty() &&
+        val isFiltersSelected = (
                 (categoriesId.isNotEmpty() || itemsId.isNotEmpty()) &&
-                _data.value.filterDate.displayName.isNotEmpty())
+                        _data.value.filterDate.displayName.isNotEmpty()
+                )
 
         _data.update {
             it.copy(
@@ -149,9 +150,8 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
             it.copy(
                 filterDate = date,
                 isFiltersSelected = with(_data.value) {
-                    (selectedUsersId.isNotEmpty() &&
-                            (selectedCategoriesIds.isNotEmpty() || selectedItemsIds.isNotEmpty())
-                            && filterDate.displayName.isNotEmpty())
+                    ((selectedCategoriesIds.isNotEmpty() || selectedItemsIds.isNotEmpty())
+                            && date.displayName.isNotEmpty())
                 }
             )
         }
