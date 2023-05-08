@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -17,12 +18,15 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
 import com.example.militaryaccountingapp.presenter.shared.adapter.UsersFilterAdapter
+import com.example.militaryaccountingapp.presenter.utils.common.constant.FilterDate
 import com.gg.gapo.treeviewlib.GapoTreeView
 import com.gg.gapo.treeviewlib.model.NodeState
 import com.gg.gapo.treeviewlib.model.NodeViewData
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.launch
+import kotlin.reflect.full.createInstance
 
 
 class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, FilterViewModel>(),
@@ -37,10 +41,14 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
         setupAdapter()
         setupTreeView()
         setupDateButtons()
+        setupDateModal()
     }
 
     override fun render(data: ViewData) {
         usersAdapter.submitList(data.usersUi)
+        userDateSelection = data.filterDate
+        binding.selectedDate.text = userDateSelection.displayName
+        binding.buttonSetFilters.isEnabled = data.isFiltersSelected
     }
 
     private val usersAdapter by lazy {
@@ -56,6 +64,8 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
         )
     }
 
+    private lateinit var userDateSelection: FilterDate
+
     private fun setupDateButtons() {
         binding.dateMode.apply {
             addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
@@ -64,9 +74,78 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
                         requireContext(),
                         R.drawable.ic_check_24dp
                     ) else null
+
+                if (isChecked) {
+                    if (!binding.buttonSelectDate.isEnabled) {
+                        binding.buttonSelectDate.isEnabled = true
+                    }
+
+                    when (checkedId) {
+                        R.id.button_pick_day -> FilterDate.PickDay::class
+                        R.id.button_before -> FilterDate.Before::class
+                        R.id.button_after -> FilterDate.After::class
+                        R.id.button_range -> FilterDate.Range::class
+                        else -> null
+                    }?.let { kClass ->
+                        kClass.createInstance().also {
+                            it.date = userDateSelection.date
+//                            it.getDisplayName = userDateSelection.getDisplayName
+                            if (it is FilterDate.Range) {
+                                it.endDate =  MaterialDatePicker.thisMonthInUtcMilliseconds()
+                                it.date =  MaterialDatePicker.todayInUtcMilliseconds()
+                            }
+                            viewModel.changeDateSelection(it)
+                            viewModel.changeFiltersSelected(false)
+                        }
+                    }
+                }
             }
         }
     }
+
+    private fun setupDateModal() {
+        binding.buttonSelectDate.setOnClickListener {
+            when (userDateSelection) {
+                is FilterDate.Range -> showDateRangePicker()
+                else -> showDatePicker()
+            }
+        }
+    }
+
+    private fun showDatePicker() {
+        val picker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select date")
+            .setSelection(userDateSelection.date)
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            userDateSelection = userDateSelection::class.createInstance()
+            userDateSelection.date = it
+            userDateSelection.displayName = picker.headerText
+            viewModel.changeDateSelection(userDateSelection)
+//            viewModel.changeFiltersSelected(true)
+        }
+
+        picker.show(childFragmentManager, picker.toString())
+    }
+
+    private fun showDateRangePicker() {
+        val range = (userDateSelection as FilterDate.Range)
+
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select date")
+            .setSelection(Pair(range.endDate, range.date))
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            userDateSelection = FilterDate.Range(it.first, it.second, picker.headerText)
+            viewModel.changeDateSelection(userDateSelection)
+//            viewModel.changeFiltersSelected(true)
+        }
+
+        picker.show(childFragmentManager, picker.toString())
+    }
+
 
     private val treeViewBuilder by lazy {
         GapoTreeView.Builder.plant<TreeNodeItem>(requireContext())
@@ -90,8 +169,6 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
                     treeView = treeViewBuilder
                         .setData(it)
                         .build()
-
-                    log.d(it.toString())
                 }
         }
     }

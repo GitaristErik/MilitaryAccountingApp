@@ -35,7 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/users_label"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-        tools:itemCount="3"
+        tools:itemCount="1"
         tools:listitem="@layout/item_filter_user" />
 
 
@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/items_label"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-        tools:itemCount="2"
+        tools:itemCount="1"
         tools:listitem="@layout/item_tree_node_view" />
 
     <!-- Date -->
@@ -125,5 +125,57 @@
             android:text="@string/filter.date.range" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selected_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?colorSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/button_select_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/button_select_date"
+        tools:text="Aug 17 - Aug 24" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.small.extra"
+        android:enabled="false"
+        android:paddingStart="@dimen/padding.standard"
+        android:paddingEnd="@dimen/padding.large"
+        android:text="@string/filter.date.select"
+        android:theme="@style/Widget.Material3.Button.IconButton.Filled"
+        app:icon="@drawable/ic_arrow_forward_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateMode" />
+
+    <!-- Result -->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_set_filters"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/margin.large.extra"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/filter.result.button"
+            android:theme="@style/Widget.Material3.Button.ElevatedButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_select_date" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin.large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_select_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

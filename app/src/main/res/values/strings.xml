@@ -95,6 +95,8 @@
     <string name="filter.date.before">Before</string>
     <string name="filter.date.after">After</string>
     <string name="filter.date.range">Range</string>
+    <string name="filter.date.select">Select Date</string>
+    <string name="filter.result.button">Set Filters</string>
 
 
     <!-- History fragment -->
