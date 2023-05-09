@@ -46,7 +46,6 @@ class ChartBubbleBinder(
                     setDrawInside(false)
                     typeface = Typeface.DEFAULT
                 }*/
-        chart.animateY(2000)
 
         chart.axisLeft.apply {
             typeface = Typeface.DEFAULT
@@ -111,6 +110,8 @@ class ChartBubbleBinder(
 //            setValueTextSize(11f)
 //            setValueFormatter(PercentFormatter())
         }
+
+        chart.animateY(2000)
 
         chart.invalidate()
     }

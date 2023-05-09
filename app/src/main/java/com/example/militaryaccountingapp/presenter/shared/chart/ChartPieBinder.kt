@@ -60,8 +60,6 @@ class ChartPieBinder(
 
         setOnChartValueSelectedListener(onChartValueSelectedListener)
 
-        animateY(1400, Easing.EaseInOutQuad)
-
         legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
@@ -130,6 +128,9 @@ class ChartPieBinder(
 
         // undo all highlights
         chart.highlightValues(null)
+
+        chart.animateY(1400, Easing.EaseInOutQuad)
+
         chart.invalidate()
     }
 
