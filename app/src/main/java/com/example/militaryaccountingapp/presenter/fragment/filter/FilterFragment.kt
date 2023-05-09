@@ -64,7 +64,7 @@ class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, F
         )
     }
 
-    private lateinit var userDateSelection: FilterDate
+    private var userDateSelection: FilterDate = FilterDate.PickDay()
 
     private fun setupDateButtons() {
         binding.dateMode.apply {
