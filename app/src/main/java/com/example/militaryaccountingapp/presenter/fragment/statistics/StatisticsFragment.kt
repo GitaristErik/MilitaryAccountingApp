@@ -16,8 +16,11 @@ import com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragmen
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ChartType
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ViewData
-import com.example.militaryaccountingapp.presenter.shared.adapter.ChartPieBinder
-import com.example.militaryaccountingapp.presenter.shared.adapter.ListenerValueSelected
+import com.example.militaryaccountingapp.presenter.shared.chart.ChartBubbleBinder
+import com.example.militaryaccountingapp.presenter.shared.chart.ChartPieBinder
+import com.example.militaryaccountingapp.presenter.shared.chart.ListenerValueSelected
+import com.example.militaryaccountingapp.presenter.shared.chart.TestData
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.shape.MaterialShapeDrawable
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,8 +47,8 @@ class StatisticsFragment :
     override fun render(data: ViewData) {
         log.d("render")
         when (data.chartType) {
-            is ChartType.Count -> setupCountChartItems()
-            is ChartType.Users -> setupCountChartUsers()
+            is ChartType.Count -> renderCountChartItems()
+            is ChartType.Users -> renderCountChartUsers()
             else -> setupCountChart()
         }
     }
@@ -100,19 +103,42 @@ class StatisticsFragment :
         }
     }
 
-    private fun setupCountChart() {
-//        binding.countChartViewUsers.visibility = View.INVISIBLE
-    }
-
-    private fun setupCountChartUsers() {
-        binding.countChartViewUsers.visibility = View.VISIBLE
+    private val countChartUsers by lazy {
         ChartPieBinder(requireContext(), binding.countChartViewUsers, ListenerValueSelected).apply {
-            bind( "All Items", "132")
-            setData(ChartPieBinder.getDatasetEntries(3, 10f))
+            bind("All Items")
         }
     }
 
-    private fun setupCountChartItems() {
+    private val countChartItems by lazy {
+        ChartBubbleBinder(
+            requireContext(),
+            binding.countChartViewItems,
+            ListenerValueSelected
+        ).apply {
+            bind()
+        }
+    }
+
+    private fun setupCountChart() {
         binding.countChartViewUsers.visibility = View.INVISIBLE
+        binding.countChartViewUsers.visibility = View.INVISIBLE
+    }
+
+    private fun renderCountChartUsers(
+        entries: List<PieEntry> = ChartPieBinder.getDatasetEntries(3, 10f)
+    ) {
+        binding.countChartViewUsers.visibility = View.VISIBLE
+        binding.countChartViewItems.visibility = View.INVISIBLE
+        countChartUsers.setData(entries)
+    }
+
+    private fun renderCountChartItems(
+        entries: List<TestData> = TestData.generateTestData()
+    ) {
+        binding.countChartViewUsers.visibility = View.INVISIBLE
+        binding.countChartViewItems.visibility = View.VISIBLE
+        countChartItems.setData(
+            countChartItems.generateData(entries)
+        )
     }
 }

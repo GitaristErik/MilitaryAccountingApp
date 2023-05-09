@@ -81,13 +81,13 @@
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/count_group"
                 android:layout_width="wrap_content"
-                app:selectionRequired="true"
-                app:singleSelection="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin.small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/count_label">
+                app:layout_constraintTop_toBottomOf="@id/count_label"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_users"
@@ -109,6 +109,15 @@
                 android:id="@+id/count_chart_view_users"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/count_group" />
+
+            <com.github.mikephil.charting.charts.BubbleChart
+                android:id="@+id/count_chart_view_items"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/count_group" />
