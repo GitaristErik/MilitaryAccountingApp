@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="liberty_colors">
+        <item>@color/liberty_color_1</item>
+        <item>@color/liberty_color_2</item>
+        <item>@color/liberty_color_3</item>
+        <item>@color/liberty_color_4</item>
+        <item>@color/liberty_color_5</item>
+    </integer-array>
+    <integer-array name="joyful_colors">
+        <item>@color/joyful_color_1</item>
+        <item>@color/joyful_color_2</item>
+        <item>@color/joyful_color_3</item>
+        <item>@color/joyful_color_4</item>
+        <item>@color/joyful_color_5</item>
+    </integer-array>
+    <integer-array name="pastel_colors">
+        <item>@color/pastel_color_1</item>
+        <item>@color/pastel_color_2</item>
+        <item>@color/pastel_color_3</item>
+        <item>@color/pastel_color_4</item>
+        <item>@color/pastel_color_5</item>
+    </integer-array>
+    <integer-array name="colorful_colors">
+        <item>@color/colorful_color_1</item>
+        <item>@color/colorful_color_2</item>
+        <item>@color/colorful_color_3</item>
+        <item>@color/colorful_color_4</item>
+        <item>@color/colorful_color_5</item>
+    </integer-array>
+    <integer-array name="vordiplom_colors">
+        <item>@color/vordiplom_color_1</item>
+        <item>@color/vordiplom_color_2</item>
+        <item>@color/vordiplom_color_3</item>
+        <item>@color/vordiplom_color_4</item>
+        <item>@color/vordiplom_color_5</item>
+    </integer-array>
+    <integer-array name="material_colors">
+        <item>@color/material_color_1</item>
+        <item>@color/material_color_2</item>
+        <item>@color/material_color_3</item>
+        <item>@color/material_color_4</item>
+    </integer-array>
+</resources>

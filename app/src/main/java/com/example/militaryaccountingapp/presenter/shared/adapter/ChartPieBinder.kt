@@ -32,6 +32,9 @@ class ChartPieBinder(
         centerLabel: String = "",
         centerContent: String = ""
     ) = with(chart) {
+        val onSurface = ContextCompat.getColor(context, R.color.md_onBackground)
+        val surface = ContextCompat.getColor(context, R.color.md_surface)
+
         setUsePercentValues(true)
         description.isEnabled = false
         setExtraOffsets(0f, 0f, 0f, 0f)
@@ -44,7 +47,8 @@ class ChartPieBinder(
         transparentCircleRadius = 55f
         setDrawCenterText(true)
         rotationAngle = 0f
-        ContextCompat.getColor(context, R.color.md_surface).also {
+        setCenterTextColor(onSurface)
+        surface.also {
             setBackgroundColor(it)
             setHoleColor(it)
             setTransparentCircleColor(it)
@@ -62,6 +66,7 @@ class ChartPieBinder(
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             orientation = Legend.LegendOrientation.VERTICAL
+            textColor = onSurface
             setDrawInside(false)
             yEntrySpace = 0f
             yOffset = 0f
@@ -70,7 +75,7 @@ class ChartPieBinder(
 
         // entry label styling
 //            setEntryLabelTypeface(tfRegular)
-        setEntryLabelColor(ContextCompat.getColor(context, R.color.md_onSurface))
+        setEntryLabelColor(onSurface)
         setEntryLabelTextSize(12f)
     }
 
@@ -82,19 +87,21 @@ class ChartPieBinder(
             iconsOffset = MPPointF(0f, 40f)
             selectionShift = 5f
             // add a lot of colors
-            colors = ColorTemplate.VORDIPLOM_COLORS.asList() +
-                    ColorTemplate.JOYFUL_COLORS.asList() +
-                    ColorTemplate.COLORFUL_COLORS.asList() +
-                    ColorTemplate.LIBERTY_COLORS.asList() +
-                    ColorTemplate.PASTEL_COLORS.asList() +
-                    ColorTemplate.getHoloBlue()
+            colors = with(context.resources) {
+                getIntArray(R.array.vordiplom_colors).asList() +
+                        getIntArray(R.array.joyful_colors).asList() +
+                        getIntArray(R.array.colorful_colors).asList() +
+                        getIntArray(R.array.liberty_colors).asList() +
+                        getIntArray(R.array.pastel_colors).asList() +
+                        ColorTemplate.getHoloBlue()
+            }
         }
 
         chart.data = PieData(dataSet).apply {
             setValueFormatter(PercentFormatter())
             setValueTextSize(11f)
             setValueTypeface(Typeface.DEFAULT)
-            setValueTextColor(ContextCompat.getColor(context, R.color.md_onTertiaryContainer))
+            setValueTextColor(ContextCompat.getColor(context, R.color.md_onBackground))
         }
 
         // undo all highlights
