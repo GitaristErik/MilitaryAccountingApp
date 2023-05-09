@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/marker_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_chart_marker_view"
+        android:backgroundTint="@color/md_onSurfaceVariant"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+        android:textColor="@color/md_surface"
+        tools:text="hdfbvndkfv" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center_horizontal"
+        android:rotation="90"
+        android:src="@drawable/triangle_chart_marker_view" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

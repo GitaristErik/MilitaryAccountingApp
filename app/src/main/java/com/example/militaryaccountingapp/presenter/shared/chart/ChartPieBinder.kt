@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.shared.adapter
+package com.example.militaryaccountingapp.presenter.shared.chart
 
 import android.content.Context
 import android.graphics.Typeface
@@ -20,6 +20,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.github.mikephil.charting.utils.ViewPortHandler
 import timber.log.Timber
 
 class ChartPieBinder(
@@ -28,19 +29,18 @@ class ChartPieBinder(
     private val onChartValueSelectedListener: OnChartValueSelectedListener
 ) {
 
-    fun bind(
-        centerLabel: String = "",
-        centerContent: String = ""
-    ) = with(chart) {
+    private var centerLabel: String = ""
+
+    fun bind(centerLabel: String = "") = with(chart) {
         val onSurface = ContextCompat.getColor(context, R.color.md_onBackground)
         val surface = ContextCompat.getColor(context, R.color.md_surface)
+        this@ChartPieBinder.centerLabel = centerLabel
 
         setUsePercentValues(true)
         description.isEnabled = false
         setExtraOffsets(0f, 0f, 0f, 0f)
         dragDecelerationFrictionCoef = 0.95f
         setCenterTextTypeface(Typeface.DEFAULT)
-        centerText = generateCenterSpannableText(centerLabel, centerContent)
         isDrawHoleEnabled = true
         setTransparentCircleAlpha(110)
         holeRadius = 48f
@@ -77,6 +77,11 @@ class ChartPieBinder(
 //            setEntryLabelTypeface(tfRegular)
         setEntryLabelColor(onSurface)
         setEntryLabelTextSize(12f)
+
+        // marker
+        chart.marker = PieChartMarkerView(context).also {
+            it.chartView = chart // For bounds control
+        }
     }
 
 
@@ -88,21 +93,40 @@ class ChartPieBinder(
             selectionShift = 5f
             // add a lot of colors
             colors = with(context.resources) {
-                getIntArray(R.array.vordiplom_colors).asList() +
-                        getIntArray(R.array.joyful_colors).asList() +
-                        getIntArray(R.array.colorful_colors).asList() +
-                        getIntArray(R.array.liberty_colors).asList() +
-                        getIntArray(R.array.pastel_colors).asList() +
+                getIntArray(R.array.vordiplom_colors) +
+                        getIntArray(R.array.liberty_colors) +
+                        getIntArray(R.array.pastel_colors) +
+                        getIntArray(R.array.colorful_colors) +
+                        getIntArray(R.array.joyful_colors) +
                         ColorTemplate.getHoloBlue()
+            }.toList()
+        }
+
+        val formatter = object : PercentFormatter() {
+            override fun getFormattedValue(
+                value: Float,
+                entry: Entry?,
+                dataSetIndex: Int,
+                viewPortHandler: ViewPortHandler?
+            ): String {
+                return "Items: ${(entry as PieEntry).data} - " + super.getFormattedValue(
+                    value,
+                    entry,
+                    dataSetIndex,
+                    viewPortHandler
+                )
             }
         }
 
         chart.data = PieData(dataSet).apply {
-            setValueFormatter(PercentFormatter())
-            setValueTextSize(11f)
+            setValueFormatter(formatter)
+            setValueTextSize(13f)
             setValueTypeface(Typeface.DEFAULT)
             setValueTextColor(ContextCompat.getColor(context, R.color.md_onBackground))
         }
+
+        val count = entries.sumOf { it.y.toInt() }
+        chart.centerText = generateCenterSpannableText(this.centerLabel, count.toString())
 
         // undo all highlights
         chart.highlightValues(null)
@@ -126,9 +150,11 @@ class ChartPieBinder(
             range: Float
         ): List<PieEntry> = List(count) { i ->
             val p = parties[i % parties.size] + ' '
+            val value = (Math.random() * range + range / 5).toInt()
             PieEntry(
-                (Math.random() * range + range / 5).toFloat(),
-                p + p + p + p,
+                value.toFloat(),
+                p + p,
+                value.toString()
                 // getResources().getDrawable(R.drawable.star) //icon res
             )
         }
