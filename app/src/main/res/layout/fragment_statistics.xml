@@ -70,7 +70,7 @@
                 style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.large"
+                android:layout_marginVertical="@dimen/margin.large.extra"
                 android:paddingVertical="2dp"
                 android:text="@string/count.title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 app:selectionRequired="true"
                 app:singleSelection="true"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.small"
+                android:layout_marginTop="@dimen/margin.small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/count_label">
@@ -105,6 +105,13 @@
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/count_chart_view_users"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/count_group" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 package com.example.militaryaccountingapp.presenter.fragment.statistics
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -15,10 +16,13 @@ import com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragmen
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ChartType
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.shared.adapter.ChartPieBinder
+import com.example.militaryaccountingapp.presenter.shared.adapter.ListenerValueSelected
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.shape.MaterialShapeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class StatisticsFragment :
@@ -39,6 +43,11 @@ class StatisticsFragment :
 
     override fun render(data: ViewData) {
         log.d("render")
+        when (data.chartType) {
+            is ChartType.Count -> setupCountChartItems()
+            is ChartType.Users -> setupCountChartUsers()
+            else -> setupCountChart()
+        }
     }
 
 
@@ -89,5 +98,21 @@ class StatisticsFragment :
                 !binding.buttonUsers.isChecked
             ) viewModel.changeChartType(null)
         }
+    }
+
+    private fun setupCountChart() {
+//        binding.countChartViewUsers.visibility = View.INVISIBLE
+    }
+
+    private fun setupCountChartUsers() {
+        binding.countChartViewUsers.visibility = View.VISIBLE
+        ChartPieBinder(requireContext(), binding.countChartViewUsers, ListenerValueSelected).apply {
+            bind( "All Items", "132")
+            setData(ChartPieBinder.getDatasetEntries(3, 10f))
+        }
+    }
+
+    private fun setupCountChartItems() {
+        binding.countChartViewUsers.visibility = View.INVISIBLE
     }
 }

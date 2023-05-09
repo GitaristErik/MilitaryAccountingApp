@@ -135,6 +135,10 @@ dependencies {
     // Tree View
     implementation 'vn.gapowork.android:tree-view:1.0.0-alpha01'
 
+    // Charts
+//    implementation 'com.github.AnyChart:AnyChart-Android:1.1.4'
+    implementation 'com.github.AppDevNext:AndroidChart:3.1.0.15'
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
