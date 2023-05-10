@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.shared.chart
+package com.example.militaryaccountingapp.presenter.shared.chart.items
 
 import android.content.Context
 import android.graphics.Typeface

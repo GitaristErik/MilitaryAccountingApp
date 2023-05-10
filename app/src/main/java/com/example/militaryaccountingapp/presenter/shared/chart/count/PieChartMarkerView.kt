@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.shared.chart
+package com.example.militaryaccountingapp.presenter.shared.chart.count
 
 import android.annotation.SuppressLint
 import android.content.Context

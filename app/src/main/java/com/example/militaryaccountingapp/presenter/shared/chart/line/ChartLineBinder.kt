@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.shared.chart
+package com.example.militaryaccountingapp.presenter.shared.chart.line
 
 import android.content.Context
 import android.graphics.Color

@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.shared.chart
+package com.example.militaryaccountingapp.presenter.shared.chart.line
 
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
