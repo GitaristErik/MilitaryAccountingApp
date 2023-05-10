@@ -7,4 +7,25 @@
         <item name="cornerSizeTopRight">16dp</item>
         <item name="cornerSizeTopLeft">16dp</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Rounded.20" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20%</item>
+    </style>
+
+    <style name="Widget.App.Button.SegmentedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="iconGravity">textStart</item>
+        <item name="strokeColor">?colorPrimaryContainer</item>
+        <item name="iconTint">?colorOnPrimaryContainer</item>
+    </style>
+
+    <style name="Widget.App.Button.SegmentedButton.Vertical" parent="Widget.App.Button.SegmentedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
 </resources>

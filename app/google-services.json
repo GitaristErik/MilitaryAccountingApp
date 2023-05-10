@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "117127457454",
+    "project_id": "militaryaccountingapp",
+    "storage_bucket": "militaryaccountingapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117127457454:android:c4ae0b14d92abdfa345b3f",
+        "android_client_info": {
+          "package_name": "com.example.militaryaccountingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117127457454-0rol55gu68i7u1pg20qrihnkp5bca3ph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.militaryaccountingapp",
+            "certificate_hash": "382fefd8f6cc3553e08ffc5c1bab3998c420b612"
+          }
+        },
+        {
+          "client_id": "117127457454-bjmftddl39mma0knvqrmgulm2undsi9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjTruYH-A2qQxPKMKXt2ma5btPShdHV4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117127457454-bjmftddl39mma0knvqrmgulm2undsi9a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,24 +7,72 @@
     <string name="home.search.description">Пошук</string>
     <string name="home.search.title">Пошук</string>
 
-    <string name="home.item.category.label.all">Загалом:</string>
+    <string name="home.item.category.label.all">Всього:</string>
+    <string name="home.item.category.label.item">Елементи:</string>
+    <string name="home.item.category.label.nested">Вкладені:</string>
     <plurals name="home.item.category.label.item" tools:ignore="UnusedQuantity">
+        <item quantity="zero">Без елементів</item>
         <item quantity="one">%d елемент</item>
         <item quantity="few">%d елементи</item>
         <item quantity="many">%d елементів</item>
         <item quantity="other">%d елементів</item>
+    </plurals>
+    <plurals name="home.item.category.label.nested" tools:ignore="UnusedQuantity">
+        <item quantity="zero">Без вкладених</item>
+        <item quantity="one">%d вкладений</item>
+        <item quantity="few">%d вкладені</item>
+        <item quantity="many">%d вкладених</item>
+        <item quantity="other">%d вкладених</item>
     </plurals>
 
     <string name="home.item.header.button.description">Змінити вигляд категорій</string>
     <string name="tab_title_categories">Категорії</string>
     <string name="tab_title_items">Елементи</string>
     <string name="home.item.category.logo.description">Іконка категорії</string>
-    <string name="home.item.header.menu.oldest_first">Спершу старі</string>
-    <string name="home.item.header.menu.newest_first">Спершу нові</string>
-    <string name="home.item.header.menu.a_z">А-Я</string>
-    <string name="home.item.header.menu.z_a">Я-А</string>
+    <string name="home.item.header.sort.description">Змінити порядок сортирування</string>
+    <string name="home.item.header.menu.option1">Назва</string>
+    <string name="home.item.header.menu.option2">Дата</string>
+    <string name="home.item.header.menu.option3">Штрих-код</string>
+    <string name="home.item.header.menu.option4">Кількість</string>
 
+    <string name="loading.preparing.title">Підготовка даних</string>
+    <string name="loading.refresh.title">Оновлення даних</string>
+    <string name="loading.more.title">Загрузити більше</string>
+    <string name="error.button.retry">Повторити</string>
+    <string name="error.message.empty">Нічого немає</string>
+    <string name="error.message.server">Упс! Щось пішло не так, або на сервер впав метеорит</string>
+    <string name="error.message.network">Виникла проблема з підключенням, не вдалося отримати дані!</string>
+    <string name="error.message.other">Щось пішло не так! Зберігайте спокій</string>
+    <string name="filter.users.title">Користувачі</string>
+    <string name="filter.date.title">Дата</string>
+    <string name="filter.date.pick">Конкретний День</string>
+    <string name="filter.date.before">До</string>
+    <string name="filter.date.after">Після</string>
+    <string name="filter.date.range">Діапазон</string>
+    <string name="filter.date.select">Вибрати День</string>
+    <string name="filter.result.button">Встановити фільтри</string>
+    <string name="count.title">Кількість</string>
+    <string name="count.button.users">Користувачі</string>
+    <string name="count.button.items">Елементи</string>
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
     <string name="profile.title">Профіль</string>
+    <string name="category.title">Категорія</string>
+    <string name="category.appbar.title">Категорія</string>
+    <string name="item.appbar.title">Елемент</string>
+    <string name="category.details.title">Подробиці</string>
+    <string name="category.qr.title">QR Code</string>
+    <string name="category.qr.description">QR Code Image</string>
+    <string name="category.count.title">Кількість</string>
+    <string name="category.count.more.title">Деталі</string>
+    <string name="category.changed.title">Остання зміна</string>
+    <string name="category.changed.more.title">Деталі</string>
+    <string name="category.history.title">Історія</string>
+    <string name="category.history.more.title">Деталі</string>
+    <string name="item.title">Елемент</string>
+    <string name="menu.app.bar.edit">Редагувати</string>
+    <string name="menu.app.bar.edit.description">Редагувати</string>
+    <string name="menu.app.bar.delete.description">Видалити</string>
+    <string name="menu.app.bar.delete">Видалити</string>
+    <string name="filter.items.title">Елементи</string>
 </resources>

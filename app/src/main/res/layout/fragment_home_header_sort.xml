@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin.small"
+    android:layout_marginTop="@dimen/margin.small"
     android:background="@drawable/background_header_sort_tools"
     android:orientation="horizontal">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_order_by"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/home.search.title"
+        app:icon="@drawable/ic_sort" />
 
     <TextView
         android:id="@+id/sort_option_text"
         style="@style/TextAppearance.Material3.BodyLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
-        android:drawablePadding="@dimen/margin.small.extra"
-        android:paddingHorizontal="@dimen/margin.small"
-        app:drawableStartCompat="@drawable/ic_sort"
-        tools:text="Newest" />
+        android:gravity="center_vertical|start"
+        android:paddingHorizontal="@dimen/padding.small"
+        tools:text="Date" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/view_type_button"
+        android:id="@+id/btn_view_type"
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
-        android:contentDescription="@string/home.search.title"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/home.search.title"
         app:icon="@drawable/ic_baseline_view_grid_24dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

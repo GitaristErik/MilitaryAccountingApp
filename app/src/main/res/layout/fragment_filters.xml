@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Users -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/users_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.standard"
+        android:text="@string/filter.users.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:background="@drawable/background_rounded_rect"
+        android:backgroundTint="?colorSecondaryContainer"
+        android:elevation="1dp"
+        android:overScrollMode="never"
+        android:paddingHorizontal="@dimen/padding.standard"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/users_label"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_filter_user" />
+
+
+    <!-- Items -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/items_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.large.extra"
+        android:paddingVertical="2dp"
+        android:text="@string/filter.items.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_users" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:background="@drawable/background_rounded_rect"
+        android:backgroundTint="?colorSurfaceVariant"
+        android:elevation="1dp"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/items_label"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_tree_node_view" />
+
+    <!-- Date -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/date_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.large.extra"
+        android:paddingVertical="2dp"
+        android:text="@string/filter.date.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_items" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/dateMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_label"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_pick_day"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.pick" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_before"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.before" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_after"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.after" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_range"
+            style="@style/Widget.App.Button.SegmentedButton.Vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter.date.range" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selected_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?colorSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/button_select_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/button_select_date"
+        tools:text="Aug 17 - Aug 24" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.small.extra"
+        android:enabled="false"
+        android:paddingStart="@dimen/padding.standard"
+        android:paddingEnd="@dimen/padding.large"
+        android:text="@string/filter.date.select"
+        android:theme="@style/Widget.Material3.Button.IconButton.Filled"
+        app:icon="@drawable/ic_arrow_forward_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateMode" />
+
+    <!-- Result -->
+
+<!--
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_set_filters"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/margin.large.extra"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/filter.result.button"
+            android:theme="@style/Widget.Material3.Button.ElevatedButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_select_date" />
+-->
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin.large.extra.double"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_select_date" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

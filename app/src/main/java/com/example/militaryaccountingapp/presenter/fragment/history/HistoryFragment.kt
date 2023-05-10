@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.militaryaccountingapp.databinding.FragmentHistoryBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HistoryFragment :
     BaseViewModelFragment<FragmentHistoryBinding, HistoryViewModel.ViewData, HistoryViewModel>() {
 

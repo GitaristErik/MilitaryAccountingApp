@@ -1,9 +1,11 @@
-package com.example.militaryaccountingapp.presenter.fragment.home
+package com.example.militaryaccountingapp.presenter.fragment.home.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.militaryaccountingapp.presenter.fragment.categories.CategoriesFragment
+import com.example.militaryaccountingapp.presenter.fragment.items.ItemsFragment
 
 class HomeViewPagerAdapter(
     private val tabSize: Int,
@@ -14,8 +16,8 @@ class HomeViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> HomeCategoriesFragment()
-            else -> HomeItemsFragment()
+            0 -> CategoriesFragment()
+            else -> ItemsFragment()
         }
     }
 

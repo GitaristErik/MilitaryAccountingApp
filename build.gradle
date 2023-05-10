@@ -1,19 +1,6 @@
 buildscript {
-    ext{
-        appCompileSdkVersion = 33
-        appMinSdkVersion = 23
-        appTargetSdkVersion = 33
-        appBuildToolsVersion = "33.0.1"
-
-        lifecycleVersion = '2.6.0'
-        hiltVersion = '2.45'
-        nav_version = "2.5.3"
-        coil_version = "2.2.2"
-        moshiVersion = "1.14.0"
-    }
-
     dependencies {
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 
@@ -23,4 +10,19 @@ plugins {
     id 'org.jetbrains.kotlin.android' version "1.8.0" apply false
     id 'com.google.dagger.hilt.android' version '2.44.2' apply false
     id 'androidx.navigation.safeargs' version '2.5.3' apply false
+    id 'com.google.devtools.ksp' version '1.8.10-1.0.9' apply false
+}
+
+ext {
+    appCompileSdkVersion = 33
+    appMinSdkVersion = 23
+    appTargetSdkVersion = 33
+    appBuildToolsVersion = "33.0.1"
+
+    lifecycleVersion = '2.6.1'
+    hiltVersion = '2.45'
+    nav_version = "2.5.3"
+    coil_version = '2.3.0'
+    moshiVersion = "1.14.0"
+    glideVersion = "4.15.0"
 }

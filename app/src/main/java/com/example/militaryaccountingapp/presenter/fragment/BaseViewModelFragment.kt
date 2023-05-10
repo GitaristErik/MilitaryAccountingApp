@@ -21,7 +21,7 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VD, VM : BaseViewModel<VD
         observeData()
     }
 
-    private fun observeData() {
+    protected open fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.data
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)

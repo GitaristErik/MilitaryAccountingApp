@@ -6,7 +6,9 @@ import androidx.fragment.app.viewModels
 import com.example.militaryaccountingapp.databinding.FragmentProfileBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment :
     BaseViewModelFragment<FragmentProfileBinding, ViewData, ProfileViewModel>() {
 

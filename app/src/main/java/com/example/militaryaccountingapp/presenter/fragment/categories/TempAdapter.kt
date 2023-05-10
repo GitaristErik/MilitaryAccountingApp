@@ -1,13 +1,14 @@
-package com.example.militaryaccountingapp.presenter.fragment.home
+package com.example.militaryaccountingapp.presenter.fragment.categories
 
 import android.R
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TempAdapter(private val items: Array<String>) :
+class TempAdapter(private val items: MutableList<String>) :
     RecyclerView.Adapter<TempAdapter.Companion.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,6 +26,13 @@ class TempAdapter(private val items: Array<String>) :
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateItems(items: List<String>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
     }
 
     companion object {

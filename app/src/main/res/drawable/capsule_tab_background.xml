@@ -3,10 +3,10 @@
     android:shape="rectangle">
 
     <corners
-        android:bottomLeftRadius="@dimen/tab_corner_radius"
-        android:bottomRightRadius="@dimen/tab_corner_radius"
-        android:topLeftRadius="@dimen/tab_corner_radius"
-        android:topRightRadius="@dimen/tab_corner_radius" />
-    <solid android:color="@android:color/transparent" />
+        android:bottomLeftRadius="@dimen/corner.tabs"
+        android:bottomRightRadius="@dimen/corner.tabs"
+        android:topLeftRadius="@dimen/corner.tabs"
+        android:topRightRadius="@dimen/corner.tabs" />
+    <solid android:color="?attr/colorSurface" />
 
 </shape>
