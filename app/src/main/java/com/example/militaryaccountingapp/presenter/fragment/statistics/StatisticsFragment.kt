@@ -1,8 +1,11 @@
 package com.example.militaryaccountingapp.presenter.fragment.statistics
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,6 +23,12 @@ import com.example.militaryaccountingapp.presenter.shared.chart.ChartBubbleBinde
 import com.example.militaryaccountingapp.presenter.shared.chart.ChartPieBinder
 import com.example.militaryaccountingapp.presenter.shared.chart.ListenerValueSelected
 import com.example.militaryaccountingapp.presenter.shared.chart.TestData
+import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
+import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
+import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChart
+import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthData
+import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
+import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -42,15 +51,17 @@ class StatisticsFragment :
         setupFilterFragment()
         setupActionBar()
         setupCountButtons()
+        setupHistorySpinner()
     }
 
     override fun render(data: ViewData) {
         log.d("render")
-        when (data.chartType) {
+        when (data.countChartType) {
             is ChartType.Count -> renderCountChartItems()
             is ChartType.Users -> renderCountChartUsers()
             else -> setupCountChart()
         }
+        renderHistoryChart(data.historyChartType)
     }
 
 
@@ -58,9 +69,11 @@ class StatisticsFragment :
         log.d("render")
         if (data.isFiltersSelected) {
             binding.countGroup.isEnabled = true
+            viewModel.changeHistoryChartType(DayData::class)
         } else {
             binding.countGroup.clearChecked()
             binding.countGroup.isEnabled = false
+            viewModel.changeHistoryChartType(null)
         }
     }
 
@@ -94,12 +107,12 @@ class StatisticsFragment :
                 ) else null
 
             if (isChecked) when (checkedId) {
-                R.id.button_users -> viewModel.changeChartType(ChartType.Users::class)
-                R.id.button_items -> viewModel.changeChartType(ChartType.Count::class)
-                else -> viewModel.changeChartType(null)
+                R.id.button_users -> viewModel.changeCountChartType(ChartType.Users::class)
+                R.id.button_items -> viewModel.changeCountChartType(ChartType.Count::class)
+                else -> viewModel.changeCountChartType(null)
             } else if (!binding.buttonItems.isChecked &&
                 !binding.buttonUsers.isChecked
-            ) viewModel.changeChartType(null)
+            ) viewModel.changeCountChartType(null)
         }
     }
 
@@ -140,5 +153,64 @@ class StatisticsFragment :
         countChartItems.setData(
             countChartItems.generateData(entries)
         )
+    }
+
+    private fun renderHistoryChart(data: ChartData? = null) {
+        if (chartData == data) return
+        else chartData = data
+
+        if (data == null) {
+            setHistoryChartNoDataText()
+        } else {
+            historyChart.displayData(data)
+        }
+    }
+
+
+    private val historyChart: HistoryChart by lazy {
+        HistoryChart(requireContext(), binding.historyChartView).apply {
+            setupChart()
+        }
+    }
+
+    private fun setHistoryChartNoDataText() = binding.historyChartView.apply {
+        getPaint(Chart.PAINT_INFO).color = Color.WHITE
+        setNoDataText(getString(R.string.statistics_history_loading))
+        invalidate()
+    }
+
+
+    private fun setupHistorySpinner() {
+        binding.historySpinner.apply {
+            this.adapter = ArrayAdapter.createFromResource(
+                this@StatisticsFragment.requireContext(),
+                R.array.history_spinner, android.R.layout.simple_spinner_item
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+//            setSelection(3)
+            onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        when (position) {
+                            0 -> viewModel.changeHistoryChartType(DayData::class)
+                            1 -> viewModel.changeHistoryChartType(WeekData::class)
+                            2 -> viewModel.changeHistoryChartType(MonthData::class)
+                            else -> viewModel.changeHistoryChartType(null)
+                        }
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
+        }
+    }
+
+    companion object {
+        private var chartData: ChartData? = null
     }
 }

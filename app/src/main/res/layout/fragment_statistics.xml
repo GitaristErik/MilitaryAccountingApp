@@ -62,17 +62,142 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <!--
+            &lt;!&ndash; Overview &ndash;&gt;
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/overview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                android:layout_marginVertical="@dimen/margin.large.extra"
+                android:text="@string/statistics.overview.title"
+                android:textColor="?colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/today_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/statistics.overview.today"
+                android:textColor="?colorOnSurface"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/week_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/today_number" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/today_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="?colorPrimary"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="@+id/today_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/today_label"
+                app:layout_constraintTop_toBottomOf="@+id/overview_label"
+                tools:text="0m" />
 
-            <!-- Date -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/week_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="?colorPrimary"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="@+id/week_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/week_label"
+                app:layout_constraintTop_toBottomOf="@+id/overview_label"
+                tools:text="0m" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/week_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginTop="528dp"
+                android:text="@string/statistics.overview.week"
+                android:textColor="?colorOnSurface"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toStartOf="@+id/month_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/today_label"
+                app:layout_constraintTop_toBottomOf="@+id/week_number" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/number_month_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="?colorPrimary"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="@+id/month_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/month_label"
+                app:layout_constraintTop_toBottomOf="@+id/overview_label"
+                tools:text="0m" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/month_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginTop="528dp"
+                android:text="@string/statistics.overview.month"
+                android:textColor="?colorOnSurface"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toStartOf="@+id/total_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/week_label"
+                app:layout_constraintTop_toBottomOf="@+id/number_month_label" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/number_total_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="?colorPrimary"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="@+id/total_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/total_label"
+                app:layout_constraintTop_toBottomOf="@+id/overview_label"
+                tools:text="0m" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/total_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginTop="528dp"
+                android:text="@string/statistics.overview.total"
+                android:textColor="?colorOnSurface"
+               style="@style/TextAppearance.Material3.LabelMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/month_label"
+                app:layout_constraintTop_toBottomOf="@+id/today_number" />
+
+-->
+
+            <!-- Count -->
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/count_label"
                 style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin.large.extra"
-                android:paddingVertical="2dp"
-                android:text="@string/count.title"
+                android:text="@string/statistics.count.title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,21 +219,21 @@
                     style="@style/Widget.App.Button.SegmentedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/count.button.users" />
+                    android:text="@string/statistics.count.button.users" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_items"
                     style="@style/Widget.App.Button.SegmentedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/count.button.items" />
+                    android:text="@string/statistics.count.button.items" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/count_chart_view_users"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="500dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/count_group" />
@@ -121,6 +246,42 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/count_group" />
+
+
+            <!-- History -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/history_label"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.large.extra"
+                android:text="@string/statistics.history.title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/count_chart_view_users" />
+
+            <Spinner
+                android:id="@+id/history_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/history_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/history_label" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/historyChartView"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginVertical="@dimen/margin.small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/history_spinner"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/history_label" />
+            <!--                android:visibility="invisible"-->
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

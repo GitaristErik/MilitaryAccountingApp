@@ -100,9 +100,25 @@
 
     <!-- Statistics fragment -->
     <string name="statistics.title">Statistics</string>
-    <string name="count.title">Count</string>
-    <string name="count.button.users">Users</string>
-    <string name="count.button.items">Items</string>
+    <string name="statistics.count.title">Count</string>
+    <string name="statistics.count.button.users">Users</string>
+    <string name="statistics.count.button.items">Items</string>
+    <string name="statistics.history.title">History</string>
+    <string name="statistics.overview.title">Overview</string>
+    <string name="statistics.overview.today">Today</string>
+    <string name="statistics.overview.week">Week</string>
+    <string name="statistics.overview.month">Month</string>
+    <string name="statistics.overview.year">Year</string>
+    <string name="statistics.history.loading">Loading…</string>
+
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+    <string name="months">Months</string>
+    <string-array name="history_spinner">
+        <item name="days">@string/days</item>
+        <item name="weeks">@string/weeks</item>
+        <item name="months">@string/months</item>
+    </string-array>
 
 
     <!-- History fragment -->
