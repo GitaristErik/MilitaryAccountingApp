@@ -7,10 +7,10 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin.standard"
     android:background="@drawable/background_rounded_rect"
-    android:backgroundTint="?colorSurfaceVariant"
-    android:elevation="1dp"
+    android:backgroundTint="?colorSecondaryContainer"
     android:minHeight="32dp"
     android:overScrollMode="never"
     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
     tools:itemCount="1"
     tools:listitem="@layout/item_tree_node_view" />
+<!--    android:elevation="1dp"-->
