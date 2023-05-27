@@ -123,7 +123,15 @@
 
     <!-- History fragment -->
     <string name="history.title">History</string>
-
+    <string name="history.timeline.title">Timeline</string>
+    <string name="history.chips.add">Add</string>
+    <string name="history.chips.dec">Took</string>
+    <string name="history.chips.share">Share</string>
+    <string name="history.chips.unshare">Unshare</string>
+    <string name="history.chips.create">Create</string>
+    <string name="history.chips.delete">Delete</string>
+    <string name="history.chips.restore">Restore</string>
+    <string name="history.chips.update">Update</string>
 
     <!-- Profile fragment -->
     <string name="profile.title">Profile</string>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.small"
+        android:layout_marginStart="@dimen/margin.small"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin.small"
+                android:padding="@dimen/padding.small.extra"
+                tools:text="24 Aug 2021 22:00"
+                android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                android:textColor="?colorSecondary"
+                app:layout_constraintBaseline_toBaselineOf="@id/operation_type"
+                app:layout_constraintEnd_toStartOf="@id/operation_type"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/operation_type"
+                style="@style/Widget.Material3.Chip.Assist"
+                app:chipBackgroundColor="?colorSurfaceVariant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small.extra"
+                android:clickable="false"
+                tools:text="Add"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:chipCornerRadius="16dp"
+                app:chipIcon="@drawable/ic_outline_edit_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/date"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:padding="@dimen/padding.small.extra"
+                tools:text="Рис"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="?colorOnSurface"
+                app:layout_constraintEnd_toStartOf="@id/value"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/operation_type" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:paddingHorizontal="@dimen/padding.small.extra"
+                tools:text="15"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="?colorPrimary"
+                app:layout_constraintBaseline_toBaselineOf="@id/title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/title" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/category_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:layout_marginTop="@dimen/margin.small"
+                android:tint="?colorTertiary"
+                app:layout_constraintBottom_toTopOf="@id/user_icon"
+                app:layout_constraintEnd_toStartOf="@id/location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle"
+                app:srcCompat="@drawable/ic_location_24dp" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                tools:text="Продукти/Крупа"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="?colorOnTertiaryContainer"
+                app:layout_constraintBottom_toBottomOf="@id/category_icon"
+                app:layout_constraintStart_toEndOf="@id/category_icon"
+                app:layout_constraintTop_toTopOf="@id/category_icon" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/user_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="@dimen/margin.small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/name"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_icon"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin.small"
+                tools:text="Василь Васильович"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="?colorSecondary"
+                app:layout_constraintBottom_toBottomOf="@id/user_icon"
+                app:layout_constraintStart_toEndOf="@id/user_icon"
+                app:layout_constraintTop_toTopOf="@id/user_icon" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

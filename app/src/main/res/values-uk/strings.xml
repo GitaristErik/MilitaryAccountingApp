@@ -66,6 +66,7 @@
     <string name="months">Місяці</string>
     <string name="history.title">Історія</string>
     <string name="statistics.title">Статистика</string>
+    <string name="history.timeline.title">Часова шкала</string>
     <string name="profile.title">Профіль</string>
     <string name="category.title">Категорія</string>
     <string name="category.appbar.title">Категорія</string>
@@ -85,4 +86,12 @@
     <string name="menu.app.bar.delete.description">Видалити</string>
     <string name="menu.app.bar.delete">Видалити</string>
     <string name="filter.items.title">Елементи</string>
+    <string name="history.chips.add">Додано</string>
+    <string name="history.chips.dec">Забрано</string>
+    <string name="history.chips.share">Відкрили доступ</string>
+    <string name="history.chips.unshare">Закрили доступ</string>
+    <string name="history.chips.create">Створено</string>
+    <string name="history.chips.delete">Видалено</string>
+    <string name="history.chips.restore">Відновлено</string>
+    <string name="history.chips.update">Оновлено</string>
 </resources>
