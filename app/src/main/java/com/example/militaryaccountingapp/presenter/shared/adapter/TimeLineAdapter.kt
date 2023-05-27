@@ -14,7 +14,6 @@ import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.presenter.model.TimelineUi
 import com.lriccardo.timelineview.TimelineAdapter
 import com.lriccardo.timelineview.TimelineView
-import timber.log.Timber
 
 class TimeLineAdapter(
     private val onClickListener: (TimelineUi, View) -> Unit
@@ -45,18 +44,17 @@ class TimeLineAdapter(
     }
 
     override fun getLineStyle(position: Int): TimelineView.LineStyle {
-        return if (position < 1)
+        return if (position < 2)
             TimelineView.LineStyle.Dashed
         else TimelineView.LineStyle.Normal
 //        return super.getLineStyle(position)
     }
 
     override fun getLinePadding(position: Int): Float? {
-        Timber.d("timeline position: $position")
         if (position > 0)
             return TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                16f,
+                12f,
                 Resources.getSystem().displayMetrics
             )
         return super.getLinePadding(position)

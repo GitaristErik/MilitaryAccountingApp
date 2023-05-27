@@ -22,6 +22,7 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.TimeLineAdapte
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimelineDecorator
 import com.google.android.material.chip.Chip
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.lriccardo.timelineview.TimelineView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -97,11 +98,13 @@ class HistoryFragment :
                     position = TimelineDecorator.Position.Left,
                     indicatorColor = colorPrimary,
                     lineColor = colorPrimary,
-//                    lineStyle = TimelineView.LineStyle.Normal,
                     padding = 0f,
-                    indicatorSize = 20f,
-                    checkedIndicatorSize = 20f,
-                    lineWidth = 12f,
+                    indicatorSize = 28f,
+                    checkedIndicatorSize = 12f,
+                    lineStyle = TimelineView.LineStyle.Dashed,
+                    lineWidth = 16f,
+                    lineDashGap = 16f,
+//                    lineDashLength = 32f,
                     linePadding = 0f
                 )
             )
