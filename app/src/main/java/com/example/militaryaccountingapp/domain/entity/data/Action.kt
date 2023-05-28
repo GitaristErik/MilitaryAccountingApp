@@ -6,5 +6,6 @@ data class Action(
     val userId: Int,
     val itemId: Int?,
     val categoryId: Int?,
-    val timestamp: Long
+    val timestamp: Long,
+    val value: Any
 )

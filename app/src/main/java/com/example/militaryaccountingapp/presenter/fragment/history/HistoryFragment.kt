@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHistoryBinding
+import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragment
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
@@ -38,18 +39,27 @@ class HistoryFragment :
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHistoryBinding
         get() = FragmentHistoryBinding::inflate
 
+
+    private val pageLimit = lazy {
+        requireContext().resources.getInteger(R.integer.history_page_items_count)
+    }
+
     override fun initializeView() {
         setupActionBar()
         setupFilterFragment()
         setupTimeline()
         setupChips()
+
+        viewModel.loadHistory(
+            limit = pageLimit.value
+        )
     }
 
     override fun render(data: HistoryViewModel.ViewData) {
         log.d("render")
-//        setChips(data.chips)
         timelineAdapter.submitList(data.timelineItems)
     }
+
 
     private fun renderFilter(data: FilterViewModel.ViewData) {
         log.d("render")
@@ -57,7 +67,6 @@ class HistoryFragment :
         } else {
         }
     }
-
 
     override fun observeData() {
         super.observeData()
@@ -131,7 +140,6 @@ class HistoryFragment :
     }
 
     private fun setupChips() {
-//        log.d(binding.chipGroup.children.joinToString(" "))
         binding.chipGroup.children.forEach {
             (it as? Chip)?.setOnCheckedChangeListener { compoundButton, isChecked ->
                 (compoundButton as? Chip)?.apply {
@@ -140,6 +148,26 @@ class HistoryFragment :
                 }
             }
         }
+
+        binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            log.d("checkedIds: $checkedIds")
+            viewModel.loadHistory(
+                page = 0, // TODO add pagination
+                filters = checkedIds.mapNotNull(::chipMapper).toSet(),
+                limit = pageLimit.value
+            )
+        }
+    }
+
+    private fun chipMapper(chipId: Int): ActionType? = when (chipId) {
+        R.id.chip_add -> ActionType.INCREASE_COUNT
+        R.id.chip_decrease -> ActionType.DECREASE_COUNT
+        R.id.chip_share -> ActionType.SHARE
+        R.id.chip_unshare -> ActionType.UNSHARE
+        R.id.chip_create -> ActionType.CREATE
+        R.id.chip_delete -> ActionType.DELETE
+        R.id.chip_restore -> ActionType.RESTORE
+        else -> null
     }
 
     /*

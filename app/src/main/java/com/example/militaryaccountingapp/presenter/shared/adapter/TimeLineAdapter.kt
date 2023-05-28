@@ -12,6 +12,7 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ItemTimelineBinding
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.presenter.model.TimelineUi
+import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
 import com.lriccardo.timelineview.TimelineAdapter
 import com.lriccardo.timelineview.TimelineView
 
@@ -70,11 +71,13 @@ class TimeLineAdapter(
             setOperationChip(timeline.operation)
             this.location.text = timeline.location
             this.name.text = timeline.name
-            this.userIcon.setImageDrawable(timeline.userIcon)
 
             root.setOnClickListener {
                 onClickListener(timeline, it)
             }
+
+            this.userIcon.load(timeline.userIcon ?: return@with)
+//            this.userIcon.setImageDrawable(timeline.userIcon)
         }
 
         private fun setOperationChip(operation: ActionType) {

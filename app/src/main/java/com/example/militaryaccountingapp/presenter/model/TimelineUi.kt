@@ -1,6 +1,5 @@
 package com.example.militaryaccountingapp.presenter.model
 
-import android.graphics.drawable.Drawable
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
 
 data class TimelineUi(
@@ -10,5 +9,5 @@ data class TimelineUi(
     val operation: ActionType,
     val location: String,
     val name: String,
-    val userIcon: Drawable? = null
+    val userIcon: String? = null
 )
