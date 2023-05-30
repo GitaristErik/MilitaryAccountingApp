@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.category.CategoryFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.details.DetailsCategoryFragment"
         android:label="@string/category.title"
         tools:layout="@layout/fragment_category">
         <argument
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/itemFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.item.ItemFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.details.DetailsItemFragment"
         android:label="@string/item.title"
         tools:layout="@layout/fragment_item">
         <argument

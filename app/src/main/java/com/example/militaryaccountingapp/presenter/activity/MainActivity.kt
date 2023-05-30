@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController() ?: return
         setupActionBar(navController)
         navView.setupWithNavController(navController)
-        setupComponents()
+        setupComponents(navController)
     }
 
     private fun setupActionBar(navController: NavController) {
@@ -76,22 +76,31 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun setupComponents() {
-        val navController = findNavController() ?: return
+    private fun setupComponents(navController: NavController) {
         val componentsHelper = ComponentsHelper()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.navigation_home -> {
-                    componentsHelper.setToolbarDrawableStart(R.drawable.flag_version4)
-                    componentsHelper.showSearch()
-                    // TODO: handle search bar and view
-                }
+            if (destination.id == R.id.navigation_home) {
+                componentsHelper.setToolbarDrawableStart(R.drawable.flag_version4)
+                componentsHelper.showSearch()
+                // TODO: handle search bar and view
+            } else {
+                componentsHelper.setToolbarDrawableStart(0)
+                componentsHelper.hideSearch()
+            }
 
-                else -> {
-                    componentsHelper.setToolbarDrawableStart(0)
-                    componentsHelper.hideSearch()
-                }
+            if (destination.id in listOf(
+                    R.id.navigation_home,
+                    R.id.navigation_history,
+                    R.id.navigation_statistics,
+                    R.id.navigation_profile,
+                )
+            ) {
+                componentsHelper.showActionBar()
+                componentsHelper.showBottomNavigation()
+            } else {
+                componentsHelper.hideActionBar()
+                componentsHelper.hideBottomNavigation()
             }
         }
     }
@@ -145,6 +154,21 @@ class MainActivity : AppCompatActivity() {
 
         private fun animateViews(view: View, alpha: Float, duration: Duration) {
             view.animate().alpha(alpha).duration = duration.toMillis()
+        }
+
+        fun hideActionBar() {
+            supportActionBar?.hide()
+        }
+        fun showActionBar() {
+            supportActionBar?.show()
+        }
+
+
+        fun hideBottomNavigation() {
+            binding.navView.visibility = View.GONE
+        }
+        fun showBottomNavigation() {
+            binding.navView.visibility = View.VISIBLE
         }
     }
 

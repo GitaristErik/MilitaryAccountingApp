@@ -1,7 +1,7 @@
-package com.example.militaryaccountingapp.presenter.fragment.category
+package com.example.militaryaccountingapp.presenter.fragment.details
 
 import com.example.militaryaccountingapp.presenter.BaseViewModel
-import com.example.militaryaccountingapp.presenter.fragment.category.CategoryViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.details.DetailsViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChartItem
@@ -18,7 +18,7 @@ import javax.inject.Inject
 import kotlin.reflect.KClass
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(): BaseViewModel<ViewData>(ViewData()) {
+class DetailsViewModel @Inject constructor(): BaseViewModel<ViewData>(ViewData()) {
 
     init {
         Timber.d("init")

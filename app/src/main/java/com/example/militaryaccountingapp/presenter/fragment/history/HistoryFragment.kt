@@ -44,7 +44,7 @@ class HistoryFragment :
     }
 
     override fun initializeView() {
-        setupFilterFragment()
+//        setupFilterFragment()
         setupTimeline()
         setupChips()
         viewModel.loadHistory(limit = pageLimit.value)

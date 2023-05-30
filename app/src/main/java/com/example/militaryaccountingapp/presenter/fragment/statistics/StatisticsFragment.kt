@@ -47,7 +47,7 @@ class StatisticsFragment :
         get() = FragmentStatisticsBinding::inflate
 
     override fun initializeView() {
-        setupFilterFragment()
+//        setupFilterFragment()
         setupCountButtons()
         setupHistorySpinner()
     }

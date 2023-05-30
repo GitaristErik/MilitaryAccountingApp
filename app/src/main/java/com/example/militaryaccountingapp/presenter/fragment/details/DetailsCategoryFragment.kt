@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.fragment.category
+package com.example.militaryaccountingapp.presenter.fragment.details
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCategoryBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
-import com.example.militaryaccountingapp.presenter.fragment.category.CategoryViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.details.DetailsViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChart
@@ -30,10 +30,10 @@ import com.github.mikephil.charting.charts.Chart
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoryFragment :
-    BaseViewModelFragment<FragmentCategoryBinding, ViewData, CategoryViewModel>() {
+class DetailsCategoryFragment :
+    BaseViewModelFragment<FragmentCategoryBinding, ViewData, DetailsViewModel>() {
 
-    override val viewModel: CategoryViewModel by viewModels()
+    override val viewModel: DetailsViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCategoryBinding
         get() = FragmentCategoryBinding::inflate
 
@@ -50,6 +50,7 @@ class CategoryFragment :
 
     private fun setupActionBar() {
         with(requireActivity() as AppCompatActivity) {
+//            setSupportActionBar(binding.toolbar)
             binding.toolbar.apply {
                 setNavigationOnClickListener {
                     onBackPressedDispatcher.onBackPressed()
@@ -137,7 +138,7 @@ class CategoryFragment :
     private fun setupHistorySpinner() {
         binding.historySpinner.apply {
             this.adapter = ArrayAdapter.createFromResource(
-                this@CategoryFragment.requireContext(),
+                this@DetailsCategoryFragment.requireContext(),
                 R.array.history_spinner, android.R.layout.simple_spinner_item
             ).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
