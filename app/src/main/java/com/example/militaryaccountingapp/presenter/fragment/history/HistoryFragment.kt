@@ -22,7 +22,6 @@ import com.example.militaryaccountingapp.presenter.shared.ScrollableTopScreen
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimeLineAdapter
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimelineDecorator
 import com.google.android.material.chip.Chip
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.lriccardo.timelineview.TimelineView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -45,14 +44,10 @@ class HistoryFragment :
     }
 
     override fun initializeView() {
-        setupActionBar()
         setupFilterFragment()
         setupTimeline()
         setupChips()
-
-        viewModel.loadHistory(
-            limit = pageLimit.value
-        )
+        viewModel.loadHistory(limit = pageLimit.value)
     }
 
     override fun render(data: HistoryViewModel.ViewData) {
@@ -72,21 +67,15 @@ class HistoryFragment :
         super.observeData()
         viewLifecycleOwner.lifecycleScope.launch {
             filterViewModel.data
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { renderFilter(it) }
         }
     }
 
     private fun setupFilterFragment() {
         childFragmentManager.beginTransaction()
-            .add(R.id.filters, FilterFragment::class.java, null)
+            .replace(R.id.filters, FilterFragment::class.java, null)
             .commit()
-    }
-
-    private fun setupActionBar() {
-        binding.appBarLayout.statusBarForeground = MaterialShapeDrawable().apply {
-            setTint(resources.getColor(R.color.md_surface, null))
-        }
     }
 
     private fun setupTimeline() {
@@ -169,27 +158,4 @@ class HistoryFragment :
         R.id.chip_restore -> ActionType.RESTORE
         else -> null
     }
-
-    /*
-        private fun setChips(chips: List<ChipData>?) = binding.run {
-            if (chips == null) {
-                chipGroup.removeAllViews()
-                return@run
-            }
-            chips.forEach { chipName ->
-                chipGroup.addView(
-                    Chip(
-                        context, null,
-                        com.google.android.material.R.style.Widget_Material3_Chip_Filter_Elevated
-                    ).apply {
-                        text = chipName
-                        isCheckable = true
-                        isChecked = true
-                        id =
-                        shapeAppearanceModel = context.resources.getDimension(R.dimen.corner_chip).let {
-                            ShapeAppearanceModel().withCornerSize(it)
-                        }
-                    })
-            }
-        }*/
 }

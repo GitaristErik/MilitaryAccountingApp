@@ -31,7 +31,6 @@ import com.example.militaryaccountingapp.presenter.shared.chart.items.TestData
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.shape.MaterialShapeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,7 +48,6 @@ class StatisticsFragment :
 
     override fun initializeView() {
         setupFilterFragment()
-        setupActionBar()
         setupCountButtons()
         setupHistorySpinner()
     }
@@ -88,14 +86,8 @@ class StatisticsFragment :
 
     private fun setupFilterFragment() {
         childFragmentManager.beginTransaction()
-            .add(R.id.filters, FilterFragment::class.java, null)
+            .replace(R.id.filters, FilterFragment::class.java, null)
             .commit()
-    }
-
-    private fun setupActionBar() {
-        binding.appBarLayout.statusBarForeground = MaterialShapeDrawable().apply {
-            setTint(resources.getColor(R.color.md_surface, null))
-        }
     }
 
     private fun setupCountButtons() {

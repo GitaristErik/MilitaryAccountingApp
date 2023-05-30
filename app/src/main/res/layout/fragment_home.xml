@@ -1,107 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presenter.fragment.home.HomeFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/fragment_categories" />
+    <include
+        android:id="@+id/tabs_layout"
+        layout="@layout/fragment_tabs_category_items" />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:stateListAnimator="@null">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@+id/appBarLayout"
-            app:layout_scrollFlags="scroll"
-            app:navigationIcon="@drawable/app_logo">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/padding.small.extra"
-                android:text="@string/home.appbar.title"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                android:textColor="@color/colorTitle"
-                android:textSize="24sp"
-                app:drawableStartCompat="@drawable/flag_version4" />
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                app:icon="@drawable/ic_setting_24dp"
-                app:iconTint="?colorOnSurface" />
-        </com.google.android.material.appbar.MaterialToolbar>
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/home.search.title"
-            app:elevation="1dp" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/height.tabs"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="@drawable/capsule_tab_background"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        app:tabGravity="fill"
-        app:tabIndicator="@drawable/capsule_tab_item_indicator"
-        app:tabIndicatorColor="?colorSecondary"
-        app:tabIndicatorFullWidth="true"
-        app:tabIndicatorGravity="center"
-        app:tabIndicatorHeight="32dp"
-        app:tabMaxWidth="0dp"
-        app:tabMinWidth="100dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="?colorOnSecondary"
-        app:tabUnboundedRipple="true">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/tab_title_categories" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/tab_title_items" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/home.search.title"
-        app:layout_anchor="@id/search_bar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_suggestion"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.search.SearchView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

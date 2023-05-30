@@ -11,24 +11,24 @@ import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentTreeViewBinding
 import com.example.militaryaccountingapp.databinding.ItemTreeNodeViewBinding
-import com.example.militaryaccountingapp.presenter.fragment.BaseFragment
+import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
 import com.gg.gapo.treeviewlib.GapoTreeView
 import com.gg.gapo.treeviewlib.model.NodeState
 import com.gg.gapo.treeviewlib.model.NodeViewData
 import kotlinx.coroutines.launch
 
-class TreeViewFragment() : BaseFragment<FragmentTreeViewBinding>(),
+class TreeViewFragment() :
+    BaseViewModelFragment<FragmentTreeViewBinding, FilterViewModel.ViewData, FilterViewModel>(),
     GapoTreeView.Listener<TreeNodeItem> {
+
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentTreeViewBinding =
         FragmentTreeViewBinding::inflate
 
-    private val viewModel: FilterViewModel by activityViewModels()
-
+    override val viewModel: FilterViewModel by activityViewModels()
 
     override fun initializeView() {
-        setupTreeView()
     }
 
 
@@ -42,19 +42,36 @@ class TreeViewFragment() : BaseFragment<FragmentTreeViewBinding>(),
 
     private lateinit var treeView: GapoTreeView<TreeNodeItem>
 
-    private fun setupTreeView() {
+    override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.dataNodes
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect {
-                    try {
-                        binding.rvItems.removeItemDecorationAt(0)
-                    } catch (_: Exception) {
-                    }
-                    treeView = treeViewBuilder
-                        .setData(it)
-                        .build()
+                    renderTreeView(it)
                 }
+        }
+        super.observeData()
+    }
+
+    override fun render(data: FilterViewModel.ViewData) {
+        viewModelHandler = null
+        data.selectedItemsIds.forEach {
+            treeView.selectNode(it.toString(), true)
+        }
+        data.selectedCategoriesIds.forEach {
+            treeView.selectNode(it.toString(), true)
+        }
+        viewModelHandler = ::viewModelHandlerImpl
+    }
+
+    private fun renderTreeView(data: List<TreeNodeItem>) {
+        try {
+            binding.rvItems.removeItemDecorationAt(0)
+        } catch (_: Exception) {
+        } finally {
+            treeView = treeViewBuilder
+                .setData(data)
+                .build()
         }
     }
 
@@ -74,8 +91,8 @@ class TreeViewFragment() : BaseFragment<FragmentTreeViewBinding>(),
             checkbox.setOnClickListener {
                 treeView.selectNode(item.nodeId, !item.isSelected) // will trigger onNodeSelected
             }
-            checkbox.isEnabled = item.nodeState != NodeStateDisabled
 
+            checkbox.isEnabled = item.nodeState != NodeStateDisabled
 //            avatarGroup.dataSource = item.getData().userImagesUrl.toMutableList()
 
             //toggle node
@@ -104,20 +121,32 @@ class TreeViewFragment() : BaseFragment<FragmentTreeViewBinding>(),
         )
 
         // event for viewModel
-        with(node.getData()) {
-            if (!node.isLeaf) {
-                viewModel.changeCategorySelection(
-                    id,
-                    child.map { it.getData().id to it.isLeaf },
-                    isSelected
-                )
-            } else {
-                viewModel.changeItemSelection(id, isSelected)
-            }
-        }
+        viewModelHandler?.invoke(node, child, isSelected)
 
         //update layout
         treeView.requestUpdateTree()
+    }
+
+    private var viewModelHandler: ((
+        node: NodeViewData<TreeNodeItem>,
+        child: List<NodeViewData<TreeNodeItem>>,
+        isSelected: Boolean
+    ) -> Unit)? = null
+
+    private fun viewModelHandlerImpl(
+        node: NodeViewData<TreeNodeItem>,
+        child: List<NodeViewData<TreeNodeItem>>,
+        isSelected: Boolean
+    ): Unit = with(node.getData()) {
+        if (!node.isLeaf) {
+            viewModel.changeCategorySelection(
+                id,
+                child.map { it.getData().id to it.isLeaf },
+                isSelected
+            )
+        } else {
+            viewModel.changeItemSelection(id, isSelected)
+        }
     }
 
 

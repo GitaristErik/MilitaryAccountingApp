@@ -8,6 +8,7 @@ import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryC
 import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import java.time.DayOfWeek
@@ -29,21 +30,23 @@ class CategoryViewModel @Inject constructor(): BaseViewModel<ViewData>(ViewData(
 
 
     fun changeHistoryChartType(chartType: KClass<out ChartData>?) {
-        val data = List(10) {
-            HistoryChartItem(
-                LocalDate.of(2023, 5, it + 1).toString(),
-                (Math.random() * 100).toInt()
-            )
+        safeRunJob(Dispatchers.Default) {
+            val data = List(10) {
+                HistoryChartItem(
+                    LocalDate.of(2023, 5, it + 1).toString(),
+                    (Math.random() * 100).toInt()
+                )
+            }
+
+            val chart = when (chartType) {
+                DayData::class -> DayData(data)
+                WeekData::class -> WeekData(mapToWeeks(data))
+                MonthData::class -> MonthData(data)
+                else -> null
+            }?.apply { generate() }
+
+            _data.update { it.copy(historyChartType = chart) }
         }
-
-        val chart = when (chartType) {
-            DayData::class -> DayData(data)
-            WeekData::class -> WeekData(mapToWeeks(data))
-            MonthData::class -> MonthData(data)
-            else -> null
-        }?.apply { generate() }
-
-        _data.update { it.copy(historyChartType = chart) }
     }
 
 
