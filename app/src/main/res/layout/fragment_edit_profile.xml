@@ -206,7 +206,7 @@
                     android:textColor="?attr/colorOnSurface" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/phone_numbers_container"
+                    android:id="@+id/phone_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -225,13 +225,14 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/add_phone_layout"
                     android:hint="@string/profile.phone.add.hint"
                     app:endIconDrawable="@drawable/ic_add_24dp"
                     app:endIconMode="custom"
                     app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/phone"
+                        android:id="@+id/add_phone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:elegantTextHeight="true"
