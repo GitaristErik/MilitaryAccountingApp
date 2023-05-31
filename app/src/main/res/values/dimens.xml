@@ -25,4 +25,5 @@
     <dimen name="corner.rectangle">20dp</dimen>
     <dimen name="corner.chip">8dp</dimen>
     <dimen name="height.tabs">32dp</dimen>
+    <dimen name="corner.permissions">10dp</dimen>
 </resources>

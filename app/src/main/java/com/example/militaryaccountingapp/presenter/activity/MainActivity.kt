@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.Duration
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -79,14 +80,17 @@ class MainActivity : AppCompatActivity() {
     private fun setupComponents(navController: NavController) {
         val componentsHelper = ComponentsHelper()
 
+        componentsHelper.setupFab(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.navigation_home) {
                 componentsHelper.setToolbarDrawableStart(R.drawable.flag_version4)
                 componentsHelper.showSearch()
+                componentsHelper.showFab()
                 // TODO: handle search bar and view
             } else {
                 componentsHelper.setToolbarDrawableStart(0)
                 componentsHelper.hideSearch()
+                componentsHelper.hideFab()
             }
 
             if (destination.id in listOf(
@@ -159,6 +163,7 @@ class MainActivity : AppCompatActivity() {
         fun hideActionBar() {
             supportActionBar?.hide()
         }
+
         fun showActionBar() {
             supportActionBar?.show()
         }
@@ -167,8 +172,23 @@ class MainActivity : AppCompatActivity() {
         fun hideBottomNavigation() {
             binding.navView.visibility = View.GONE
         }
+
         fun showBottomNavigation() {
             binding.navView.visibility = View.VISIBLE
+        }
+
+        fun hideFab() {
+            binding.fab.hide()
+        }
+
+        fun showFab() {
+            binding.fab.show()
+        }
+
+        fun setupFab(navController: NavController) {
+            binding.fab.setOnClickListener {
+                navController.navigate(R.id.action_navigation_home_to_addFragment)
+            }
         }
     }
 

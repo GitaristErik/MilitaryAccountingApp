@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding.small"
+    android:paddingTop="@dimen/padding.small"
+    android:paddingBottom="@dimen/padding.standard">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding.small"
+        android:paddingVertical="@dimen/padding.small">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin.standard"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle"
+            app:srcCompat="@drawable/avatar_placeholder" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/icon"
+            android:layout_gravity="start|top"
+            android:layout_toStartOf="@+id/arrow"
+            android:layout_toEndOf="@id/icon"
+            android:maxLines="1"
+            android:text="Прапорщик"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="?colorOnSurfaceVariant" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_alignStart="@id/title"
+            android:layout_alignEnd="@id/title"
+            android:layout_gravity="start|bottom"
+            android:gravity="bottom|start"
+            android:maxLines="2"
+            android:text="Петро Петрович Василенко Василенко"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="?colorOnSurface" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin.standard"
+            android:gravity="end|top"
+            app:srcCompat="@drawable/ic_arrowhead_right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_user_permissions"
+        android:backgroundTint="?attr/colorSurfaceVariant"
+        android:paddingHorizontal="@dimen/padding.standard"
+        android:paddingVertical="@dimen/padding.small">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/permission_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start|top"
+            android:gravity="start|top"
+            android:maxLines="1"
+            android:text="@string/profile.permissions.title"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:textColor="?colorOnSurfaceVariant" />
+
+        <!--        READ -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/permission_label"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/margin.small.extra"
+            android:layout_toEndOf="@id/read"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/profile.permissions.read.title"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorOnSurface" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/read_label"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="10"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorPrimary" />
+
+        <!--        READ SHARE -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_share_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/read_label"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start"
+            android:layout_toEndOf="@id/read_share"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/profile.permissions.share.read.title"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorOnSurface" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/read_share_label"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="10"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorPrimary" />
+
+        <!--        Edit -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/edit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/read_share_label"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/margin.small.extra"
+            android:layout_toEndOf="@id/edit"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/profile.permissions.edit.title"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorOnSurface" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/edit_label"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="10"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorPrimary" />
+
+        <!--        edit SHARE -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/edit_share_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_label"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start"
+            android:layout_toEndOf="@id/edit_share"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/profile.permissions.share.edit.title"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorOnSurface" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/edit_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/edit_share_label"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="10"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?colorPrimary" />
+
+
+    </RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

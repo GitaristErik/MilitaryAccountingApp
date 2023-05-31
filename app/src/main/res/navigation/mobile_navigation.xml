@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_homeFragment_to_itemFragment"
             app:destination="@id/itemFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
 
     <fragment
@@ -26,7 +29,7 @@
         android:label="@string/category.title"
         tools:layout="@layout/fragment_category">
         <argument
-            android:name="category"
+            android:name="id"
             app:argType="integer" />
     </fragment>
 
@@ -36,7 +39,7 @@
         android:label="@string/item.title"
         tools:layout="@layout/fragment_item">
         <argument
-            android:name="item"
+            android:name="id"
             app:argType="integer" />
     </fragment>
 
@@ -57,5 +60,30 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.ProfileFragment"
         android:label="@string/profile.title"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_detailsUserFragment"
+            app:destination="@id/detailsUserFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.AddFragment"
+        android:label="@string/add.title"
+        tools:layout="@layout/fragment_add" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.profile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/detailsUserFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserFragment"
+        android:label="fragment_datails_user"
+        tools:layout="@layout/fragment_datails_user" />
 </navigation>

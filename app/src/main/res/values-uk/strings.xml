@@ -94,4 +94,6 @@
     <string name="history.chips.delete">Видалено</string>
     <string name="history.chips.restore">Відновлено</string>
     <string name="history.chips.update">Оновлено</string>
+    <string name="tab_title_category">Категорія</string>
+    <string name="tab_title_item">Елемент</string>
 </resources>
