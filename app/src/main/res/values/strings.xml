@@ -95,9 +95,10 @@
     <!-- Add fragment -->
     <string name="add.title">Create</string>
     <string name="add.title.label">Title</string>
-    <string name="add.title.hint">Enter the title here</string>
+    <string name="add.title.hint">Enter a title</string>
     <string name="add.description.label">Description</string>
-    <string name="add.qr.label">QR code</string>
+    <string name="add.description.hint">Enter the description</string>
+    <string name="add.codes.label">Codes</string>
     <string name="add.qr.button">Select QR Code</string>
     <string name="add.barcode.label">Barcode</string>
     <string name="add.barcode.button">Select Barcode</string>
@@ -181,8 +182,9 @@
     <string name="profile.rank.hint">Enter the rank</string>
     <string name="profile.login.title">Login</string>
     <string name="profile.login.hint">Enter your login</string>
+    <string name="profile.login.helper">Unique id for find your profile</string>
     <string name="profile.email.title">Email</string>
-    <string name="profile.email.hint">Enter your email here</string>
+    <string name="profile.email.hint">Edit your email</string>
     <string name="profile.phone.title">Phone Numbers</string>
     <string name="profile.phone.hint">Enter phone number</string>
     <string name="profile.phone.add.hint">Add a phone number</string>

@@ -1,76 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/height.tabs.addition"
+    android:orientation="vertical"
     tools:context=".presenter.fragment.edit.AddFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/start_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/title_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin.standard"
-        android:text="@string/add.title.label"
-        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/title_edit_text"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_title"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:layout_marginVertical="@dimen/margin.small.extra"
         android:hint="@string/add.title.hint"
-        android:inputType="text"
-        android:maxLines="1"
-        android:tooltipText="ssdfdfd"
-        app:layout_constraintEnd_toStartOf="@id/end_guideline"
-        app:layout_constraintStart_toEndOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/title_label" />
+        app:errorEnabled="true"
+        app:helperText="Required*"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="?attr/colorError"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Rounded.20">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:inputType="text|textCapSentences" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_select_qr_code"
-        style="@style/Widget.Material3.Button.TonalButton"
+    <!-- description -->
+
+    <!--    <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_description"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:text="@string/add.description.label"
+            android:textColor="?attr/colorOnSurface" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_description"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.small"
+        android:hint="@string/add.description.hint"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:gravity="top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:minLines="3" />
+        <!--tools:text="Water"-->
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- quantity -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/label_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:text="@string/add.count.label"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+    <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+        android:id="@+id/layout_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/add.qr.button"
-        app:layout_constraintBottom_toTopOf="@id/button_select_bar_code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        android:layout_gravity="end"
+        android:layout_marginVertical="@dimen/margin.small.extra" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_select_bar_code"
-        style="@style/Widget.Material3.Button.TonalButton"
-        android:layout_width="wrap_content"
+    <!--    Codes -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/label_qr"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/add.barcode.button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_select_qr_code" />
+        android:layout_marginTop="@dimen/margin.standard"
+        android:text="@string/add.codes.label"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    barcode -->
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

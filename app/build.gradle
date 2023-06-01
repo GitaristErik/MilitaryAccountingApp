@@ -146,6 +146,9 @@ dependencies {
     implementation 'com.robertlevonyan.view:CustomFloatingActionButton:3.1.4'
     implementation "com.leinardi.android:speed-dial:3.3.0"
 
+    // counter
+    implementation "com.github.kojofosu:Quantitizer:1.6.8"
+
     // zxing
     implementation 'com.google.zxing:core:3.5.1'
 //    implementation 'com.google.zxing:android-core:3.5.1'
