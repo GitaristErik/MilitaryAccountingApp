@@ -41,10 +41,11 @@
     <style name="Theme.MilitaryAccountingApp" parent="Base.Theme.MilitaryAccountingApp">
         <!--        <item name="android:statusBarColor">?attr/colorSurface</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <!--        <item name="android:windowTranslucentNavigation">false</item>-->
         <!--        <item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!--        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
     </style>
 </resources>

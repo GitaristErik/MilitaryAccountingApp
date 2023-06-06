@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -80,7 +83,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupComponents(navController: NavController) {
         val componentsHelper = ComponentsHelper()
 
+        componentsHelper.setupNavInsets()
         componentsHelper.setupFab(navController)
+        componentsHelper.setSysInsets()
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.navigation_home) {
                 componentsHelper.setToolbarDrawableStart(R.drawable.flag_version4)
@@ -189,6 +195,42 @@ class MainActivity : AppCompatActivity() {
             binding.fab.setOnClickListener {
                 navController.navigate(R.id.action_navigation_home_to_addFragment)
             }
+            setupFabInsets()
+        }
+
+        private var systemNavigationInsets: Int? = null
+        private fun getSystemNavigationInsets(insets: WindowInsetsCompat): Int {
+            if (systemNavigationInsets == null) {
+                systemNavigationInsets = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                ).bottom / 2
+            }
+            return systemNavigationInsets!!
+        }
+
+        fun setupFabInsets() {
+            ViewCompat.setOnApplyWindowInsetsListener(
+                binding.fab
+            ) { view, insets ->
+                view.updatePadding(
+                    bottom = getSystemNavigationInsets(insets)
+                )
+                insets
+            }
+        }
+
+        fun setupNavInsets() = ViewCompat.setOnApplyWindowInsetsListener(
+            binding.navView
+        ) { view, insets ->
+            view.updatePadding(
+                bottom = getSystemNavigationInsets(insets)
+            )
+            insets
+        }
+
+        fun setSysInsets() {
+            binding.root.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         }
     }
 
