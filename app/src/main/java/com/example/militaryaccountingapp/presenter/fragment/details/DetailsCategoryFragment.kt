@@ -1,14 +1,12 @@
 package com.example.militaryaccountingapp.presenter.fragment.details
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCategoryBinding
@@ -19,13 +17,7 @@ import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChart
 import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
-import com.github.alexzhirkevich.customqrgenerator.QrData
-import com.github.alexzhirkevich.customqrgenerator.vector.QrCodeDrawable
-import com.github.alexzhirkevich.customqrgenerator.vector.createQrVectorOptions
-import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorBallShape
-import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorColor
-import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorFrameShape
-import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorPixelShape
+import com.example.militaryaccountingapp.presenter.utils.ui.ext.initAsQrFull
 import com.github.mikephil.charting.charts.Chart
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,38 +68,7 @@ class DetailsCategoryFragment :
 
     private fun setupQrCode() {
         val data = "This is the test data for qr code"
-        val qrData = QrData.Text(data)
-
-        val options = createQrVectorOptions {
-            padding = .125f
-            background {
-                drawable = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.background_qr_code
-                )
-            }
-            colors {
-                dark = QrVectorColor.Solid(
-                    ContextCompat.getColor(requireContext(), R.color.md_secondaryContainer)
-                )
-                ball = QrVectorColor.Solid(
-                    ContextCompat.getColor(requireContext(), R.color.md_primaryContainer)
-                )
-                frame = QrVectorColor.Solid(
-                    ContextCompat.getColor(requireContext(), R.color.md_primaryContainer)
-                )
-            }
-            shapes {
-                darkPixel = QrVectorPixelShape
-                    .Circle(0.85f)
-                ball = QrVectorBallShape
-                    .Circle(.5f)
-                frame = QrVectorFrameShape
-                    .RoundCorners(.5f, .75f)
-            }
-        }
-        val drawable: Drawable = QrCodeDrawable(qrData, options)
-        binding.qrImage.setImageDrawable(drawable)
+        binding.qrImage.initAsQrFull(data)
     }
 
 

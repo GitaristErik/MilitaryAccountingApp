@@ -65,6 +65,7 @@
     <!-- : Category menu -->
     <string name="menu.app.bar.edit">Edit</string>
     <string name="menu.app.bar.edit.description">Edit</string>
+    <string name="menu.app.bar.torch.description">Torch</string>
     <string name="menu.app.bar.delete.description">Delete</string>
     <string name="menu.app.bar.delete">Delete</string>
 
@@ -94,6 +95,7 @@
     </string-array>
     <!-- Add fragment -->
     <string name="add.title">Create</string>
+    <string name="add.details.title">Create</string>
     <string name="add.title.label">Title</string>
     <string name="add.title.hint">Enter a title</string>
     <string name="add.description.label">Description</string>
@@ -101,7 +103,13 @@
     <string name="add.codes.label">Codes</string>
     <string name="add.qr.button">Select QR Code</string>
     <string name="add.barcode.label">Barcode</string>
-    <string name="add.barcode.button">Select Barcode</string>
+    <string name="add.code.button">Scan new</string>
+    <string name="add.code.button.delete">Delete</string>
+    <string name="add.code.alert.title">Confirmation</string>
+    <string name="add.code.alert.message">Do you want to delete this barcode?</string>
+    <string name="add.code.alert.positive">Yes</string>
+    <string name="add.code.alert.negative">No</string>
+    <string name="add.code.label">Content</string>
     <string name="add.count.label">Count</string>
     <!-- :Add item fragment  -->
 
@@ -195,5 +203,10 @@
     <string name="profile.edit.title">Personal Info</string>
     <string name="profile.edit.change.avatar">Change Avatar</string>
 
+
+    <!-- Scan fragment -->
+    <string name="scan.title">Scan</string>
+    <string name="scan.flash.button">Flash</string>
+    <string name="scan.item.code.logo.description">BarCode icon</string>
 
 </resources>

@@ -1,13 +1,17 @@
 package com.example.militaryaccountingapp.presenter.fragment.edit
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentAddItemBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.model.Barcode
+import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import com.mcdev.quantitizerlibrary.AnimationStyle
 import com.mcdev.quantitizerlibrary.QuantitizerListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,14 +28,40 @@ class AddItemFragment :
 
     override fun initializeView() {
         setupQuantity()
-        setupQrCodeScanner()
+        setupCodeScanner()
+        setupCodes()
     }
 
-    private fun setupQrCodeScanner() {
-//        val scanner = Inte
+    override fun render(data: ViewData) {
+        log.d("render")
+        codesAdapter.submitList(data.codes.toList())
+    }
 
-        // Add the barcode scanner fragment to the view hierarchy.
-//        BarcodeView
+    private val codesAdapter by lazy {
+        BarCodeAdapter { barcode ->
+            showCodeDetails(barcode)
+        }
+    }
+
+    private fun showCodeDetails(barcode: Barcode) {
+        log.d("showCodeDetails : $barcode")
+        findNavController().navigate(
+            R.id.action_addFragment_to_modalBottomSheetCodeDetails,
+            Bundle().apply {
+                putSerializable("code", barcode)
+            }
+        )
+    }
+
+
+    private fun setupCodes() {
+        binding.rvCodes.adapter = codesAdapter
+    }
+
+    private fun setupCodeScanner() {
+        binding.buttonScan.setOnClickListener {
+            findNavController().navigate(R.id.action_addFragment_to_barcodeScannerFragment)
+        }
     }
 
     private fun setupQuantity() {
@@ -52,9 +82,5 @@ class AddItemFragment :
 
             textAnimationStyle = AnimationStyle.FALL_IN
         }
-    }
-
-    override fun render(data: ViewData) {
-        log.d("render")
     }
 }

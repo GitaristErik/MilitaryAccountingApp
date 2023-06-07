@@ -1,78 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/height.tabs.addition"
-    android:orientation="vertical"
     tools:context=".presenter.fragment.edit.AddFragment">
-   <!-- android:layout_marginHorizontal="@dimen/activity_horizontal_margin"-->
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_title"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/add.title.hint"
-        app:errorEnabled="true"
-        app:helperText="Required*"
-        app:helperTextEnabled="true"
-        app:helperTextTextColor="?attr/colorError"
-        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Rounded.20">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/height.tabs.addition">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_title"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_title"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elegantTextHeight="true"
-            android:inputType="text|textCapSentences" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:hint="@string/add.title.hint"
+            app:errorEnabled="true"
+            app:helperText="Required*"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="?attr/colorError"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Rounded.20">
 
-    <!-- description -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elegantTextHeight="true"
+                android:inputType="text|textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/label_description"
-            style="@style/TextAppearance.Material3.TitleMedium"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_description"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elegantTextHeight="true"
-            android:text="@string/add.description.label"
-            android:textColor="?attr/colorOnSurface" />-->
+            android:layout_marginTop="@dimen/margin.small"
+            android:hint="@string/add.description.hint"
+            app:errorEnabled="true">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_description"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin.small"
-        android:hint="@string/add.description.hint"
-        app:errorEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elegantTextHeight="true"
+                android:gravity="top"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="3" />
+            <!--tools:text="Water"-->
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_description"
+        <!--    Codes -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_qr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elegantTextHeight="true"
-            android:gravity="top"
-            android:inputType="textMultiLine|textCapSentences"
-            android:minLines="3" />
-        <!--tools:text="Water"-->
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="@dimen/margin.standard"
+            android:text="@string/add.codes.label"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-    <!--    Codes -->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/label_qr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin.standard"
-        android:text="@string/add.codes.label"
-        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin.small"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_code_list" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_scan"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/add.code.button"
+            app:icon="@drawable/ic_add_24dp"
+            app:iconTint="?colorOnSecondaryContainer" />
 
-
-    <!--    barcode -->
-
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

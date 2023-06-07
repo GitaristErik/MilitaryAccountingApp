@@ -1,0 +1,66 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/margin.small.extra"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:paddingHorizontal="@dimen/padding.small"
+        android:paddingVertical="@dimen/padding.small">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@id/detailed"
+            android:layout_marginStart="@dimen/margin.small"
+            android:layout_toStartOf="@id/detailed"
+            android:layout_toEndOf="@id/code_image"
+            tools:text="12.12.2020, 12:12"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="?colorSecondary" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/detailed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_arrowhead_right"
+            android:tint="?colorSecondary" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/content"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date"
+            android:layout_alignStart="@id/date"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/code_image"
+            android:elegantTextHeight="true"
+            tools:text="Category Title Category Title Category Title Category Title Category Title" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/code_image"
+            android:layout_width="@dimen/size.code.item"
+            android:layout_height="@dimen/size.code.item"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/scan.item.code.logo.description"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            tools:srcCompat="@drawable/ic_launcher_background" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

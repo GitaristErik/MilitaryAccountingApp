@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -60,7 +59,7 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.ProfileFragment"
         android:label="@string/profile.title"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -70,20 +69,44 @@
     </fragment>
 
     <fragment
-        android:id="@+id/addFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.AddFragment"
-        android:label="@string/add.title"
-        tools:layout="@layout/fragment_add" />
-
-    <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="@string/profile.edit.title"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/detailsUserFragment"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserFragment"
-        android:label="fragment_datails_user"
-        tools:layout="@layout/fragment_datails_user" />
+        android:label="@string/profile.details.title"
+        tools:layout="@layout/fragment_details_user" />
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.AddFragment"
+        android:label="@string/add.title"
+        tools:layout="@layout/fragment_add">
+        <action
+            android:id="@+id/action_addFragment_to_barcodeScannerFragment"
+            app:destination="@id/barcodeScannerFragment" />
+        <action
+            android:id="@+id/action_addFragment_to_modalBottomSheetCodeDetails"
+            app:destination="@id/modalBottomSheetCodeDetails" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/barcodeScannerFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.scan.BarcodeScannerFragment"
+        android:label="@string/scan.title"
+        tools:layout="@layout/fragment_barcode_scanner" />
+
+    <dialog
+        android:id="@+id/modalBottomSheetCodeDetails"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.ModalBottomSheetCodeDetails"
+        android:label="@string/add.details.title" >
+        <argument
+            android:name="code"
+            app:argType="com.example.militaryaccountingapp.presenter.model.Barcode"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 </navigation>
