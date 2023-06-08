@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:elevation="0dp"
             app:layout_anchor="@+id/appBarLayout"
+            app:menu="@menu/top_app_bar_done"
             app:navigationIcon="@drawable/ic_arrow_back_24dp"
             app:title="@string/add.title" />
     </com.google.android.material.appbar.AppBarLayout>

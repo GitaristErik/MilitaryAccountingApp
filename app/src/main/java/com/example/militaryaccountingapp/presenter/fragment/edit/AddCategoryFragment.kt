@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.presenter.fragment.edit
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
@@ -14,7 +15,8 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddCategoryFragment : BaseViewModelFragment<FragmentAddCategoryBinding, ViewData, AddOrEditViewModel>() {
+class AddCategoryFragment :
+    BaseViewModelFragment<FragmentAddCategoryBinding, ViewData, AddOrEditViewModel>() {
 
     override val viewModel: AddOrEditViewModel by navGraphViewModels(R.id.mobile_navigation)
 
@@ -24,11 +26,25 @@ class AddCategoryFragment : BaseViewModelFragment<FragmentAddCategoryBinding, Vi
     override fun initializeView() {
         setupCodeScanner()
         setupCodes()
+        setupTitle()
+        setupDescription()
     }
 
+    private var isDataInit = false
     override fun render(data: ViewData) {
         log.d("render")
         codesAdapter.submitList(data.codes.toList())
+
+        if (isDataInit) return
+        else isDataInit = true
+
+        binding.editTitle.setText(data.title)
+        binding.editDescription.setText(data.description)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isDataInit = false
     }
 
     private val codesAdapter by lazy {
@@ -54,6 +70,18 @@ class AddCategoryFragment : BaseViewModelFragment<FragmentAddCategoryBinding, Vi
     private fun setupCodeScanner() {
         binding.buttonScan.setOnClickListener {
             findNavController().navigate(R.id.action_addFragment_to_barcodeScannerFragment)
+        }
+    }
+
+    private fun setupTitle() {
+        binding.editTitle.addTextChangedListener {
+            viewModel.setTitle(it.toString())
+        }
+    }
+
+    private fun setupDescription() {
+        binding.editDescription.addTextChangedListener {
+            viewModel.setDescription(it.toString())
         }
     }
 }

@@ -3,7 +3,7 @@ package com.example.militaryaccountingapp.presenter.fragment.edit
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
@@ -30,11 +30,27 @@ class AddItemFragment :
         setupQuantity()
         setupCodeScanner()
         setupCodes()
+        setupTitle()
+        setupDescription()
     }
+
+    private var isDataInit = false
 
     override fun render(data: ViewData) {
         log.d("render")
         codesAdapter.submitList(data.codes.toList())
+
+        if (isDataInit) return
+        else isDataInit = true
+
+        binding.editTitle.setText(data.title)
+        binding.editDescription.setText(data.description)
+        binding.layoutQuantity.value = data.count
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isDataInit = false
     }
 
     private val codesAdapter by lazy {
@@ -67,20 +83,27 @@ class AddItemFragment :
     private fun setupQuantity() {
         binding.layoutQuantity.apply {
             setQuantitizerListener(object : QuantitizerListener {
-                override fun onIncrease() {
-                    Toast.makeText(context, "inc", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onDecrease() {
-                    Toast.makeText(context, "dec", Toast.LENGTH_SHORT).show()
-                }
-
                 override fun onValueChanged(value: Int) {
-                    Toast.makeText(context, "value changed to : $value", Toast.LENGTH_SHORT).show()
+                    viewModel.setCount(value)
                 }
+
+                override fun onIncrease() {}
+                override fun onDecrease() {}
             })
 
             textAnimationStyle = AnimationStyle.FALL_IN
+        }
+    }
+
+    private fun setupTitle() {
+        binding.editTitle.addTextChangedListener {
+            viewModel.setTitle(it.toString())
+        }
+    }
+
+    private fun setupDescription() {
+        binding.editDescription.addTextChangedListener {
+            viewModel.setDescription(it.toString())
         }
     }
 }

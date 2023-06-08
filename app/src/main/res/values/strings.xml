@@ -66,6 +66,7 @@
     <string name="menu.app.bar.edit">Edit</string>
     <string name="menu.app.bar.edit.description">Edit</string>
     <string name="menu.app.bar.torch.description">Torch</string>
+    <string name="menu.app.bar.done.description">Done</string>
     <string name="menu.app.bar.delete.description">Delete</string>
     <string name="menu.app.bar.delete">Delete</string>
 

@@ -18,14 +18,14 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignBottom="@id/detailed"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/margin.small"
             android:layout_toStartOf="@id/detailed"
             android:layout_toEndOf="@id/code_image"
-            tools:text="12.12.2020, 12:12"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:textColor="?colorSecondary" />
+            android:textColor="?colorSecondary"
+            tools:text="12.12.2020, 12:12" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/detailed"
@@ -57,7 +57,6 @@
             android:contentDescription="@string/scan.item.code.logo.description"
             android:scaleType="centerCrop"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
             tools:srcCompat="@drawable/ic_launcher_background" />
 
     </RelativeLayout>

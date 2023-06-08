@@ -23,7 +23,7 @@ class AddFragment : BaseViewModelFragment<FragmentAddBinding, ViewData, AddOrEdi
         get() = FragmentAddBinding::inflate
 
 
-    override fun initializeView()  {
+    override fun initializeView() {
         setupActionBar()
         setupViewPager()
     }
@@ -54,13 +54,25 @@ class AddFragment : BaseViewModelFragment<FragmentAddBinding, ViewData, AddOrEdi
     }
 
     private fun setupActionBar() {
-        with(requireActivity() as AppCompatActivity) {
-//            setSupportActionBar(binding.toolbar)
-            binding.toolbar.apply {
-                setNavigationOnClickListener {
-                    onBackPressedDispatcher.onBackPressed()
+        binding.toolbar.apply {
+            setNavigationOnClickListener { back() }
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.done -> {
+                        viewModel.save()
+                        back()
+                        true
+                    }
+
+                    else -> false
                 }
             }
+        }
+    }
+
+    private fun back() {
+        with(requireActivity() as AppCompatActivity) {
+            requireActivity().onBackPressed()
         }
     }
 
