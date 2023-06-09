@@ -23,7 +23,6 @@
             android:elevation="6dp"
             android:scaleType="fitXY"
             android:background="?colorSurfaceVariant"
-            app:contentPadding="@dimen/padding.standard"
             app:layout_constraintEnd_toStartOf="@id/user_name"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"

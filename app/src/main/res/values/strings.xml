@@ -205,6 +205,7 @@
     <string name="profile.network.add.button">Add to my network</string>
     <string name="profile.edit.title">Personal Info</string>
     <string name="profile.edit.change.avatar">Change Avatar</string>
+    <string name="profile.edit.delete.avatar">Delete Avatar</string>
 
 
     <!-- Scan fragment -->

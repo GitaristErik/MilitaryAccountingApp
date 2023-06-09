@@ -1,7 +1,6 @@
 package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,10 +10,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateMargins
-import androidx.documentfile.provider.DocumentFile
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import androidx.navigation.navGraphViewModels
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerLauncher
 import com.esafirm.imagepicker.features.ImagePickerMode
@@ -32,7 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditProfileFragment :
     BaseViewModelFragment<FragmentEditProfileBinding, ViewData, ProfileViewModel>() {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: ProfileViewModel by navGraphViewModels(R.id.mobile_navigation)
+
+    //    override val viewModel: ProfileViewModel by activityViewModels<ProfileViewModel>()
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEditProfileBinding
         get() = FragmentEditProfileBinding::inflate
 
@@ -46,33 +45,19 @@ class EditProfileFragment :
 
     override fun render(data: ViewData) {
         log.d("render")
-        log.d("render data test: ${data.test}")
-        setupAvatar(data.userProfileUri)
-    }
-
-    private fun setupAvatar(uri: Uri?) {
-        log.d("setupAvatar uri: $uri")
-        if (uri == null) return
-        Glide.with(this)
-            .load(uri)
-            .circleCrop()
-            .into(binding.avatar)
-
-        binding.avatar.setOnClickListener {
-            showAvatar(uri)
-        }
-    }
-
-    private fun showAvatar(uri: Uri) {
-        requireActivity().startActivity(
-            getUriViewIntent(requireContext(), uri) ?: return
+        ProfileHelper.setupAvatarWithIntent(
+            requireActivity(),
+            binding.avatar,
+            data.userProfileUri
         )
     }
 
     private fun setupPhotoPick() {
         binding.changeAvatar.setOnClickListener {
-//            startPhotoPicker(getCameraOptions())
             startPhotoPicker()
+        }
+        binding.deleteAvatar.setOnClickListener {
+            viewModel.deleteAvatar()
         }
     }
 
@@ -189,24 +174,6 @@ class EditProfileFragment :
 
     companion object {
         private const val SAVE_PATH = "Camera"
-
-        /**
-         * Get Intent to View Uri backed File
-         *
-         * @param context
-         * @param uri
-         * @return Intent
-         */
-        @JvmStatic
-        fun getUriViewIntent(context: Context, uri: Uri): Intent? {
-            return if (DocumentFile.fromSingleUri(context, uri)?.canRead() == true) {
-                Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(uri, "image/*")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-            } else null
-        }
-
 
         private fun generateId(): Int {
             // Get the current time in milliseconds.

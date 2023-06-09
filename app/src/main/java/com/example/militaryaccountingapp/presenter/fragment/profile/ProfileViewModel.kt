@@ -11,7 +11,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()) {
     data class ViewData(
-        val test: String = "",
         val userProfileUri: Uri? = null
     )
 
@@ -22,10 +21,19 @@ class ProfileViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData(
     fun setAvatar(uri: Uri) {
         Timber.d("setAvatar uri: $uri")
         _data.update {
-            it.copy(
-//                userProfileUri = uri,
-                test = "test"
-            )
+            it.copy(userProfileUri = uri)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        log.e("onCleared")
+    }
+
+    fun deleteAvatar() {
+        Timber.d("delete avatar")
+        _data.update {
+            it.copy(userProfileUri = null)
         }
     }
 }

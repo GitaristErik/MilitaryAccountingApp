@@ -2,8 +2,9 @@ package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentProfileBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
@@ -13,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment :
     BaseViewModelFragment<FragmentProfileBinding, ViewData, ProfileViewModel>() {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: ProfileViewModel by navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation)
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentProfileBinding
         get() = FragmentProfileBinding::inflate
 
@@ -36,5 +37,10 @@ class ProfileFragment :
 
     override fun render(data: ViewData) {
         log.d("render")
+        ProfileHelper.setupAvatarWithIntent(
+            requireActivity(),
+            binding.avatar,
+            data.userProfileUri
+        )
     }
 }

@@ -3,18 +3,18 @@ package com.example.militaryaccountingapp.presenter.fragment.profile
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
+import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentDetailsUserBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
-import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserViewModel.ViewData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailsUserFragment :
-    BaseViewModelFragment<FragmentDetailsUserBinding, ViewData, ProfileViewModel>() {
+    BaseViewModelFragment<FragmentDetailsUserBinding, ViewData, DetailsUserViewModel>() {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: DetailsUserViewModel by navGraphViewModels<DetailsUserViewModel>(R.id.mobile_navigation)
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailsUserBinding
         get() = FragmentDetailsUserBinding::inflate
 
@@ -22,10 +22,17 @@ class DetailsUserFragment :
         setupActionBar()
     }
 
+    override fun render(data: ViewData) {
+        log.d("render")
+        ProfileHelper.setupAvatarWithIntent(
+            requireActivity(),
+            binding.avatar,
+            data.userProfileUri
+        )
+    }
 
     private fun setupActionBar() {
         with(requireActivity() as AppCompatActivity) {
-//            setSupportActionBar(binding.toolbar)
             binding.toolbar.apply {
                 setNavigationOnClickListener {
                     onBackPressedDispatcher.onBackPressed()
@@ -42,9 +49,5 @@ class DetailsUserFragment :
                 }
             }
         }
-    }
-
-    override fun render(data: ViewData) {
-        log.d("render")
     }
 }

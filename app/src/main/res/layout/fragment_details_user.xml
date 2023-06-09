@@ -48,7 +48,6 @@
                 android:contentDescription="@string/profile.icon.description"
                 android:elevation="6dp"
                 android:scaleType="fitXY"
-                app:contentPadding="@dimen/padding.standard"
                 app:layout_constraintEnd_toStartOf="@id/user_name"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintHorizontal_chainStyle="packed"

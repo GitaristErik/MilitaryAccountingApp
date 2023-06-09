@@ -23,6 +23,7 @@ class CropUserAvatarFragment :
     BaseViewModelFragment<FragmentCropUserAvatarBinding, ViewData, ProfileViewModel>() {
 
     override val viewModel: ProfileViewModel by navGraphViewModels(R.id.mobile_navigation)
+//    override val viewModel: ProfileViewModel by activityViewModels<ProfileViewModel>()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCropUserAvatarBinding
         get() = FragmentCropUserAvatarBinding::inflate
