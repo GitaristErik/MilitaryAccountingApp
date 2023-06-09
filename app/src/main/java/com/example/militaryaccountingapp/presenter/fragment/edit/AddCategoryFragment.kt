@@ -155,7 +155,7 @@ class AddCategoryFragment :
 
     private fun navigateToCropFragment(uri: Uri) {
         findNavController().navigate(
-            R.id.action_editProfileFragment_to_cropImageFragment,
+            R.id.action_addFragment_to_cropImageFragment,
             Bundle().apply { putParcelable("uri_image", uri) }
         )
     }

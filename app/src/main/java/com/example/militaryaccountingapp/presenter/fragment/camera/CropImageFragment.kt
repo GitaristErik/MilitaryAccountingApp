@@ -27,16 +27,16 @@ class CropImageFragment : BaseFragment<FragmentCropUserAvatarBinding>() {
         get() = FragmentCropUserAvatarBinding::inflate
 
 
-    private val viewModel: CroppingSavableViewModel by getViewModel()
+    private val viewModel: CroppingSavableViewModel by lazy { getCustomViewModel() }
 
-    private fun getViewModel(): Lazy<CroppingSavableViewModel> {
+    private fun getCustomViewModel(): CroppingSavableViewModel {
         return if (getUriAndSave("uri_avatar") != null) {
-            navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation)
+            val vm by navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation); vm
         } else if (getUriAndSave("uri_image") != null) {
-            navGraphViewModels<AddOrEditViewModel>(R.id.mobile_navigation)
+            val vm by navGraphViewModels<AddOrEditViewModel>(R.id.mobile_navigation); vm
         } else {
-//            back()
-            navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation)
+            back()
+            val vm by navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation); vm
 //            throw IllegalArgumentException("Uri is null")
         }
     }
@@ -61,7 +61,7 @@ class CropImageFragment : BaseFragment<FragmentCropUserAvatarBinding>() {
             // height edge to edge, without insets
             layoutParams.height = (requireActivity() as AppCompatActivity).window.decorView.height
 
-            if(viewModel is AddOrEditViewModel) {
+            if (viewModel is AddOrEditViewModel) {
                 setCropMode(CropImageView.CropMode.FREE)
             }
 
