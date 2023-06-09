@@ -128,6 +128,7 @@ class AddOrEditViewModel @Inject constructor(
 
     override fun saveCropUri(uri: Uri) {
         log.d("saveCropUri $uri")
+        addImages(listOf(uri))
     }
 
 }
