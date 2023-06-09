@@ -1,20 +1,26 @@
 package com.example.militaryaccountingapp.presenter.fragment.edit
 
-import android.os.Bundle
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.esafirm.imagepicker.features.ImagePickerLauncher
+import com.esafirm.imagepicker.features.registerImagePicker
+import com.esafirm.imagepicker.model.Image
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentAddItemBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
-import com.example.militaryaccountingapp.presenter.model.Barcode
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import com.mcdev.quantitizerlibrary.AnimationStyle
 import com.mcdev.quantitizerlibrary.QuantitizerListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddItemFragment :
@@ -25,14 +31,33 @@ class AddItemFragment :
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentAddItemBinding
         get() = FragmentAddItemBinding::inflate
 
+    private lateinit var imagePickerLauncher: ImagePickerLauncher
 
     override fun initializeView() {
+        setupImages()
         setupQuantity()
         setupCodeScanner()
         setupCodes()
         setupTitle()
         setupDescription()
     }
+
+    override fun observeData() {
+        super.observeData()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.dataImages
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect {
+                    AddFragmentHelper.renderImagesCarousel(
+                        binding.carousel,
+                        binding.carouselEmpty,
+                        binding.buttonRemoveCurrentImage,
+                        it
+                    )
+                }
+        }
+    }
+
 
     private var isDataInit = false
 
@@ -48,6 +73,42 @@ class AddItemFragment :
         binding.layoutQuantity.value = data.count
     }
 
+    private fun setupImages() {
+        binding.carousel.apply {
+            registerLifecycle(viewLifecycleOwner)
+            onScrollListener = AddFragmentHelper.carouselScrollListener
+        }
+
+        binding.buttonAddImage.setOnClickListener {
+            startPhotoPicker()
+        }
+
+        binding.buttonRemoveCurrentImage.setOnClickListener {
+            viewModel.removeImages(
+                setOf(
+                    AddFragmentHelper.currentImageUrl ?: return@setOnClickListener
+                )
+            )
+        }
+    }
+
+    private fun startPhotoPicker() {
+        imagePickerLauncher.launch(
+            AddFragmentHelper.createPickerConfig()
+        )
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        imagePickerLauncher = registerImagePicker {
+            if (it.size == 1) {
+                AddFragmentHelper.navigateToCropFragment(this, it.first().uri)
+            } else {
+                viewModel.addImages(it.map(Image::uri))
+            }
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         isDataInit = false
@@ -55,20 +116,9 @@ class AddItemFragment :
 
     private val codesAdapter by lazy {
         BarCodeAdapter { barcode ->
-            showCodeDetails(barcode)
+            AddFragmentHelper.navigateToCodeDetails(this, barcode)
         }
     }
-
-    private fun showCodeDetails(barcode: Barcode) {
-        log.d("showCodeDetails : $barcode")
-        findNavController().navigate(
-            R.id.action_addFragment_to_modalBottomSheetCodeDetails,
-            Bundle().apply {
-                putSerializable("code", barcode)
-            }
-        )
-    }
-
 
     private fun setupCodes() {
         binding.rvCodes.adapter = codesAdapter

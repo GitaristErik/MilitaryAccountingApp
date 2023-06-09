@@ -65,6 +65,86 @@
             <!--tools:text="Water"-->
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <!--    Photos  -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin.standard"
+            android:text="@string/add.images.label"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+            android:id="@+id/carousel"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginVertical="@dimen/margin.small"
+            android:visibility="gone"
+            app:carouselGravity="CENTER"
+            app:carouselType="BLOCK"
+            app:infiniteCarousel="true"
+            app:showCaption="false" />
+
+
+        <FrameLayout
+            android:id="@+id/carousel_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin.small">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin.standard"
+                android:elegantTextHeight="true"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:text="@string/add.image.label.empty"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:textColor="?colorOnSecondaryContainer"
+                android:textStyle="italic"/>
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin.standard"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_remove_current_image"
+                style="@style/Widget.App.Button.OutlinedButton.Icon.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:enabled="false"
+                android:text="@string/add.image.button.remove.current" />
+            <!--
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_remove_all_image"
+                            style="@style/Widget.App.Button.OutlinedButton.Icon.Error"
+                            android:layout_width="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin.small"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/add.image.button.remove.all" />
+            -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_add_image"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/add.image.button.new"
+                app:icon="@drawable/ic_add_24dp"
+                app:iconGravity=""
+                app:iconTint="?colorOnSecondaryContainer" />
+
+        </FrameLayout>
+
         <!-- quantity -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_quantity"
@@ -79,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginVertical="@dimen/margin.small.extra" />
+            android:layout_marginVertical="@dimen/margin.small" />
 
         <!--    Codes -->
         <com.google.android.material.textview.MaterialTextView

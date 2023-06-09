@@ -3,7 +3,6 @@ package com.example.militaryaccountingapp.presenter.fragment.edit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.navGraphViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -71,11 +70,8 @@ class AddFragment : BaseViewModelFragment<FragmentAddBinding, ViewData, AddOrEdi
     }
 
     private fun back() {
-        with(requireActivity() as AppCompatActivity) {
-            requireActivity().onBackPressed()
-        }
+        requireActivity().onBackPressed()
     }
-
 
     override fun render(data: ViewData) {
         log.d("render")

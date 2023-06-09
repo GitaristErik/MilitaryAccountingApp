@@ -1,11 +1,7 @@
 package com.example.militaryaccountingapp.presenter.fragment.edit
 
 import android.content.Context
-import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -13,23 +9,16 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.RecyclerView
-import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerLauncher
-import com.esafirm.imagepicker.features.ImagePickerMode
-import com.esafirm.imagepicker.features.ImagePickerSavePath
 import com.esafirm.imagepicker.features.registerImagePicker
 import com.esafirm.imagepicker.model.Image
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentAddCategoryBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
-import com.example.militaryaccountingapp.presenter.model.Barcode
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.imaginativeworld.whynotimagecarousel.listener.CarouselOnScrollListener
-import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 @AndroidEntryPoint
 class AddCategoryFragment :
@@ -41,8 +30,6 @@ class AddCategoryFragment :
         get() = FragmentAddCategoryBinding::inflate
 
     private lateinit var imagePickerLauncher: ImagePickerLauncher
-
-    private var currentImageUrl: String? = null
 
     override fun initializeView() {
         setupImages()
@@ -58,7 +45,12 @@ class AddCategoryFragment :
             viewModel.dataImages
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect {
-                    renderImagesCarousel(it)
+                    AddFragmentHelper.renderImagesCarousel(
+                        binding.carousel,
+                        binding.carouselEmpty,
+                        binding.buttonRemoveCurrentImage,
+                        it
+                    )
                 }
         }
     }
@@ -75,35 +67,10 @@ class AddCategoryFragment :
         binding.editDescription.setText(data.description)
     }
 
-    private fun renderImagesCarousel(imageUrls: Set<String>) {
-        if (imageUrls.isEmpty()) {
-            binding.carousel.visibility = View.GONE
-            binding.carouselEmpty.visibility = View.VISIBLE
-            binding.buttonRemoveCurrentImage.isEnabled = false
-        } else {
-            binding.carouselEmpty.visibility = View.GONE
-            binding.carousel.visibility = View.VISIBLE
-
-            binding.carousel.setData(
-                imageUrls.map { CarouselItem(imageUrl = it) }
-            )
-            binding.buttonRemoveCurrentImage.isEnabled = true
-        }
-    }
-
     private fun setupImages() {
         binding.carousel.apply {
             registerLifecycle(viewLifecycleOwner)
-            onScrollListener = object : CarouselOnScrollListener {
-                override fun onScrollStateChanged(
-                    recyclerView: RecyclerView,
-                    newState: Int,
-                    position: Int,
-                    carouselItem: CarouselItem?
-                ) {
-                    currentImageUrl = carouselItem?.imageUrl
-                }
-            }
+            onScrollListener = AddFragmentHelper.carouselScrollListener
         }
 
         binding.buttonAddImage.setOnClickListener {
@@ -111,13 +78,17 @@ class AddCategoryFragment :
         }
 
         binding.buttonRemoveCurrentImage.setOnClickListener {
-            viewModel.removeImages(setOf(currentImageUrl ?: return@setOnClickListener))
+            viewModel.removeImages(
+                setOf(
+                    AddFragmentHelper.currentImageUrl ?: return@setOnClickListener
+                )
+            )
         }
     }
 
     private fun startPhotoPicker() {
         imagePickerLauncher.launch(
-            createPickerConfig()
+            AddFragmentHelper.createPickerConfig()
         )
     }
 
@@ -125,42 +96,12 @@ class AddCategoryFragment :
         super.onAttach(context)
         imagePickerLauncher = registerImagePicker {
             if (it.size == 1) {
-                navigateToCropFragment(it.first().uri)
+                AddFragmentHelper.navigateToCropFragment(this, it.first().uri)
             } else {
                 viewModel.addImages(it.map(Image::uri))
             }
         }
     }
-
-    private fun createPickerConfig() = ImagePickerConfig {
-        mode = ImagePickerMode.MULTIPLE
-        language = "en"
-        theme = R.style.Theme_MilitaryAccountingApp
-        // set folder mode (false by default)
-        isFolderMode = false
-        isIncludeVideo = false
-        isOnlyVideo = false
-//      arrowColor = requireActivity().getColor(R.id.color)
-        // folder selection title
-        folderTitle = "Folder"
-        imageTitle = "Tap to select"
-        doneButtonText = "Done"
-        // max images can be selected (99 by default)
-        isShowCamera = true
-        savePath = ImagePickerSavePath(
-            Environment.getExternalStorageDirectory().path,
-            isRelative = false
-        ) // can be a full path
-    }
-
-    private fun navigateToCropFragment(uri: Uri) {
-        findNavController().navigate(
-            R.id.action_addFragment_to_cropImageFragment,
-            Bundle().apply { putParcelable("uri_image", uri) }
-        )
-    }
-
-    // ====== Barcode and other ======
 
     override fun onStop() {
         super.onStop()
@@ -169,18 +110,8 @@ class AddCategoryFragment :
 
     private val codesAdapter by lazy {
         BarCodeAdapter { barcode ->
-            showCodeDetails(barcode)
+            AddFragmentHelper.navigateToCodeDetails(this, barcode)
         }
-    }
-
-    private fun showCodeDetails(barcode: Barcode) {
-        log.d("showCodeDetails : $barcode")
-        findNavController().navigate(
-            R.id.action_addFragment_to_modalBottomSheetCodeDetails,
-            Bundle().apply {
-                putSerializable("code", barcode)
-            }
-        )
     }
 
     private fun setupCodes() {

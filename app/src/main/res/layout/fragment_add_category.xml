@@ -95,6 +95,7 @@
 
 
         <FrameLayout
+            android:layout_marginBottom="@dimen/margin.standard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
