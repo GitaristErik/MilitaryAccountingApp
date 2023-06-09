@@ -1,22 +1,163 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presenter.fragment.history.HistoryFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/filters"
+            android:name="com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Timeline  -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeline_label"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin.large.extra"
+            android:text="@string/history.timeline.title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filters" />
+
+        <HorizontalScrollView
+            android:id="@+id/chip_group_nested"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeline_label">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                style="@style/Widget.Material3.ChipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:isScrollContainer="true"
+                android:nestedScrollingEnabled="true"
+                app:singleLine="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_add"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.add"
+                    app:checkedIconEnabled="true"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_add_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_decrease"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.dec"
+                    app:checkedIconEnabled="true"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_remove_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_share"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.share"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_share_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_unshare"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.unshare"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_unshare_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_create"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.create"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_outline_edit_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <!--                    <com.google.android.material.chip.Chip-->
+                <!--                        android:id="@+id/chip_update"-->
+                <!--                        app:chipIcon="@drawable/ic_outline_edit_24dp"-->
+                <!--                        style="@style/Widget.Material3.Chip.Filter.Elevated"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:text="@string/history.chips.update"-->
+                <!--                        app:chipCornerRadius="@dimen/corner.chip" />-->
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_restore"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.restore"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_restore_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_delete"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checkable="true"
+                    android:text="@string/history.chips.delete"
+                    app:chipCornerRadius="@dimen/corner.chip"
+                    app:chipIcon="@drawable/ic_delete_24dp"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="?colorSecondary" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_timeline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin.small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_group_nested"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_timeline" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

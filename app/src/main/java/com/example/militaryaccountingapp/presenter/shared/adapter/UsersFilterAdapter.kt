@@ -44,7 +44,7 @@ class UsersFilterAdapter(
             onChange: ((Int, Boolean) -> Unit)?,
         ) = binding.run {
             checkbox.isChecked = data.checked
-            name.text = data.name
+            title.text = data.name
             count.text = data.count.toString()
 
             icon.transitionName = TransitionUtils.imageTransitionName(data.id.toString())

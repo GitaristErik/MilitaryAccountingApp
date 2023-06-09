@@ -76,4 +76,12 @@
     <color name="material_color_2">#f1c40f</color>
     <color name="material_color_3">#e74c3c</color>
     <color name="material_color_4">#3498db</color>
+
+    <!--    Photo picker theme -->
+    <color name="video_counter_color_pix">#E53935</color>
+    <color name="primary_color_pix">@color/md_primary</color>
+    <color name="primary_light_color_pix">@color/md_primaryContainer</color>
+    <color name="surface_color_pix">@color/md_surface</color>
+    <color name="text_color_pix">@color/md_inverseSurface</color>
 </resources>
+

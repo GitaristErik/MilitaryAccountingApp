@@ -41,7 +41,7 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun fetch() {
-        safeRunJob(Dispatchers.Default) {
+        safeRunJob(Dispatchers.IO) {
             val categories = getCategories()
             _data.update {
                 it.copy(categories = categories)

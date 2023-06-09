@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presenter.fragment.profile.EditProfileFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:layout_anchor="@+id/appBarLayout"
+            app:menu="@menu/profile_edit_app_bar"
+            app:navigationIcon="@drawable/ic_arrow_back_24dp"
+            app:title="@string/profile.edit.title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
+
+            <!-- Profile -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginHorizontal="@dimen/margin.large.extra"
+                android:layout_marginVertical="@dimen/margin.standard"
+                android:background="?colorSurfaceVariant"
+                android:contentDescription="@string/profile.icon.description"
+                android:elevation="6dp"
+                android:scaleType="fitXY"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle"
+                app:srcCompat="@drawable/ic_avatar_default" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changeAvatar"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:text="@string/profile.edit.change.avatar"
+                app:icon="@drawable/ic_outline_edit_24dp"
+                app:layout_constraintBottom_toTopOf="@id/deleteAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/avatar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteAvatar"
+                style="@style/Widget.App.Button.OutlinedButton.Icon.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.small"
+                android:text="@string/profile.edit.delete.avatar"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/changeAvatar" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/avatar_divider"
+                style="@style/Widget.Material3.MaterialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin.standard"
+                android:layout_marginVertical="@dimen/margin.large.extra"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatar" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/details_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.large.extra"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/margin.small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatar_divider">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profile.login.hint"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="5"
+                    app:counterOverflowTextColor="?attr/colorPrimarySurface"
+                    app:counterTextColor="?attr/colorError"
+                    app:errorEnabled="true"
+                    app:helperText="@string/profile.login.helper"
+                    app:prefixText="\@\"
+                    app:prefixTextColor="?attr/colorTertiary"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Rounded.20">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elegantTextHeight="true"
+                        android:inputType="text"
+                        tools:text="vasil" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- name -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_name"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.name.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:elegantTextHeight="true"
+                    android:hint="@string/profile.name.hint"
+                    android:inputType="textPersonName|textCapWords" />
+
+
+                <!-- rank -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_rank"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.rank.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:elegantTextHeight="true"
+                    android:hint="@string/profile.rank.hint"
+                    android:inputType="text|textCapSentences" />
+
+                <!-- full name  -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_full_name"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.fullname.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:elegantTextHeight="true"
+                    android:hint="@string/profile.fullname.hint"
+                    android:inputType="textCapWords|textPersonName|text" />
+
+                <!-- email -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_email"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.email.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:elegantTextHeight="true"
+                    android:hint="@string/profile.email.hint"
+                    android:inputType="textEmailAddress" />
+
+
+                <!-- phone -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_phone"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.phone.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/phone_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/margin.small.extra"
+                        android:elegantTextHeight="true"
+                        android:hint="@string/profile.phone.hint"
+                        android:inputType="phone"
+                        android:text="+380-00-000-00-00" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/add_phone_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profile.phone.add.hint"
+                    app:endIconDrawable="@drawable/ic_add_24dp"
+                    app:endIconMode="custom"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/add_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elegantTextHeight="true"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <!-- password -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_password"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/profile.password.title"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:hint="@string/profile.password.hint"
+                    app:passwordToggleEnabled="true"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Rounded.20">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elegantTextHeight="true"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin.small.extra"
+                    android:hint="@string/profile.repassword.hint"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_repassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elegantTextHeight="true"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

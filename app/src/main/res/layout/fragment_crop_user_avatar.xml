@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presenter.fragment.camera.CropImageFragment">
+
+    <!--    <com.takusemba.cropme.CropLayout
+            android:id="@+id/crop_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cropme_background_alpha="90%"
+            app:cropme_frame_height_percent="100%"
+            app:cropme_frame_width_percent="100%"
+            app:cropme_max_scale="3.0"
+            app:cropme_overlay_shape="circle"
+            app:cropme_with_border="true"
+            app:layout_anchor="@id/appBarLayout">-->
+
+
+    <com.isseiaoki.simplecropview.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cropView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding.small.extra"
+        custom:scv_background_color="?colorSurface"
+        custom:scv_crop_mode="circle_square"
+        custom:scv_frame_color="?colorPrimary"
+        custom:scv_frame_stroke_weight="1dp"
+        custom:scv_guide_color="?colorPrimary"
+        custom:scv_guide_show_mode="show_on_touch"
+        custom:scv_guide_stroke_weight="1dp"
+        custom:scv_handle_color="?colorPrimary"
+        custom:scv_handle_show_mode="show_always"
+        custom:scv_handle_size="14dp"
+        custom:scv_min_frame_size="96dp"
+        custom:scv_touch_padding="8dp" />
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:backgroundTint="?colorControlNormal"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:layout_anchor="@+id/appBarLayout"
+            app:menu="@menu/top_app_bar_crop"
+            app:navigationIcon="@drawable/ic_arrow_back_24dp"
+            app:title="@string/crop.title" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -39,8 +39,10 @@ abstract class BaseViewModel<T>(initial: T) : ViewModel() {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    fun stopRunningJob() {
-        if (mainJob?.isActive == true) mainJob?.cancel()
+    fun stopRunningJob() = stopRunningJob(mainJob)
+
+    fun stopRunningJob(job: Job?) {
+        if (job?.isActive == true) job.cancel()
     }
 
     @VisibleForTesting

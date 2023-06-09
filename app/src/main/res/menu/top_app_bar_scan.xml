@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/flash"
+        android:iconTint="?attr/colorControlNormal"
+        android:contentDescription="@string/menu.app.bar.torch.description"
+        android:icon="@drawable/ic_light_on_24dp"
+        android:title="@string/menu.app.bar.edit"
+        app:showAsAction="ifRoom" />
+
+</menu>

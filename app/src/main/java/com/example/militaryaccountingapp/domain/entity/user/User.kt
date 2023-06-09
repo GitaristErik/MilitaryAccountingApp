@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.domain.entity.user
 data class User(
     val id: String,
     val name: String,
+    val fullName: String,
     val email: String,
     val imageUrl: String,
     val createdAt: Long,

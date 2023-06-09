@@ -65,6 +65,10 @@
     <!-- : Category menu -->
     <string name="menu.app.bar.edit">Edit</string>
     <string name="menu.app.bar.edit.description">Edit</string>
+    <string name="menu.app.bar.torch.description">Torch</string>
+    <string name="menu.app.bar.done.description">Done</string>
+    <string name="menu.app.bar.rotate.right.description">Rotate Right</string>
+    <string name="menu.app.bar.rotate.left.description">Rotate Left</string>
     <string name="menu.app.bar.delete.description">Delete</string>
     <string name="menu.app.bar.delete">Delete</string>
 
@@ -81,10 +85,41 @@
     <string name="category.history.title">History</string>
     <string name="category.history.more.title">See More</string>
 
-
     <!-- Item fragment -->
     <string name="item.title">Item</string>
     <string name="item.appbar.title">Item</string>
+
+    <!-- :Add fragment Tabs title -->
+    <string name="tab_title_category">Category</string>
+    <string name="tab_title_item">Item</string>
+    <string-array name="add_tab_title">
+        <item>@string/tab_title_category</item>
+        <item>@string/tab_title_item</item>
+    </string-array>
+    <!-- Add fragment -->
+    <string name="add.title">Create</string>
+    <string name="add.details.title">Create</string>
+    <string name="add.title.label">Title</string>
+    <string name="add.title.hint">Enter a title</string>
+    <string name="add.description.label">Description</string>
+    <string name="add.description.hint">Enter the description</string>
+    <string name="add.codes.label">Codes</string>
+    <string name="add.images.label">Images</string>
+    <string name="add.qr.button">Select QR Code</string>
+    <string name="add.barcode.label">Barcode</string>
+    <string name="add.code.button">Scan new</string>
+    <string name="add.image.button.remove.current">Remove current</string>
+    <string name="add.image.button.remove.all">All</string>
+    <string name="add.image.button.new">Add images</string>
+    <string name="add.image.label.empty">You do not have selected any photo.\nAdd a photo for better understanding case…</string>
+    <string name="add.code.button.delete">Delete</string>
+    <string name="add.code.alert.title">Confirmation</string>
+    <string name="add.code.alert.message">Do you want to delete this barcode?</string>
+    <string name="add.code.alert.positive">Yes</string>
+    <string name="add.code.alert.negative">No</string>
+    <string name="add.code.label">Content</string>
+    <string name="add.count.label">Count</string>
+    <!-- :Add item fragment  -->
 
 
     <!-- Filters fragment -->
@@ -100,16 +135,91 @@
 
     <!-- Statistics fragment -->
     <string name="statistics.title">Statistics</string>
-    <string name="count.title">Count</string>
-    <string name="count.button.users">Users</string>
-    <string name="count.button.items">Items</string>
+    <string name="statistics.count.title">Count</string>
+    <string name="statistics.count.button.users">Users</string>
+    <string name="statistics.count.button.items">Items</string>
+    <string name="statistics.history.title">History</string>
+    <string name="statistics.overview.title">Overview</string>
+    <string name="statistics.overview.today">Today</string>
+    <string name="statistics.overview.week">Week</string>
+    <string name="statistics.overview.month">Month</string>
+    <string name="statistics.overview.year">Year</string>
+    <string name="statistics.history.loading">Loading…</string>
+
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+    <string name="months">Months</string>
+    <string-array name="history_spinner">
+        <item name="days">@string/days</item>
+        <item name="weeks">@string/weeks</item>
+        <item name="months">@string/months</item>
+    </string-array>
 
 
     <!-- History fragment -->
     <string name="history.title">History</string>
+    <string name="history.timeline.title">Timeline</string>
+    <string name="history.chips.add">Add</string>
+    <string name="history.chips.dec">Took</string>
+    <string name="history.chips.share">Share</string>
+    <string name="history.chips.unshare">Unshare</string>
+    <string name="history.chips.create">Create</string>
+    <string name="history.chips.delete">Delete</string>
+    <string name="history.chips.restore">Restore</string>
+    <string name="history.chips.update">Update</string>
 
+    <!-- Profile user item -->
+    <string name="profile.network.title">My Network</string>
+    <string name="profile.network.button">Add a member</string>
+    <string name="profile.permissions.title">Permissions</string>
+    <string name="profile.permissions.read.title">Read</string>
+    <string name="profile.permissions.edit.title">Edit</string>
+    <string name="profile.permissions.share.read.title">Share for read</string>
+    <string name="profile.permissions.share.edit.title">Share for edit</string>
 
     <!-- Profile fragment -->
     <string name="profile.title">Profile</string>
+    <string name="profile.user.button">Change profile</string>
+    <string name="profile.icon.description">User avatar</string>
+    <string name="profile.logout.button">Log Out</string>
+    <string name="profile.more.button">See more</string>
+    <string name="profile.details.title">User Details</string>
+    <string name="profile.innetwork.text">In your network</string>
+    <string name="profile.nonnetwork.text">Not on your network</string>
+    <string name="profile.fullname.title">Full Name</string>
+    <string name="profile.fullname.hint">Enter your full name</string>
+    <string name="profile.name.title">Name</string>
+    <string name="profile.name.hint">Enter your name here</string>
+    <string name="profile.password.title">Password</string>
+    <string name="profile.password.hint">Enter password</string>
+    <string name="profile.repassword.title">Password Retype</string>
+    <string name="profile.repassword.hint">Retype password</string>
+    <string name="profile.rank.title">Rank</string>
+    <string name="profile.rank.hint">Enter the rank</string>
+    <string name="profile.login.title">Login</string>
+    <string name="profile.login.hint">Enter your login</string>
+    <string name="profile.login.helper">Unique id for find your profile</string>
+    <string name="profile.email.title">Email</string>
+    <string name="profile.email.hint">Edit your email</string>
+    <string name="profile.phone.title">Phone Numbers</string>
+    <string name="profile.phone.hint">Enter phone number</string>
+    <string name="profile.phone.add.hint">Add a phone number</string>
+    <string name="profile.items.title">Items</string>
+    <string name="profile.history.title">History</string>
+    <string name="profile.network.delete.button">Delete from my network</string>
+    <string name="profile.network.add.button">Add to my network</string>
+    <string name="profile.edit.title">Personal Info</string>
+    <string name="profile.edit.change.avatar">Change Avatar</string>
+    <string name="profile.edit.delete.avatar">Delete Avatar</string>
+
+
+    <!-- Scan fragment -->
+    <string name="scan.title">Scan</string>
+    <string name="scan.flash.button">Flash</string>
+    <string name="scan.item.code.logo.description">BarCode icon</string>
+
+    <!-- Crop fragment -->
+    <string name="crop.title">Crop</string>
+    <string name="image_picker_provider_authority_suffix" translatable="false">.imagepicker.provider</string>
 
 </resources>

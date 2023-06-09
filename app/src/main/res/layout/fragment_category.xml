@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presenter.fragment.category.CategoryFragment">
+    tools:context=".presenter.fragment.details.DetailsCategoryFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -262,13 +262,21 @@
                 app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/last_changed_btn_all" />
 
-            <View
+            <Spinner
+                android:id="@+id/history_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/history_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/history_label" />
+
+
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/history_chart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginHorizontal="16dp"
+                android:layout_height="350dp"
                 android:layout_marginTop="8dp"
-                android:background="?attr/colorTertiaryContainer"
                 app:layout_constraintBottom_toTopOf="@id/history_btn_all"
                 app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintStart_toEndOf="@id/guideline_start"

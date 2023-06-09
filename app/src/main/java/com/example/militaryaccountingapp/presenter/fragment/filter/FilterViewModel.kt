@@ -6,6 +6,7 @@ import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
 import com.example.militaryaccountingapp.presenter.model.filter.UserFilterUi
 import com.example.militaryaccountingapp.presenter.utils.common.constant.FilterDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
@@ -28,26 +29,29 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
     private val _dataNodes = MutableStateFlow<List<TreeNodeItem>>(emptyList())
     val dataNodes: MutableStateFlow<List<TreeNodeItem>> = _dataNodes
 
+    val filterDate: FilterDate get() = _data.value.filterDate
+
     init {
         Timber.d("init")
-        fetch()
+        load()
     }
 
-    private fun fetch() {
+    private fun load() {
         log.d("fetch")
+        safeRunJob(Dispatchers.IO) {
+            val users = getTempUsers()
+            val selectedUsersId = MutableList(3) { it }
+            val nodes = getTempNodes()
 
-        val users = getTempUsers()
-        val selectedUsersId = MutableList(3) { it }
-        val nodes = getTempNodes()
+            _data.update {
+                it.copy(
+                    usersUi = users,
+                    selectedUsersId = selectedUsersId,
+                )
+            }
 
-        _data.update {
-            it.copy(
-                usersUi = users,
-                selectedUsersId = selectedUsersId,
-            )
+            _dataNodes.update { nodes }
         }
-
-        _dataNodes.update { nodes }
     }
 
     fun changeUserSelection(userId: Int, checked: Boolean = false) {
@@ -87,10 +91,8 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
                 this - id
             }
         }
-        val isFiltersSelected = (
-                (_data.value.selectedCategoriesIds.isNotEmpty() || itemsId.isNotEmpty()) &&
-                        _data.value.filterDate.displayName.isNotEmpty()
-                )
+        val isFiltersSelected =
+            _data.value.selectedCategoriesIds.isNotEmpty() || itemsId.isNotEmpty()
 
         _data.update {
             it.copy(
@@ -131,10 +133,7 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
             )
         }
 
-        val isFiltersSelected = (
-                (categoriesId.isNotEmpty() || itemsId.isNotEmpty()) &&
-                        _data.value.filterDate.displayName.isNotEmpty()
-                )
+        val isFiltersSelected = categoriesId.isNotEmpty() || itemsId.isNotEmpty()
 
         _data.update {
             it.copy(
@@ -150,17 +149,8 @@ class FilterViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData()
             it.copy(
                 filterDate = date,
                 isFiltersSelected = with(_data.value) {
-                    ((selectedCategoriesIds.isNotEmpty() || selectedItemsIds.isNotEmpty())
-                            && date.displayName.isNotEmpty())
+                    selectedCategoriesIds.isNotEmpty() || selectedItemsIds.isNotEmpty()
                 }
-            )
-        }
-    }
-
-    fun changeFiltersSelected(isSelected: Boolean) {
-        _data.update {
-            it.copy(
-                isFiltersSelected = isSelected,
             )
         }
     }

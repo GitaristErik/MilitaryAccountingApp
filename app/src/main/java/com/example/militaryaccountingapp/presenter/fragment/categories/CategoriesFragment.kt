@@ -85,6 +85,7 @@ class CategoriesFragment :
 
     override fun render(data: ViewData) {
         super.render(data)
+        log.d("render: $data")
         headerAdapter.setViewType(data.viewType)
         headerAdapter.setOrderBy(data.orderBy)
         headerAdapter.setSortType(data.sortType)
