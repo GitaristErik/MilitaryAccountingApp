@@ -34,4 +34,5 @@
         <item name="android:layout_marginHorizontal">@dimen/margin.standard</item>
         <item name="android:layout_marginTop">@dimen/margin.small</item>
     </style>
+
 </resources>

@@ -67,6 +67,8 @@
     <string name="menu.app.bar.edit.description">Edit</string>
     <string name="menu.app.bar.torch.description">Torch</string>
     <string name="menu.app.bar.done.description">Done</string>
+    <string name="menu.app.bar.rotate.right.description">Rotate Right</string>
+    <string name="menu.app.bar.rotate.left.description">Rotate Left</string>
     <string name="menu.app.bar.delete.description">Delete</string>
     <string name="menu.app.bar.delete">Delete</string>
 
@@ -209,5 +211,9 @@
     <string name="scan.title">Scan</string>
     <string name="scan.flash.button">Flash</string>
     <string name="scan.item.code.logo.description">BarCode icon</string>
+
+    <!-- Crop fragment -->
+    <string name="crop.title">Crop</string>
+    <string name="image_picker_provider_authority_suffix" translatable="false">.imagepicker.provider</string>
 
 </resources>

@@ -1,18 +1,35 @@
 package com.example.militaryaccountingapp.presenter.fragment.profile
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.updateMargins
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.esafirm.imagepicker.features.ImagePickerConfig
+import com.esafirm.imagepicker.features.ImagePickerLauncher
+import com.esafirm.imagepicker.features.ImagePickerMode
+import com.esafirm.imagepicker.features.ImagePickerSavePath
+import com.esafirm.imagepicker.features.registerImagePicker
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentEditProfileBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.github.dhaval2404.imagepicker.util.FileUriUtils
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+
 
 @AndroidEntryPoint
 class EditProfileFragment :
@@ -22,14 +39,48 @@ class EditProfileFragment :
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEditProfileBinding
         get() = FragmentEditProfileBinding::inflate
 
+    private lateinit var imagePickerLauncher: ImagePickerLauncher
+
     override fun initializeView() {
         setupActionBar()
         setupPhone()
+        setupPhotoPick()
+    }
+
+    override fun render(data: ViewData) {
+        log.d("render")
+        log.d("render data test: ${data.test}")
+        setupAvatar(data.userProfileUri)
+    }
+
+    private fun setupAvatar(uri: Uri?) {
+        log.d("setupAvatar uri: $uri")
+        if (uri == null) return
+        Glide.with(this)
+            .load(uri)
+            .circleCrop()
+            .into(binding.avatar)
+
+        binding.avatar.setOnClickListener {
+            showAvatar(uri)
+        }
+    }
+
+    private fun showAvatar(uri: Uri) {
+        requireActivity().startActivity(
+            getUriViewIntent(requireContext(), uri)
+        )
+    }
+
+    private fun setupPhotoPick() {
+        binding.changeAvatar.setOnClickListener {
+//            startPhotoPicker(getCameraOptions())
+            startPhotoPicker()
+        }
     }
 
     private fun setupActionBar() {
         with(requireActivity() as AppCompatActivity) {
-//            setSupportActionBar(binding.toolbar)
             binding.toolbar.apply {
                 setNavigationOnClickListener {
                     onBackPressedDispatcher.onBackPressed()
@@ -38,9 +89,61 @@ class EditProfileFragment :
         }
     }
 
+    private fun startPhotoPicker() {
+        imagePickerLauncher.launch(createPickerConfig())
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        imagePickerLauncher = registerImagePicker {
+            navigateToCropFragment(it.firstOrNull()?.uri ?: return@registerImagePicker)
+        }
+    }
+
+    private fun createPickerConfig() = ImagePickerConfig {
+        // default is multi image mode
+        mode = ImagePickerMode.SINGLE
+        // Set image picker language
+        language = "en"
+        theme = R.style.Theme_MilitaryAccountingApp
+
+        // set whether pick action or camera action should return immediate result or not.
+        // Only works in single mode for image picker
+//        returnMode = if (returnAfterCapture) ReturnMode.ALL else ReturnMode.NONE
+
+        // set folder mode (false by default)
+        isFolderMode = false
+        // include video (false by default)
+        isIncludeVideo = false
+        isOnlyVideo = false
+//      set toolbar arrow up color
+//      arrowColor = requireActivity().getColor(R.id.color)
+        // folder selection title
+        folderTitle = "Folder"
+        imageTitle = "Tap to select"
+        doneButtonText = "Done"
+        // max images can be selected (99 by default)
+        limit = 1
+        // show camera or not (true by default)
+        isShowCamera = true
+        // captured image directory name ("Camera" folder by default)
+        savePath = ImagePickerSavePath(SAVE_PATH)
+        savePath = ImagePickerSavePath(
+            Environment.getExternalStorageDirectory().path,
+            isRelative = false
+        ) // can be a full path
+    }
+
+    private fun navigateToCropFragment(uri: Uri) {
+        findNavController().navigate(
+            R.id.action_editProfileFragment_to_cropUserAvatarFragment,
+            Bundle().apply { putParcelable("uri", uri) }
+        )
+    }
+
     private fun setupPhone() {
         binding.addPhoneLayout.setEndIconOnClickListener {
-            if(binding.addPhone.text.isNullOrEmpty()) return@setEndIconOnClickListener
+            if (binding.addPhone.text.isNullOrEmpty()) return@setEndIconOnClickListener
             makePhoneEditText(binding.addPhone.text.toString()) {
                 binding.phoneContainer.removeView(it)
             }.also {
@@ -55,7 +158,7 @@ class EditProfileFragment :
         onRemoveListener: OnClickListener
     ): TextInputEditText =
         TextInputEditText(requireContext()).apply {
-            val id = generateId()
+            val id = Companion.generateId()
             setId(id)
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -87,19 +190,44 @@ class EditProfileFragment :
             }
         }
 
-    private fun generateId(): Int {
-        // Get the current time in milliseconds.
-        val time = System.currentTimeMillis()
+    companion object {
+        private const val SAVE_PATH = "Camera"
 
-        // Get the current thread ID.
-        val threadId = Thread.currentThread().id
+        /**
+         * Get Intent to View Uri backed File
+         *
+         * @param context
+         * @param uri
+         * @return Intent
+         */
+        @JvmStatic
+        fun getUriViewIntent(context: Context, uri: Uri): Intent {
+            val authority = context.packageName +
+                    context.getString(R.string.image_picker_provider_authority_suffix)
 
-        // Return a unique ID that is based on the current time and thread ID.
-        return (time * 10000 + threadId).toInt()
-    }
+            val file = DocumentFile.fromSingleUri(context, uri)
+            val dataUri = if (file?.canRead() == true) {
+                uri
+            } else {
+                val filePath = FileUriUtils.getRealPath(context, uri)!!
+                FileProvider.getUriForFile(context, authority, File(filePath))
+            }
 
+            return Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(dataUri, "image/*")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+        }
 
-    override fun render(data: ViewData) {
-        log.d("render")
+        private fun generateId(): Int {
+            // Get the current time in milliseconds.
+            val time = System.currentTimeMillis()
+
+            // Get the current thread ID.
+            val threadId = Thread.currentThread().id
+
+            // Return a unique ID that is based on the current time and thread ID.
+            return (time * 10000 + threadId).toInt()
+        }
     }
 }

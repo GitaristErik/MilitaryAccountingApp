@@ -66,7 +66,7 @@
                 android:layout_marginHorizontal="@dimen/margin.small"
                 android:elegantTextHeight="true"
                 android:maxLines="3"
-                android:text="Петрович"
+                android:text="Петро"
                 android:textColor="?attr/colorOnSurface"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@id/user_rank"
