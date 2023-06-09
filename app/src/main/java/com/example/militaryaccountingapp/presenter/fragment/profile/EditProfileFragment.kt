@@ -10,7 +10,6 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.core.view.updateMargins
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.viewModels
@@ -25,10 +24,8 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentEditProfileBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
-import com.github.dhaval2404.imagepicker.util.FileUriUtils
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 
 @AndroidEntryPoint
@@ -68,7 +65,7 @@ class EditProfileFragment :
 
     private fun showAvatar(uri: Uri) {
         requireActivity().startActivity(
-            getUriViewIntent(requireContext(), uri)
+            getUriViewIntent(requireContext(), uri) ?: return
         )
     }
 
@@ -201,23 +198,15 @@ class EditProfileFragment :
          * @return Intent
          */
         @JvmStatic
-        fun getUriViewIntent(context: Context, uri: Uri): Intent {
-            val authority = context.packageName +
-                    context.getString(R.string.image_picker_provider_authority_suffix)
-
-            val file = DocumentFile.fromSingleUri(context, uri)
-            val dataUri = if (file?.canRead() == true) {
-                uri
-            } else {
-                val filePath = FileUriUtils.getRealPath(context, uri)!!
-                FileProvider.getUriForFile(context, authority, File(filePath))
-            }
-
-            return Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(dataUri, "image/*")
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
+        fun getUriViewIntent(context: Context, uri: Uri): Intent? {
+            return if (DocumentFile.fromSingleUri(context, uri)?.canRead() == true) {
+                Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(uri, "image/*")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+            } else null
         }
+
 
         private fun generateId(): Int {
             // Get the current time in milliseconds.

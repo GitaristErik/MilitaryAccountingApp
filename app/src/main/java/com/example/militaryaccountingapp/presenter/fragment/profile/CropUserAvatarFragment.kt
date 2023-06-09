@@ -11,6 +11,7 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCropUserAvatarBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.isseiaoki.simplecropview.CropImageView
 import com.isseiaoki.simplecropview.callback.CropCallback
 import com.isseiaoki.simplecropview.callback.LoadCallback
 import com.isseiaoki.simplecropview.callback.SaveCallback
@@ -78,31 +79,6 @@ class CropUserAvatarFragment :
         )
     }
 
-    /*    private val cropBuilder by lazy {
-            CropIwaSaveConfig.Builder(getUri() ?: return@lazy null)
-                .setCompressFormat(Bitmap.CompressFormat.PNG)
-                .setQuality(100) //Hint for lossy compression formats
-                .build()
-        }
-
-        private fun setupCropper() {
-            binding.cropView.apply {
-                // height edge to edge, without insets
-                layoutParams.height = (requireActivity() as AppCompatActivity).window.decorView.height
-
-                setImageUri(getUri())
-
-                setCropSaveCompleteListener {
-                    viewModel.setAvatar(it)
-                    back()
-                }
-                setErrorListener {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                    back()
-                }
-            }
-        }*/
-
     override fun render(data: ViewData) {
     }
 
@@ -116,6 +92,14 @@ class CropUserAvatarFragment :
                 when (it.itemId) {
                     R.id.done -> {
                         cropAndSave(uri) { back() }
+                        true
+                    }
+                    R.id.rotate_left -> {
+                        binding.cropView.rotateImage(CropImageView.RotateDegrees.ROTATE_M90D)
+                        true
+                    }
+                    R.id.rotate_right -> {
+                        binding.cropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D)
                         true
                     }
 

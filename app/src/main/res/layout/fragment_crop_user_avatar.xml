@@ -24,6 +24,7 @@
         android:id="@+id/cropView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/padding.small.extra"
         custom:scv_background_color="?colorSurface"
         custom:scv_crop_mode="circle_square"
         custom:scv_frame_color="?colorPrimary"
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:elevation="0dp"
             app:layout_anchor="@+id/appBarLayout"
-            app:menu="@menu/top_app_bar_done"
+            app:menu="@menu/top_app_bar_crop"
             app:navigationIcon="@drawable/ic_arrow_back_24dp"
             app:title="@string/crop.title" />
     </com.google.android.material.appbar.AppBarLayout>

@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewData(
         Timber.d("setAvatar uri: $uri")
         _data.update {
             it.copy(
-                userProfileUri = uri,
+//                userProfileUri = uri,
                 test = "test"
             )
         }
