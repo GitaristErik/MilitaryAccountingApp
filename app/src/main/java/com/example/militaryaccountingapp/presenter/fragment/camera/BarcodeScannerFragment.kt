@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.fragment.scan
+package com.example.militaryaccountingapp.presenter.fragment.camera
 
 import android.content.pm.PackageManager
 import android.view.LayoutInflater

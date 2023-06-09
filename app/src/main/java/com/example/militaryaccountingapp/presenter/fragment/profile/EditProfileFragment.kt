@@ -118,8 +118,8 @@ class EditProfileFragment :
 
     private fun navigateToCropFragment(uri: Uri) {
         findNavController().navigate(
-            R.id.action_editProfileFragment_to_cropUserAvatarFragment,
-            Bundle().apply { putParcelable("uri", uri) }
+            R.id.action_editProfileFragment_to_cropImageFragment,
+            Bundle().apply { putParcelable("uri_avatar", uri) }
         )
     }
 

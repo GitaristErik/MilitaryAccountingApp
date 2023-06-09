@@ -1,13 +1,18 @@
 package com.example.militaryaccountingapp.presenter.fragment.edit
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.Barcode
+import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -16,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddOrEditViewModel @Inject constructor(
-) : BaseViewModel<ViewData>(ViewData()) {
+) : BaseViewModel<ViewData>(ViewData()), CroppingSavableViewModel {
 
     data class ViewData(
         val codes: Set<Barcode> = emptySet(),
@@ -24,6 +29,9 @@ class AddOrEditViewModel @Inject constructor(
         val description: String = "",
         val count: Int = 0
     )
+
+    private val _dataImages: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
+    val dataImages: StateFlow<Set<String>> = _dataImages.asStateFlow()
 
     init {
         Timber.d("init")
@@ -101,7 +109,25 @@ class AddOrEditViewModel @Inject constructor(
     fun save() {
         // TODO push barcodes to database
     }
+
     fun pushCodes() {}
 
+
+    fun addImages(images: List<Uri>) {
+        _dataImages.update {
+            it.plus(images.map { i -> i.toString() })
+        }
+    }
+
+    fun removeImages(images: Set<String>) {
+        _dataImages.update {
+//            it.minus(images.map { i -> i.toString() }.toSet())
+            it.minus(images)
+        }
+    }
+
+    override fun saveCropUri(uri: Uri) {
+        log.d("saveCropUri $uri")
+    }
 
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presenter.fragment.profile.">
+    tools:context=".presenter.fragment.camera.CropImageFragment">
 
     <!--    <com.takusemba.cropme.CropLayout
             android:id="@+id/crop_view"

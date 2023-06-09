@@ -74,8 +74,8 @@
         android:label="@string/profile.edit.title"
         tools:layout="@layout/fragment_edit_profile" >
         <action
-            android:id="@+id/action_editProfileFragment_to_cropUserAvatarFragment"
-            app:destination="@id/cropUserAvatarFragment" />
+            android:id="@+id/action_editProfileFragment_to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
     <fragment
@@ -95,11 +95,14 @@
         <action
             android:id="@+id/action_addFragment_to_modalBottomSheetCodeDetails"
             app:destination="@id/modalBottomSheetCodeDetails" />
+        <action
+            android:id="@+id/action_addFragment_to_cropImageFragment"
+            app:destination="@id/cropImageFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/barcodeScannerFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.scan.BarcodeScannerFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.camera.BarcodeScannerFragment"
         android:label="@string/scan.title"
         tools:layout="@layout/fragment_barcode_scanner" />
 
@@ -114,8 +117,19 @@
             android:defaultValue="@null" />
     </dialog>
     <fragment
-        android:id="@+id/cropUserAvatarFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.profile.CropUserAvatarFragment"
-        android:label="@string/crop.title" />
+        android:id="@+id/cropImageFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.camera.CropImageFragment"
+        android:label="@string/crop.title" >
+        <argument
+            android:name="uri_avatar"
+            app:argType="android.net.Uri"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="uri_image"
+            app:argType="android.net.Uri"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>

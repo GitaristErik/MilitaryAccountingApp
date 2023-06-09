@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.fragment.profile
+package com.example.militaryaccountingapp.presenter.fragment.camera
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCropUserAvatarBinding
-import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
-import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.BaseFragment
+import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel
+import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel
+import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
 import com.isseiaoki.simplecropview.CropImageView
 import com.isseiaoki.simplecropview.callback.CropCallback
 import com.isseiaoki.simplecropview.callback.LoadCallback
@@ -19,30 +21,49 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class CropUserAvatarFragment :
-    BaseViewModelFragment<FragmentCropUserAvatarBinding, ViewData, ProfileViewModel>() {
-
-    override val viewModel: ProfileViewModel by navGraphViewModels(R.id.mobile_navigation)
-//    override val viewModel: ProfileViewModel by activityViewModels<ProfileViewModel>()
+class CropImageFragment : BaseFragment<FragmentCropUserAvatarBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCropUserAvatarBinding
         get() = FragmentCropUserAvatarBinding::inflate
 
 
-    override fun initializeView() {
-        setupActionBar()
-        setupCropper()
+    private val viewModel: CroppingSavableViewModel by getViewModel()
+
+    private fun getViewModel(): Lazy<CroppingSavableViewModel> {
+        return if (getUriAndSave("uri_avatar") != null) {
+            navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation)
+        } else if (getUriAndSave("uri_image") != null) {
+            navGraphViewModels<AddOrEditViewModel>(R.id.mobile_navigation)
+        } else {
+//            back()
+            navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation)
+//            throw IllegalArgumentException("Uri is null")
+        }
     }
 
-    private val uri by lazy {
-        requireArguments().getParcelable<Uri>("uri")
-            ?: throw IllegalArgumentException("Uri is null")
+    private var uri: Uri? = null
+
+    private fun getUri(key: String) = requireArguments().getParcelable<Uri>(key)
+
+    private fun getUriAndSave(key: String): Uri? {
+        uri = getUri(key)
+        return uri
+    }
+
+
+    override fun initializeView() {
+        setupCropper()
+        setupActionBar()
     }
 
     private fun setupCropper() {
         binding.cropView.apply {
             // height edge to edge, without insets
             layoutParams.height = (requireActivity() as AppCompatActivity).window.decorView.height
+
+            if(viewModel is AddOrEditViewModel) {
+                setCropMode(CropImageView.CropMode.FREE)
+            }
 
             load(uri)
                 .useThumbnail(true)
@@ -55,7 +76,7 @@ class CropUserAvatarFragment :
         }
     }
 
-     fun onErrorHandler(e: Throwable?) {
+    fun onErrorHandler(e: Throwable?) {
         log.e("onError: $e")
         Toast.makeText(requireContext(), e?.message, Toast.LENGTH_SHORT).show()
     }
@@ -71,16 +92,13 @@ class CropUserAvatarFragment :
 
                         override fun onSuccess(savedUri: Uri?) {
                             log.d("onSuccess, uri: $savedUri")
-                            viewModel.setAvatar(savedUri ?: return)
+                            viewModel.saveCropUri(savedUri ?: return)
                             onSaveCallback?.invoke(savedUri)
                         }
                     })
                 }
             }
         )
-    }
-
-    override fun render(data: ViewData) {
     }
 
     private fun setupActionBar() {
@@ -92,13 +110,15 @@ class CropUserAvatarFragment :
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.done -> {
-                        cropAndSave(uri) { back() }
+                        cropAndSave(uri!!) { back() }
                         true
                     }
+
                     R.id.rotate_left -> {
                         binding.cropView.rotateImage(CropImageView.RotateDegrees.ROTATE_M90D)
                         true
                     }
+
                     R.id.rotate_right -> {
                         binding.cropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D)
                         true
