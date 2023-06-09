@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -75,9 +76,19 @@ class AddCategoryFragment :
     }
 
     private fun renderImagesCarousel(imageUrls: Set<String>) {
-        binding.carousel.setData(
-            imageUrls.map { CarouselItem(imageUrl = it) }
-        )
+        if (imageUrls.isEmpty()) {
+            binding.carousel.visibility = View.GONE
+            binding.carouselEmpty.visibility = View.VISIBLE
+            binding.buttonRemoveCurrentImage.isEnabled = false
+        } else {
+            binding.carouselEmpty.visibility = View.GONE
+            binding.carousel.visibility = View.VISIBLE
+
+            binding.carousel.setData(
+                imageUrls.map { CarouselItem(imageUrl = it) }
+            )
+            binding.buttonRemoveCurrentImage.isEnabled = true
+        }
     }
 
     private fun setupImages() {
