@@ -1,13 +1,13 @@
 package com.example.militaryaccountingapp.presenter.utils.ui.ext
 
 import android.widget.TextView
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.google.android.material.textfield.TextInputLayout
 
-fun TextView.renderValidate(result: Result<String>, layout: TextInputLayout? = null) {
-    when (result) {
-        is Result.Success -> {
-            this.text = result.data
+fun TextView.renderValidate(results: Results<String>, layout: TextInputLayout? = null) {
+    when (results) {
+        is Results.Success -> {
+            this.text = results.data
             if (layout != null) {
                 layout.error = null
             } else {
@@ -15,11 +15,11 @@ fun TextView.renderValidate(result: Result<String>, layout: TextInputLayout? = n
             }
         }
 
-        is Result.Failure -> {
+        is Results.Failure -> {
             if (layout != null) {
-                layout.error = result.throwable.message
+                layout.error = results.throwable.message
             } else {
-                this.error = result.throwable.message
+                this.error = results.throwable.message
             }
         }
 

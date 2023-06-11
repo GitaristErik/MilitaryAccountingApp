@@ -7,7 +7,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentResetPasswordBinding
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.auth.ResetPasswordViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
@@ -44,18 +44,18 @@ class ResetPasswordFragment :
         binding.email.renderValidate(data.email)
 
         when (data.isReset) {
-            is Result.Success -> {
+            is Results.Success -> {
                 if (data.isReset.data) {
                     showToast(R.string.login_successful)
                     findNavController().navigate(ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment())
                 }
             }
 
-            is Result.Failure -> {
+            is Results.Failure -> {
                 data.isReset.throwable.localizedMessage?.let(::showToast)
             }
 
-            is Result.Canceled -> {
+            is Results.Canceled -> {
                 showToast(getString(R.string.request_canceled) + "<br/>" + data.isReset.throwable?.localizedMessage)
             }
 

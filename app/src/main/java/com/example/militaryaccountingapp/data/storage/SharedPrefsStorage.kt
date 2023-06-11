@@ -2,7 +2,7 @@ package com.example.militaryaccountingapp.data.storage
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import javax.inject.Inject
 
 class SharedPrefsStorage<Data> @Inject constructor(
@@ -18,7 +18,7 @@ class SharedPrefsStorage<Data> @Inject constructor(
         SHARED_PREFS_STORAGE_NAME + "_preferences", MODE_PRIVATE
     )
 
-    override suspend fun save(key: String, data: Data): Result<Void?> {
+    override suspend fun save(key: String, data: Data): Results<Void?> {
         val edit = storage.edit()
         when (data) {
             is String -> edit.putString(key, data)
@@ -26,22 +26,22 @@ class SharedPrefsStorage<Data> @Inject constructor(
             is Long -> edit.putLong(key, data)
             is Int -> edit.putInt(key, data)
             is Float -> edit.putFloat(key, data)
-            else -> return Result.Failure(IllegalArgumentException())
+            else -> return Results.Failure(IllegalArgumentException())
         }
         edit.apply()
-        return Result.Success(null)
+        return Results.Success(null)
     }
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun load(key: String): Result<Data> {
+    override suspend fun load(key: String): Results<Data> {
         val res = when (defaultValue) {
             is Boolean -> storage.getBoolean(key, defaultValue)
             is Int -> storage.getInt(key, defaultValue)
             is Long -> storage.getLong(key, defaultValue)
             is Float -> storage.getFloat(key, defaultValue)
             is String -> storage.getString(key, defaultValue)
-            else -> return Result.Failure(IllegalArgumentException())
+            else -> return Results.Failure(IllegalArgumentException())
         } as? Data
-        return res?.let { Result.Success(it) } ?: Result.Failure(IllegalArgumentException())
+        return res?.let { Results.Success(it) } ?: Results.Failure(IllegalArgumentException())
     }
 }

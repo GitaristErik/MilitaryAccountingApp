@@ -1,7 +1,7 @@
 package com.example.militaryaccountingapp.domain.usecase.auth
 
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
 
 open class RegisterUseCase(
@@ -15,7 +15,7 @@ open class RegisterUseCase(
         fullName: String = "",
         rank: String = "",
         phones: List<String> = emptyList(),
-    ): Result<User> =
+    ): Results<User> =
         authRepository.register(
             email,
             password,

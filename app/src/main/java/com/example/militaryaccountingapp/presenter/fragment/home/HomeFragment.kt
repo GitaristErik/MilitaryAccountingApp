@@ -8,7 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeBinding
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.adapter.TabsViewPagerAdapter
@@ -46,7 +46,7 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
     }
 
     override fun render(data: ViewData) {
-        if (data.currentUser is Result.Success && data.currentUser.data == null) {
+        if (data.currentUser is Results.Success && data.currentUser.data == null) {
             findNavController().navigate(
                 R.id.action_navigation_home_to_loginFragment, null,
                 NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()

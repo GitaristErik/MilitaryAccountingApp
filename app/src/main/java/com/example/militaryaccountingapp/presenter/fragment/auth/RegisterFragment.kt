@@ -13,7 +13,7 @@ import com.esafirm.imagepicker.features.ImagePickerLauncher
 import com.esafirm.imagepicker.features.registerImagePicker
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentRegisterBinding
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.auth.RegisterViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
@@ -116,20 +116,20 @@ class RegisterFragment :
         binding.editFullName.setAutofillHints(View.AUTOFILL_HINT_NAME)
     }
 
-    private fun renderSigned(signed: Result<Boolean>) {
+    private fun renderSigned(signed: Results<Boolean>) {
         when (signed) {
-            is Result.Success -> {
+            is Results.Success -> {
                 if (signed.data) {
                     showToast(R.string.register_successful)
                     findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToNavigationHome())
                 }
             }
 
-            is Result.Failure -> {
+            is Results.Failure -> {
                 showToast(getString(R.string.register_failed) + "\n" + signed.throwable.localizedMessage)
             }
 
-            is Result.Canceled -> {
+            is Results.Canceled -> {
                 showToast(getString(R.string.request_canceled) + "\n" + signed.throwable?.localizedMessage)
             }
 
@@ -137,35 +137,35 @@ class RegisterFragment :
         }
     }
 
-    private fun renderEmail(email: Result<String>) {
+    private fun renderEmail(email: Results<String>) {
         binding.editEmail.renderValidate(email)
     }
 
-    private fun renderPassword(password: Result<String>) {
+    private fun renderPassword(password: Results<String>) {
         binding.editPassword.renderValidate(password, binding.passwordLayout)
     }
 
-    private fun renderRepassword(repassword: Result<String>) {
+    private fun renderRepassword(repassword: Results<String>) {
         binding.editRepassword.renderValidate(repassword, binding.repasswordLayout)
     }
 
-    private fun renderLogin(login: Result<String>) {
+    private fun renderLogin(login: Results<String>) {
         binding.editLogin.renderValidate(login, binding.loginLayout)
     }
 
-    private fun renderRank(rank: Result<String>) {
+    private fun renderRank(rank: Results<String>) {
         binding.editRank.renderValidate(rank)
     }
 
-    private fun renderFullName(fullname: Result<String>) {
+    private fun renderFullName(fullname: Results<String>) {
         binding.editFullName.renderValidate(fullname)
     }
 
-    private fun renderName(name: Result<String>) {
+    private fun renderName(name: Results<String>) {
         binding.editName.renderValidate(name)
     }
 
-    private fun renderPhones(phones: List<Result<String>>) {
+    private fun renderPhones(phones: List<Results<String>>) {
         binding.phoneList.renderValidate(phones)
     }
 

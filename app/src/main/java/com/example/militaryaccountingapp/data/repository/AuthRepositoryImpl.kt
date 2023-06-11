@@ -5,7 +5,7 @@ import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWr
 import com.example.militaryaccountingapp.data.storage.Storage
 import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
@@ -24,14 +24,14 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun login(
         email: String,
         password: String
-    ): Result<User> = safetyResultWrapper(
+    ): Results<User> = safetyResultWrapper(
         { firebaseAuth.signInWithEmailAndPassword(email, password).await() }
     ) {
         it.user?.let { firebaseUser ->
             Timber.i("Login Successful!")
             return@safetyResultWrapper loadUserInStorage(firebaseUser.uid)
         }
-        Result.Failure(RuntimeException("User not loaded"))
+        Results.Failure(RuntimeException("User not loaded"))
     }
 
     override suspend fun register(
@@ -42,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
         fullName: String,
         rank: String,
         phones: List<String>,
-    ): Result<User> = safetyResultWrapper(
+    ): Results<User> = safetyResultWrapper(
         { firebaseAuth.createUserWithEmailAndPassword(email, password).await() }
     ) {
         it.user?.let { firebaseUser ->
@@ -63,14 +63,14 @@ class AuthRepositoryImpl @Inject constructor(
             Timber.i("Registration Successful!")
             return@safetyResultWrapper saveUserInStorage(user)
         }
-        Result.Failure(RuntimeException("Sign in is successfully, but response model is empty"))
+        Results.Failure(RuntimeException("Sign in is successfully, but response model is empty"))
     }
 
 
     override suspend fun signInGoogle(
         idToken: String,
         accessToken: String?
-    ): Result<User> = safetyResultWrapper({
+    ): Results<User> = safetyResultWrapper({
         signInWithCredential(
             GoogleAuthProvider.getCredential(idToken, accessToken)
         )
@@ -81,7 +81,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signInFacebook(
         token: String
-    ): Result<User> = safetyResultWrapper({
+    ): Results<User> = safetyResultWrapper({
         signInWithCredential(FacebookAuthProvider.getCredential(token))
     }) {
         Timber.i("signInWithCredential Facebook Success - " + it?.user?.uid)
@@ -89,10 +89,10 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun resetPassword(email: String): Result<Void?> = try {
+    override suspend fun resetPassword(email: String): Results<Void?> = try {
         firebaseAuth.sendPasswordResetEmail(email).await()
     } catch (e: Exception) {
-        Result.Failure(e)
+        Results.Failure(e)
     } finally {
         currentUser = null
     }
@@ -102,21 +102,21 @@ class AuthRepositoryImpl @Inject constructor(
         if (currentUser == null) {
             currentUser = firebaseAuth.currentUser?.let {
                 when (val result = storage.load(it.uid)) {
-                    is Result.Success -> {
+                    is Results.Success -> {
                         result.data
                     }
 
-                    is Result.Failure -> {
+                    is Results.Failure -> {
                         Timber.e(result.toString())
                         null
                     }
 
-                    is Result.Canceled -> {
+                    is Results.Canceled -> {
                         Timber.e(result.toString())
                         null
                     }
 
-                    is Result.Loading -> {
+                    is Results.Loading -> {
                         Timber.d("result loading: ${result.oldData}")
                         result.oldData
                     }
@@ -135,13 +135,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     private suspend fun signInWithCredential(
         authCredential: AuthCredential
-    ): Result<AuthResult?> = firebaseAuth
+    ): Results<AuthResult?> = firebaseAuth
         .signInWithCredential(authCredential).await()
 
 
     private suspend fun saveUserInStorageAtApi(
         result: AuthResult?
-    ): Result<User> {
+    ): Results<User> {
         result?.user?.providerData?.get(1)?.let {
             it.displayName?.let { name ->
                 val email: String = if (it.email.isNullOrEmpty()) {
@@ -186,19 +186,19 @@ class AuthRepositoryImpl @Inject constructor(
         throw NullPointerException("user model is empty")
     }
 
-    private suspend fun loadUserInStorage(userId: String): Result<User> = resultWrapper(
+    private suspend fun loadUserInStorage(userId: String): Results<User> = resultWrapper(
         storage.load(userId)
     ) {
         Timber.d(it.toString())
         currentUser = it
-        Result.Success(it)
+        Results.Success(it)
     }
 
-    private suspend fun saveUserInStorage(user: User): Result<User> = resultWrapper(
+    private suspend fun saveUserInStorage(user: User): Results<User> = resultWrapper(
         storage.save(user.id, user)
     ) {
         Timber.i("User saved!")
         currentUser = user
-        Result.Success(user)
+        Results.Success(user)
     }
 }

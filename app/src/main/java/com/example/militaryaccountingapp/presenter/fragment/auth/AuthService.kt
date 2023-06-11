@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.IntentSender
 import androidx.core.app.ActivityCompat
 import com.example.militaryaccountingapp.R
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -25,7 +25,7 @@ object AuthService {
 
     suspend fun signInWithFacebook(
         activity: Activity,
-        onResultListener: (result: Result<LoginResult>) -> Unit
+        onResultListener: (results: Results<LoginResult>) -> Unit
     ) {
         callbackManager = CallbackManager.Factory.create()
 
@@ -49,7 +49,7 @@ object AuthService {
 
     private suspend fun createFacebookManager(
         activity: Activity,
-        onResultListener: (result: Result<LoginResult>) -> Unit
+        onResultListener: (results: Results<LoginResult>) -> Unit
     ) = LoginManager.getInstance().apply {
         logInWithReadPermissions(
             activity, listOf("email", "public_profile")
@@ -59,21 +59,21 @@ object AuthService {
             callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    onResultListener(Result.Success(result))
+                    onResultListener(Results.Success(result))
                 }
 
                 override fun onError(error: FacebookException) {
                     onResultListener(
                         logError(
                             "Result.Failure FACEBOOK - ${error.message}",
-                            error, Result.FailureType.FACEBOOK
+                            error, Results.FailureType.FACEBOOK
                         )
                     )
                 }
 
                 override fun onCancel() {
                     onResultListener(
-                        Result.Canceled(Exception("FacebookCallback: Request canceled"))
+                        Results.Canceled(Exception("FacebookCallback: Request canceled"))
                     )
                 }
             }
@@ -112,8 +112,8 @@ object AuthService {
     fun handleGoogleAccessToken(
         data: Intent?,
         onSuccessListener: (idToken: String) -> Unit
-    ): Result<Boolean> {
-        var res: Result<Boolean> = Result.Loading(false)
+    ): Results<Boolean> {
+        var res: Results<Boolean> = Results.Loading(false)
 
         try {
             oneTapClient
@@ -125,7 +125,7 @@ object AuthService {
             when (e.statusCode) {
                 CommonStatusCodes.CANCELED -> {
                     Timber.e("One-tap dialog was closed.")
-                    res = Result.Canceled(Exception("One-tap dialog was closed."))
+                    res = Results.Canceled(Exception("One-tap dialog was closed."))
 //                    _toast.value = activity.getString(R.string.request_canceled)
                     // Don't re-prompt the user.
 //                    showOneTapUI = false
@@ -133,22 +133,22 @@ object AuthService {
 
                 CommonStatusCodes.NETWORK_ERROR -> {
                     Timber.e("One-tap encountered a network error.")
-                    res = Result.Failure(
+                    res = Results.Failure(
                         Exception("One-tap encountered a network error.", e),
-                        Result.FailureType.NETWORK
+                        Results.FailureType.NETWORK
                     )
                     // Try again or just ignore.
                 }
 
                 else -> {
-                    res = Result.Failure(
+                    res = Results.Failure(
                         Exception("Couldn't get credential from result. (${e.localizedMessage})"),
-                        Result.FailureType.GOOGLE
+                        Results.FailureType.GOOGLE
                     )
                 }
             }
         } catch (e: Exception) {
-            res = Result.Failure(e, Result.FailureType.GOOGLE)
+            res = Results.Failure(e, Results.FailureType.GOOGLE)
         } finally {
             blockOneTapUI = false
         }
@@ -159,7 +159,7 @@ object AuthService {
     fun signInWithGoogle(
         activity: Activity,
         isLogin: Boolean = false,
-        onResultListener: (Result<Boolean>) -> Unit
+        onResultListener: (Results<Boolean>) -> Unit
     ) {
         // if one tap blocked the user is already trying to log in
         if (blockOneTapUI) return
@@ -188,7 +188,7 @@ object AuthService {
                     onResultListener(
                         logError(
                             "Couldn't start One Tap UI: " + e.localizedMessage,
-                            e, Result.FailureType.GOOGLE
+                            e, Results.FailureType.GOOGLE
                         )
                     )
                 }
@@ -199,7 +199,7 @@ object AuthService {
                     onResultListener(
                         logError(
                             "No saved credentials found. Show error: $e",
-                            it, Result.FailureType.GOOGLE
+                            it, Results.FailureType.GOOGLE
                         )
                     )
                 }
@@ -208,9 +208,9 @@ object AuthService {
 
     private fun <T> logError(
         message: String, e: Exception,
-        type: Result.FailureType
-    ): Result.Failure<T> {
+        type: Results.FailureType
+    ): Results.Failure<T> {
         Timber.e(message)
-        return Result.Failure(Exception(message, e), type)
+        return Results.Failure(Exception(message, e), type)
     }
 }

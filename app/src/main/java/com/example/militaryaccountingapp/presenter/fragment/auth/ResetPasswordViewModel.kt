@@ -1,6 +1,6 @@
 package com.example.militaryaccountingapp.presenter.fragment.auth
 
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.usecase.auth.ResetPasswordUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.auth.ResetPasswordViewModel.ViewData
@@ -16,21 +16,21 @@ class ResetPasswordViewModel @Inject constructor(
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     data class ViewData(
-        val email: Result<String> = Result.Loading(""),
-        val isReset: Result<Boolean> = Result.Loading(false),
+        val email: Results<String> = Results.Loading(""),
+        val isReset: Results<Boolean> = Results.Loading(false),
     )
 
     fun reset(email: String) {
         AuthValidator.EmailValidator.validate(email).let { emailResult ->
             _data.update {
-                it.copy(email = emailResult, isReset = Result.Success(false))
+                it.copy(email = emailResult, isReset = Results.Success(false))
             }
-            if (emailResult is Result.Success) {
+            if (emailResult is Results.Success) {
                 safeRunJobWithLoading(Dispatchers.IO) {
                     val res = resultWrapper(
                         resetPasswordUseCase(email)
                     ) {
-                        Result.Success(true)
+                        Results.Success(true)
                     }
                     _data.update { it.copy(isReset = res) }
                 }

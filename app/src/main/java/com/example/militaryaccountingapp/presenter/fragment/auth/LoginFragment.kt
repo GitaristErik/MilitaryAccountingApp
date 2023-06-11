@@ -8,7 +8,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentLoginBinding
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.auth.LoginViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
@@ -58,9 +58,9 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, ViewData, Logi
         renderPassword(data.password)
     }
 
-    private fun renderSigned(signed: Result<Boolean>) {
+    private fun renderSigned(signed: Results<Boolean>) {
         when (signed) {
-            is Result.Success -> {
+            is Results.Success -> {
                 if (signed.data) {
                     showToast(R.string.login_successful)
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToNavigationHome())
@@ -68,12 +68,12 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, ViewData, Logi
                 binding.error.visibility = View.GONE
             }
 
-            is Result.Failure -> {
+            is Results.Failure -> {
                 showToast(getString(R.string.login_failed) + "\n" + signed.throwable.localizedMessage)
                 binding.error.visibility = View.VISIBLE
             }
 
-            is Result.Canceled -> {
+            is Results.Canceled -> {
                 showToast(getString(R.string.request_canceled) + "\n" + signed.throwable?.localizedMessage)
                 binding.error.visibility = View.GONE
             }
@@ -84,11 +84,11 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, ViewData, Logi
         }
     }
 
-    private fun renderEmail(email: Result<String>) {
+    private fun renderEmail(email: Results<String>) {
         binding.email.renderValidate(email)
     }
 
-    private fun renderPassword(password: Result<String>) {
+    private fun renderPassword(password: Results<String>) {
         binding.password.renderValidate(password)
     }
 

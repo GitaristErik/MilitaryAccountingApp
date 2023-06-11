@@ -1,7 +1,7 @@
 package com.example.militaryaccountingapp.domain.usecase.auth
 
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
 
 open class SignInGoogleUseCase(
@@ -10,5 +10,5 @@ open class SignInGoogleUseCase(
     suspend operator fun invoke(
         idToken: String,
         accessToken: String?
-    ): Result<User> = authRepository.signInGoogle(idToken, accessToken)
+    ): Results<User> = authRepository.signInGoogle(idToken, accessToken)
 }

@@ -1,7 +1,7 @@
 package com.example.militaryaccountingapp.presenter.fragment.home
 
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     data class ViewData(
-        val currentUser: Result<User?> = Result.Loading(null),
+        val currentUser: Results<User?> = Results.Loading(null),
     )
 
     init {
@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
     fun checkUser() {
         safeRunJobWithLoading(Dispatchers.IO) {
             _data.update {
-                it.copy(currentUser = Result.Success(currentUserUseCase()))
+                it.copy(currentUser = Results.Success(currentUserUseCase()))
             }
         }
     }

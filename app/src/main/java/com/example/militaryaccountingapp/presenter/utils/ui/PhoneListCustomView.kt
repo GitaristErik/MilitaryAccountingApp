@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import androidx.core.view.updateMargins
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ItemPhoneAddBinding
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
 import com.google.android.material.textfield.TextInputEditText
 
@@ -60,9 +60,9 @@ class PhoneListCustomView(context: Context, attrs: AttributeSet) : LinearLayout(
         return phones
     }
 
-    fun renderValidate(resultList: List<Result<String>>) {
+    fun renderValidate(resultsList: List<Results<String>>) {
         foreachPhoneView { view, i ->
-            view.renderValidate(resultList[i])
+            view.renderValidate(resultsList[i])
         }
     }
 

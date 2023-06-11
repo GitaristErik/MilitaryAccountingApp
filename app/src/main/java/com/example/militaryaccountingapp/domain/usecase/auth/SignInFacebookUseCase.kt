@@ -1,7 +1,7 @@
 package com.example.militaryaccountingapp.domain.usecase.auth
 
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
 
 open class SignInFacebookUseCase(
@@ -9,5 +9,5 @@ open class SignInFacebookUseCase(
 ) {
     suspend operator fun invoke(
         token: String
-    ): Result<User> = authRepository.signInFacebook(token)
+    ): Results<User> = authRepository.signInFacebook(token)
 }

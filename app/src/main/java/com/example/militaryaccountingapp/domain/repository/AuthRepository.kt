@@ -1,14 +1,14 @@
 package com.example.militaryaccountingapp.domain.repository
 
 import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 
 interface AuthRepository {
 
     suspend fun login(
         email: String,
         password: String
-    ): Result<User>
+    ): Results<User>
 
     suspend fun register(
         email: String,
@@ -18,20 +18,20 @@ interface AuthRepository {
         fullName: String = "",
         rank: String = "",
         phones: List<String> = emptyList(),
-    ): Result<User>
+    ): Results<User>
 
     suspend fun signInGoogle(
         idToken: String,
         accessToken: String?
-    ): Result<User>
+    ): Results<User>
 
     suspend fun signInFacebook(
         token: String
-    ): Result<User>
+    ): Results<User>
 
     suspend fun resetPassword(
         email: String
-    ): Result<Void?>
+    ): Results<Void?>
 
     suspend fun currentUser(): User?
 

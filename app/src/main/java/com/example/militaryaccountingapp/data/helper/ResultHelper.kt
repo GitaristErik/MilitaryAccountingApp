@@ -1,67 +1,67 @@
 package com.example.militaryaccountingapp.data.helper
 
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import timber.log.Timber
 
 object ResultHelper {
 
     /**
      * Wrapper for Result object
-     * @param result [Result] object
-     * @param onSuccessAction action for [Result.Success] object
-     * @return [Result] object
-     * @see Result
-     * @see Result.Success
-     * @see Result.Failure
-     * @see Result.Canceled
-     * @see Result.Loading
+     * @param results [Results] object
+     * @param onSuccessAction action for [Results.Success] object
+     * @return [Results] object
+     * @see Results
+     * @see Results.Success
+     * @see Results.Failure
+     * @see Results.Canceled
+     * @see Results.Loading
      */
     @JvmStatic
     suspend fun <D, O> resultWrapper(
-        result: Result<D>,
-        onSuccessAction: suspend (data: D) -> Result<O>
-    ): Result<O> = when (result) {
-        is Result.Success -> {
-            Timber.i("$result")
-            onSuccessAction(result.data)
+        results: Results<D>,
+        onSuccessAction: suspend (data: D) -> Results<O>
+    ): Results<O> = when (results) {
+        is Results.Success -> {
+            Timber.i(results.toString())
+            onSuccessAction(results.data)
         }
 
-        is Result.Failure -> {
-            Timber.e("${result.throwable}")
-            Result.Failure(result.throwable, result.type)
+        is Results.Failure -> {
+            Timber.e(results.toString())
+            Results.Failure(results.throwable, results.type)
         }
 
-        is Result.Canceled -> {
-            Timber.e("${result.throwable}")
-            Result.Canceled(result.throwable)
+        is Results.Canceled -> {
+            Timber.e(results.toString())
+            Results.Canceled(results.throwable)
         }
 
-        is Result.Loading -> {
-            Timber.e("${result.oldData}")
-            Result.Loading()
+        is Results.Loading -> {
+            Timber.e(results.toString())
+            Results.Loading()
         }
     }
 
     /**
      * Wrapper for [resultWrapper] with try-catch block
-     * @param result [Result] object
-     * @param onSuccessAction action for [Result.Success] object
-     * @return [Result] object
+     * @param result [Results] object
+     * @param onSuccessAction action for [Results.Success] object
+     * @return [Results] object
      * @see resultWrapper
-     * @see Result
-     * @see Result.Success
+     * @see Results
+     * @see Results.Success
      */
     @JvmStatic
     suspend fun <D, O> safetyResultWrapper(
-        getResultAction: suspend () -> Result<D>,
-        onSuccessAction: suspend (data: D) -> Result<O>
-    ): Result<O> = try {
+        getResultsAction: suspend () -> Results<D>,
+        onSuccessAction: suspend (data: D) -> Results<O>
+    ): Results<O> = try {
         resultWrapper(
-            result = getResultAction(),
+            results = getResultsAction(),
             onSuccessAction = onSuccessAction
         )
     } catch (throwable: Throwable) {
-        Result.Failure(throwable)
+        Results.Failure(throwable)
     }
 
 }

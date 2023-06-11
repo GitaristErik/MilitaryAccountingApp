@@ -3,7 +3,7 @@ package com.example.militaryaccountingapp.presenter.fragment.auth
 import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.usecase.auth.LoginUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.SignInFacebookUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.SignInGoogleUseCase
@@ -25,25 +25,25 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     data class ViewData(
-        val email: Result<String> = Result.Loading(""),
-        val password: Result<String> = Result.Loading(""),
-        val isSigned: Result<Boolean> = Result.Loading(false),
+        val email: Results<String> = Results.Loading(""),
+        val password: Results<String> = Results.Loading(""),
+        val isSigned: Results<Boolean> = Results.Loading(false),
     )
 
     fun login(email: String, password: String) {
         val emailResult = AuthValidator.EmailValidator.validate(email)
         val passwordResult = AuthValidator.PasswordValidator.validate(password)
-        val signedResult: Result<Boolean> = Result.Success(false)
+        val signedResults: Results<Boolean> = Results.Success(false)
         _data.update {
-            it.copy(email = emailResult, password = passwordResult, isSigned = signedResult)
+            it.copy(email = emailResult, password = passwordResult, isSigned = signedResults)
         }
 
-        if (emailResult is Result.Success && passwordResult is Result.Success) {
+        if (emailResult is Results.Success && passwordResult is Results.Success) {
             safeRunJobWithLoading(Dispatchers.IO) {
                 val res = resultWrapper(
                     loginUseCase(email, password)
                 ) {
-                    Result.Success(true)
+                    Results.Success(true)
                 }
                 _data.update { it.copy(isSigned = res) }
             }
@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(
                         resultWrapper(
                             signInFacebookUseCase(it.accessToken.token)
                         ) {
-                            Result.Success(true)
+                            Results.Success(true)
                         }
                     }
                     _data.update { it.copy(isSigned = res) }
@@ -88,7 +88,7 @@ class LoginViewModel @Inject constructor(
                     _data.update {
                         it.copy(isSigned = resultWrapper(
                             signInGoogleUseCase(idToken, null)
-                        ) { Result.Success(true) })
+                        ) { Results.Success(true) })
                     }
                 }
             }

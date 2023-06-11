@@ -3,7 +3,7 @@ package com.example.militaryaccountingapp.presenter
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -91,35 +91,35 @@ abstract class BaseViewModel<T>(initial: T) : ViewModel() {
 
     /**
      * Wrapper for Result object to handle success, failure, loading and cancel states
-     * @param result Result object
+     * @param results Result object
      * @param onSuccessAction action to perform on success
      * @return Any
-     * @see Result
+     * @see Results
      */
     protected suspend fun <D, O> resultWrapper(
-        result: Result<D>,
-        onSuccessAction: suspend (data: D) -> Result<O>
-    ): Result<O> = when (result) {
-        is Result.Success -> {
-            log.e("Result.Success | data:${result.data}")
+        results: Results<D>,
+        onSuccessAction: suspend (data: D) -> Results<O>
+    ): Results<O> = when (results) {
+        is Results.Success -> {
+            log.e("Result.Success | data:${results.data}")
             _spinner.value = false
-            onSuccessAction(result.data)
+            onSuccessAction(results.data)
         }
 
-        is Result.Failure -> {
-            log.e("Result.Failure | type:${result.type} - ${result.throwable}")
-            Result.Failure(result.throwable, result.type)
+        is Results.Failure -> {
+            log.e("Result.Failure | type:${results.type} - ${results.throwable}")
+            Results.Failure(results.throwable, results.type)
         }
 
-        is Result.Canceled -> {
-            log.e("Result.Canceled | ${result.throwable}")
-            Result.Canceled(result.throwable)
+        is Results.Canceled -> {
+            log.e("Result.Canceled | ${results.throwable}")
+            Results.Canceled(results.throwable)
         }
 
-        is Result.Loading -> {
-            log.e("Result.Loading | oldData:${result.oldData}}")
+        is Results.Loading -> {
+            log.e("Result.Loading | oldData:${results.oldData}}")
             _spinner.value = true
-            Result.Loading()
+            Results.Loading()
         }
     }
 }

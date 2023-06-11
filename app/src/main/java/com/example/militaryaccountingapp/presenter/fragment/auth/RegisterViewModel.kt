@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.usecase.auth.RegisterUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.SignInFacebookUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.SignInGoogleUseCase
@@ -28,16 +28,16 @@ class RegisterViewModel @Inject constructor(
 ) : BaseViewModel<ViewData>(ViewData()), CroppingSavableViewModel {
 
     data class ViewData(
-        val email: Result<String> = Result.Loading(""),
-        val password: Result<String> = Result.Loading(""),
-        val repassword: Result<String> = Result.Loading(""),
-        val login: Result<String> = Result.Loading(""),
-        val name: Result<String> = Result.Success(""),
-        val fullName: Result<String> = Result.Success(""),
-        val rank: Result<String> = Result.Success(""),
-        val phones: List<Result<String>> = emptyList(),
+        val email: Results<String> = Results.Loading(""),
+        val password: Results<String> = Results.Loading(""),
+        val repassword: Results<String> = Results.Loading(""),
+        val login: Results<String> = Results.Loading(""),
+        val name: Results<String> = Results.Success(""),
+        val fullName: Results<String> = Results.Success(""),
+        val rank: Results<String> = Results.Success(""),
+        val phones: List<Results<String>> = emptyList(),
         val imageUri: Uri? = null,
-        val isSigned: Result<Boolean> = Result.Loading(false),
+        val isSigned: Results<Boolean> = Results.Loading(false),
     )
 
     fun register(
@@ -69,11 +69,11 @@ class RegisterViewModel @Inject constructor(
                 fullName = fullNameResult,
                 rank = rankResult,
                 phones = phonesResult,
-                isSigned = Result.Success(false),
+                isSigned = Results.Success(false),
             )
         }
 
-        listOf<Result<String>>(
+        listOf<Results<String>>(
             emailResult,
             passwordResult,
             repasswordResult,
@@ -82,7 +82,7 @@ class RegisterViewModel @Inject constructor(
             fullNameResult,
             rankResult,
             *phonesResult.toTypedArray()
-        ).all { it is Result.Success<*> }.let { result ->
+        ).all { it is Results.Success<*> }.let { result ->
             if (!result) return
             safeRunJobWithLoading(Dispatchers.IO) {
                 val res = resultWrapper(
@@ -95,7 +95,7 @@ class RegisterViewModel @Inject constructor(
                         rank = rank,
                         phones = phones,
                     )
-                ) { Result.Success(true) }
+                ) { Results.Success(true) }
                 _data.update { it.copy(isSigned = res) }
             }
         }
@@ -129,7 +129,7 @@ class RegisterViewModel @Inject constructor(
                         resultWrapper(
                             signInFacebookUseCase(it.accessToken.token)
                         ) {
-                            Result.Success(true)
+                            Results.Success(true)
                         }
                     }
                     _data.update { it.copy(isSigned = res) }
@@ -147,7 +147,7 @@ class RegisterViewModel @Inject constructor(
                     _data.update {
                         it.copy(isSigned = resultWrapper(
                             signInGoogleUseCase(idToken, null)
-                        ) { Result.Success(true) })
+                        ) { Results.Success(true) })
                     }
                 }
             }

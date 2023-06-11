@@ -1,7 +1,7 @@
 package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.net.Uri
-import com.example.militaryaccountingapp.domain.helper.Result
+import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.usecase.auth.LogoutUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
@@ -20,7 +20,7 @@ class ProfileViewModel @Inject constructor(
 
     data class ViewData(
         val userProfileUri: Uri? = null,
-        val isLoggingOut: Result<Unit> = Result.Canceled(null),
+        val isLoggingOut: Results<Unit> = Results.Canceled(null),
     )
 
     init {
@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(
         log.d("logout")
         safeRunJob(Dispatchers.IO) {
             _data.update {
-                it.copy(isLoggingOut = Result.Success(logoutUseCase()))
+                it.copy(isLoggingOut = Results.Success(logoutUseCase()))
             }
         }
     }
