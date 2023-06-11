@@ -2,10 +2,12 @@ package com.example.militaryaccountingapp.presenter.fragment.auth
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.esafirm.imagepicker.features.ImagePickerLauncher
 import com.esafirm.imagepicker.features.registerImagePicker
@@ -16,11 +18,13 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.auth.RegisterViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment :
     BaseViewModelFragment<FragmentRegisterBinding, ViewData, RegisterViewModel>() {
 
-    override val viewModel: RegisterViewModel by activityViewModels<RegisterViewModel>()
+    override val viewModel: RegisterViewModel by hiltNavGraphViewModels<RegisterViewModel>(R.id.navigation_auth)
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRegisterBinding =
         FragmentRegisterBinding::inflate
@@ -49,6 +53,17 @@ class RegisterFragment :
         renderFullName(data.fullName)
         renderRank(data.rank)
         renderPhones(data.phones)
+        renderAvatar(data.imageUri)
+    }
+
+    private fun renderAvatar(imageUri: Uri?) {
+        log.d("render")
+        binding.deleteAvatar.visibility = if (imageUri == null) View.GONE else View.VISIBLE
+        AvatarHelper.setupAvatarWithIntent(
+            requireActivity(),
+            binding.avatar,
+            imageUri
+        )
     }
 
     private fun setupRegister() = with(binding) {
@@ -111,11 +126,11 @@ class RegisterFragment :
             }
 
             is Result.Failure -> {
-                showToast(getString(R.string.register_failed) + "<br/>" + signed.throwable.localizedMessage)
+                showToast(getString(R.string.register_failed) + "\n" + signed.throwable.localizedMessage)
             }
 
             is Result.Canceled -> {
-                showToast(getString(R.string.request_canceled) + "<br/>" + signed.throwable?.localizedMessage)
+                showToast(getString(R.string.request_canceled) + "\n" + signed.throwable?.localizedMessage)
             }
 
             else -> {}
@@ -167,9 +182,14 @@ class RegisterFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         imagePickerLauncher = registerImagePicker {
-            AvatarHelper.navigateToCropFragment(
-                it.firstOrNull()?.uri ?: return@registerImagePicker,
-                this
+            findNavController().navigate(
+                R.id.action_registerFragment_to_cropImageFragment,
+                Bundle().apply {
+                    putParcelable(
+                        AvatarHelper.URI_USER,
+                        it.firstOrNull()?.uri ?: return@registerImagePicker
+                    )
+                }
             )
         }
     }

@@ -21,6 +21,7 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentEditProfileBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +44,7 @@ class EditProfileFragment :
 
     override fun render(data: ViewData) {
         log.d("render")
-        ProfileHelper.setupAvatarWithIntent(
+        AvatarHelper.setupAvatarWithIntent(
             requireActivity(),
             binding.avatar,
             data.userProfileUri

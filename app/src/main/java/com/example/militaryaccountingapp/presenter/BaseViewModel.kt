@@ -53,10 +53,10 @@ abstract class BaseViewModel<T>(initial: T) : ViewModel() {
 
 
     // Toast declaration
-    protected val _toast: MutableStateFlow<Any?> = MutableStateFlow(null)
+    protected val _toast: MutableStateFlow<Any?> = MutableStateFlow("")
     open val toast: StateFlow<Any?> = _toast.asStateFlow()
     fun onToastShown() {
-        _toast.value = null
+        _toast.value = ""
     }
 
 
@@ -101,22 +101,23 @@ abstract class BaseViewModel<T>(initial: T) : ViewModel() {
         onSuccessAction: suspend (data: D) -> Result<O>
     ): Result<O> = when (result) {
         is Result.Success -> {
+            log.e("Result.Success | data:${result.data}")
             _spinner.value = false
             onSuccessAction(result.data)
         }
 
         is Result.Failure -> {
-//            _toast.value = result.throwable.message
+            log.e("Result.Failure | type:${result.type} - ${result.throwable}")
             Result.Failure(result.throwable, result.type)
         }
 
         is Result.Canceled -> {
-//            _toast.value = R.string.request_canceled
+            log.e("Result.Canceled | ${result.throwable}")
             Result.Canceled(result.throwable)
         }
 
         is Result.Loading -> {
-//            _toast.value = R.string.request_loading
+            log.e("Result.Loading | oldData:${result.oldData}}")
             _spinner.value = true
             Result.Loading()
         }

@@ -73,7 +73,7 @@ class RegisterViewModel @Inject constructor(
             )
         }
 
-        listOf(
+        listOf<Result<String>>(
             emailResult,
             passwordResult,
             repasswordResult,
@@ -81,19 +81,19 @@ class RegisterViewModel @Inject constructor(
             nameResult,
             fullNameResult,
             rankResult,
-            phonesResult
+            *phonesResult.toTypedArray()
         ).all { it is Result.Success<*> }.let { result ->
             if (!result) return
             safeRunJobWithLoading(Dispatchers.IO) {
                 val res = resultWrapper(
                     registerUseCase(
-                        email,
-                        password,
-                        login,
-                        name,
-                        fullName,
-                        rank,
-                        phones,
+                        email = email,
+                        password = password,
+                        login = login,
+                        name = name,
+                        fullName = fullName,
+                        rank = rank,
+                        phones = phones,
                     )
                 ) { Result.Success(true) }
                 _data.update { it.copy(isSigned = res) }
@@ -112,7 +112,7 @@ class RegisterViewModel @Inject constructor(
     // Google
     fun registerWithGoogle(activity: Activity) {
         safeRunJobWithLoading(Dispatchers.IO) {
-            AuthService.signInWithGoogle(activity, true) { result ->
+            AuthService.signInWithGoogle(activity, false) { result ->
                 _data.update {
                     it.copy(isSigned = result)
                 }

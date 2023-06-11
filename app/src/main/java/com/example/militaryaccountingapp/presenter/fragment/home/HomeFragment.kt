@@ -4,8 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHomeBinding
+import com.example.militaryaccountingapp.domain.helper.Result
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.adapter.TabsViewPagerAdapter
@@ -19,7 +22,7 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-    override fun initializeView()  {
+    override fun initializeView() {
         setupViewPager()
     }
 
@@ -43,6 +46,11 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
     }
 
     override fun render(data: ViewData) {
-        log.d("render")
+        if (data.currentUser is Result.Success && data.currentUser.data == null) {
+            findNavController().navigate(
+                R.id.action_navigation_home_to_loginFragment, null,
+                NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
+            )
+        }
     }
 }

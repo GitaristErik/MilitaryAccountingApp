@@ -1,6 +1,5 @@
 package com.example.militaryaccountingapp.presenter.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,17 +51,28 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     protected abstract fun initializeView()
 
+    private val size: Int get() = 1
 
-    protected open val toastMaker: (Context, CharSequence, Int) -> Toast = Toast::makeText
+    protected open val toast: Toast by lazy {
+        Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT)
+    }
 
-    protected var toast: Toast? = null
-        private set
+    protected fun showToast(messageResId: Int) = showToastAny(messageResId)
+    protected fun showToast(message: String) = showToastAny(message)
 
-    protected fun showToast(messageResId: Int) = showToast(getString(messageResId))
-    protected fun showToast(message: String) {
+    private fun showToastAny(message: Any) {
+        toast.cancel()
+        when(message){
+            is Int -> toast.setText(message)
+            is String -> toast.setText(message)
+        }
+        toast.show()
+    }
+
+    private var toastMessage: String = ""
+    protected fun showToastOnce(message: String) {
         log.i(message)
-        toast?.cancel()
-        toast = toastMaker(requireContext(), message, Toast.LENGTH_SHORT)
-        toast?.show()
+        if (toastMessage == message) return
+        showToast(message)
     }
 }

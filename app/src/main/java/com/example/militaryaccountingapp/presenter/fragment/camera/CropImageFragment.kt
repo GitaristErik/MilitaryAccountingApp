@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.activityViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCropUserAvatarBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseFragment
+import com.example.militaryaccountingapp.presenter.fragment.auth.RegisterViewModel
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel
 import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
@@ -31,12 +32,14 @@ class CropImageFragment : BaseFragment<FragmentCropUserAvatarBinding>() {
 
     private fun getCustomViewModel(): CroppingSavableViewModel {
         return if (getUriAndSave("uri_avatar") != null) {
-            val vm by navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation); vm
+            val vm by activityViewModels<ProfileViewModel>(); vm
         } else if (getUriAndSave("uri_image") != null) {
-            val vm by navGraphViewModels<AddOrEditViewModel>(R.id.mobile_navigation); vm
+            val vm by activityViewModels<AddOrEditViewModel>(); vm
+       } else if (getUriAndSave("uri_user") != null) {
+            val vm by activityViewModels<RegisterViewModel>(); vm
         } else {
             back()
-            val vm by navGraphViewModels<ProfileViewModel>(R.id.mobile_navigation); vm
+            val vm by activityViewModels<RegisterViewModel>(); vm
 //            throw IllegalArgumentException("Uri is null")
         }
     }

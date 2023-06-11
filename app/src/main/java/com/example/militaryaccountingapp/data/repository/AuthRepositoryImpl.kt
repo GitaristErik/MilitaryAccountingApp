@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Result<User> = safetyResultWrapper(
-        firebaseAuth.signInWithEmailAndPassword(email, password).await()
+        { firebaseAuth.signInWithEmailAndPassword(email, password).await() }
     ) {
         it.user?.let { firebaseUser ->
             Timber.i("Login Successful!")
@@ -43,7 +43,7 @@ class AuthRepositoryImpl @Inject constructor(
         rank: String,
         phones: List<String>,
     ): Result<User> = safetyResultWrapper(
-        firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        { firebaseAuth.createUserWithEmailAndPassword(email, password).await() }
     ) {
         it.user?.let { firebaseUser ->
             val user = User(
@@ -70,20 +70,20 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signInGoogle(
         idToken: String,
         accessToken: String?
-    ): Result<User> = safetyResultWrapper(
+    ): Result<User> = safetyResultWrapper({
         signInWithCredential(
             GoogleAuthProvider.getCredential(idToken, accessToken)
         )
-    ) {
+    }) {
         Timber.d("signInWithCredential Google Success - " + it?.user?.uid)
         saveUserInStorageAtApi(it)
     }
 
     override suspend fun signInFacebook(
         token: String
-    ): Result<User> = safetyResultWrapper(
+    ): Result<User> = safetyResultWrapper({
         signInWithCredential(FacebookAuthProvider.getCredential(token))
-    ) {
+    }) {
         Timber.i("signInWithCredential Facebook Success - " + it?.user?.uid)
         saveUserInStorageAtApi(it)
     }
@@ -93,35 +93,42 @@ class AuthRepositoryImpl @Inject constructor(
         firebaseAuth.sendPasswordResetEmail(email).await()
     } catch (e: Exception) {
         Result.Failure(e)
+    } finally {
+        currentUser = null
     }
 
+    private var currentUser: User? = null
     override suspend fun currentUser(): User? {
-        val currentUser = firebaseAuth.currentUser
-        return if (currentUser == null) null
-        else when (val result = storage.load(currentUser.uid)) {
-            is Result.Success -> {
-                result.data
-            }
+        if (currentUser == null) {
+            currentUser = firebaseAuth.currentUser?.let {
+                when (val result = storage.load(it.uid)) {
+                    is Result.Success -> {
+                        result.data
+                    }
 
-            is Result.Failure -> {
-                Timber.e(result.throwable)
-                null
-            }
+                    is Result.Failure -> {
+                        Timber.e(result.toString())
+                        null
+                    }
 
-            is Result.Canceled -> {
-                Timber.e(result.throwable)
-                null
-            }
+                    is Result.Canceled -> {
+                        Timber.e(result.toString())
+                        null
+                    }
 
-            is Result.Loading -> {
-                Timber.d("result loading: ${result.oldData}")
-                result.oldData
+                    is Result.Loading -> {
+                        Timber.d("result loading: ${result.oldData}")
+                        result.oldData
+                    }
+                }
             }
         }
+        return currentUser
     }
 
     override suspend fun logout() {
         firebaseAuth.signOut()
+        currentUser = null
 //        Firebase.auth.signOut()
     }
 
@@ -183,6 +190,7 @@ class AuthRepositoryImpl @Inject constructor(
         storage.load(userId)
     ) {
         Timber.d(it.toString())
+        currentUser = it
         Result.Success(it)
     }
 
@@ -190,6 +198,7 @@ class AuthRepositoryImpl @Inject constructor(
         storage.save(user.id, user)
     ) {
         Timber.i("User saved!")
+        currentUser = user
         Result.Success(user)
     }
 }

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentLoginBinding
@@ -12,10 +12,12 @@ import com.example.militaryaccountingapp.domain.helper.Result
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.auth.LoginViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, ViewData, LoginViewModel>() {
 
-    override val viewModel: LoginViewModel by activityViewModels<LoginViewModel>()
+    override val viewModel: LoginViewModel by hiltNavGraphViewModels<LoginViewModel>(R.id.navigation_auth)
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentLoginBinding =
         FragmentLoginBinding::inflate
@@ -63,28 +65,31 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, ViewData, Logi
                     showToast(R.string.login_successful)
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToNavigationHome())
                 }
+                binding.error.visibility = View.GONE
             }
 
             is Result.Failure -> {
-                showToast(getString(R.string.login_failed) + "<br/>" + signed.throwable.localizedMessage)
+                showToast(getString(R.string.login_failed) + "\n" + signed.throwable.localizedMessage)
+                binding.error.visibility = View.VISIBLE
             }
 
             is Result.Canceled -> {
-                showToast(getString(R.string.request_canceled) + "<br/>" + signed.throwable?.localizedMessage)
+                showToast(getString(R.string.request_canceled) + "\n" + signed.throwable?.localizedMessage)
+                binding.error.visibility = View.GONE
             }
 
-            else -> {}
+            else -> {
+                binding.error.visibility = View.GONE
+            }
         }
     }
 
     private fun renderEmail(email: Result<String>) {
         binding.email.renderValidate(email)
-//        if (email !is Result.Success) binding.login.isEnabled = false
     }
 
     private fun renderPassword(password: Result<String>) {
         binding.password.renderValidate(password)
-//        if (password !is Result.Success) binding.login.isEnabled = false
     }
 
     @Deprecated("Deprecated in Java")

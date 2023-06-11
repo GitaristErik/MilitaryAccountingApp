@@ -1,22 +1,22 @@
 package com.example.militaryaccountingapp.presenter.utils.image
 
+import android.app.Activity
 import android.net.Uri
-import android.os.Bundle
 import android.os.Environment
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
 import com.esafirm.imagepicker.features.ImagePickerSavePath
 import com.example.militaryaccountingapp.R
-import com.example.militaryaccountingapp.presenter.fragment.auth.RegisterFragment
+import com.example.militaryaccountingapp.presenter.utils.common.ext.getUriViewIntent
+import com.google.android.material.imageview.ShapeableImageView
 
 object AvatarHelper {
 
-    private const val URI_AVATAR = "uri_avatar"
+    const val URI_AVATAR = "uri_avatar"
+    const val URI_USER = "uri_user"
 
     private const val SAVE_PATH = "Camera"
-
 
     fun createPickerConfig() = ImagePickerConfig {
         // default is multi image mode
@@ -53,10 +53,25 @@ object AvatarHelper {
     }
 
 
-    fun navigateToCropFragment(uri: Uri, fragment: Fragment) {
-        fragment.findNavController().navigate(
-            R.id.action_editProfileFragment_to_cropImageFragment,
-            Bundle().apply { putParcelable(URI_AVATAR, uri) }
+    fun setupAvatarWithIntent(activity: Activity, view: ShapeableImageView, uri: Uri?) {
+        Glide.with(view).let {
+            if (uri == null) {
+                it.load(R.drawable.ic_avatar_default)
+            } else {
+                it.load(uri)
+            }
+        }.into(view)
+
+        if (uri != null) {
+            view.setOnClickListener {
+                showAvatar(activity, uri)
+            }
+        }
+    }
+
+    fun showAvatar(activity: Activity, uri: Uri) {
+        activity.startActivity(
+            uri.getUriViewIntent(activity)
         )
     }
 }

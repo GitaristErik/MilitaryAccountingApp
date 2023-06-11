@@ -32,6 +32,7 @@ class SharedPrefsStorage<Data> @Inject constructor(
         return Result.Success(null)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override suspend fun load(key: String): Result<Data> {
         val res = when (defaultValue) {
             is Boolean -> storage.getBoolean(key, defaultValue)

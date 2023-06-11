@@ -1,13 +1,8 @@
 package com.example.militaryaccountingapp.data.storage
 
-import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWrapper
-import com.example.militaryaccountingapp.domain.entity.extension.await
-import com.example.militaryaccountingapp.domain.entity.user.User
-import com.example.militaryaccountingapp.domain.helper.Result
-import com.google.firebase.firestore.FirebaseFirestore
-import javax.inject.Inject
+/*
 
-class AuthStorage @Inject constructor() : Storage<String, User> {
+class AvatarStorage @Inject constructor() : Storage<String, Uri> {
 
     companion object {
         private const val USER_COLLECTION_NAME = "users"
@@ -33,4 +28,4 @@ class AuthStorage @Inject constructor() : Storage<String, User> {
             else -> Result.Success(user)
         }
     }
-}
+}*/

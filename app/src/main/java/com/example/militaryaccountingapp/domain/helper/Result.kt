@@ -14,12 +14,12 @@ sealed class Result<out T> {
     data class Canceled(val throwable: Throwable?) : Result<Nothing>() // Status Canceled
     // string method to display a result for debugging
     override fun toString(): String {
-        return when (this) {
-            is Success<*> -> "Success[data=$data]"
+        return "Result." + when (this) {
+            is Success<*> -> "Success [data=$data]"
 //            is Error -> "Error[exception=$exception]"
-            is Canceled -> "Canceled[exception=$throwable]"
-            is Loading -> "Loading[oldData=$oldData]"
-            is Failure -> "Failure[throwable=$throwable, type=$type, oldData=$oldData]"
+            is Canceled -> "Canceled [exception=$throwable]"
+            is Loading -> "Loading [oldData=$oldData]"
+            is Failure -> "Failure [throwable=$throwable, type=$type, oldData=$oldData]"
         }
     }
 

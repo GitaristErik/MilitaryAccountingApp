@@ -43,7 +43,6 @@ class LoginViewModel @Inject constructor(
                 val res = resultWrapper(
                     loginUseCase(email, password)
                 ) {
-//                    _toast.value = R.string.login_successful
                     Result.Success(true)
                 }
                 _data.update { it.copy(isSigned = res) }

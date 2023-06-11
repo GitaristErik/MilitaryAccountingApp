@@ -8,6 +8,7 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentDetailsUserBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +25,7 @@ class DetailsUserFragment :
 
     override fun render(data: ViewData) {
         log.d("render")
-        ProfileHelper.setupAvatarWithIntent(
+        AvatarHelper.setupAvatarWithIntent(
             requireActivity(),
             binding.avatar,
             data.userProfileUri

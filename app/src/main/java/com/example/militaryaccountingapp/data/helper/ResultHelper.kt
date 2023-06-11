@@ -22,6 +22,7 @@ object ResultHelper {
         onSuccessAction: suspend (data: D) -> Result<O>
     ): Result<O> = when (result) {
         is Result.Success -> {
+            Timber.i("$result")
             onSuccessAction(result.data)
         }
 
@@ -52,11 +53,11 @@ object ResultHelper {
      */
     @JvmStatic
     suspend fun <D, O> safetyResultWrapper(
-        result: Result<D>,
+        getResultAction: suspend () -> Result<D>,
         onSuccessAction: suspend (data: D) -> Result<O>
     ): Result<O> = try {
         resultWrapper(
-            result = result,
+            result = getResultAction(),
             onSuccessAction = onSuccessAction
         )
     } catch (throwable: Throwable) {

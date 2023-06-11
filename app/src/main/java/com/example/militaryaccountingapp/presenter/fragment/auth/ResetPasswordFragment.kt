@@ -3,7 +3,7 @@ package com.example.militaryaccountingapp.presenter.fragment.auth
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentResetPasswordBinding
@@ -11,11 +11,15 @@ import com.example.militaryaccountingapp.domain.helper.Result
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.auth.ResetPasswordViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResetPasswordFragment :
     BaseViewModelFragment<FragmentResetPasswordBinding, ViewData, ResetPasswordViewModel>() {
 
-    override val viewModel: ResetPasswordViewModel by activityViewModels<ResetPasswordViewModel>()
+    override val viewModel: ResetPasswordViewModel by hiltNavGraphViewModels<ResetPasswordViewModel>(
+        R.id.navigation_auth
+    )
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentResetPasswordBinding =
         FragmentResetPasswordBinding::inflate

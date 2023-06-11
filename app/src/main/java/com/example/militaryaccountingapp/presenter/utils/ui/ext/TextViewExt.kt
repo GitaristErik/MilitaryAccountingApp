@@ -8,6 +8,11 @@ fun TextView.renderValidate(result: Result<String>, layout: TextInputLayout? = n
     when (result) {
         is Result.Success -> {
             this.text = result.data
+            if (layout != null) {
+                layout.error = null
+            } else {
+                this.error = null
+            }
         }
 
         is Result.Failure -> {

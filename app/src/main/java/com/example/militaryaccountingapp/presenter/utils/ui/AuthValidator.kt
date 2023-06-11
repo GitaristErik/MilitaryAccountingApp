@@ -2,7 +2,6 @@ package com.example.militaryaccountingapp.presenter.utils.ui
 
 import android.util.Patterns
 import com.example.militaryaccountingapp.domain.helper.Result
-import timber.log.Timber
 
 sealed interface AuthValidator<T> {
 
@@ -134,7 +133,7 @@ sealed interface AuthValidator<T> {
                 fullName.length > MAX_FULL_NAME_LENGTH ->
                     Result.Failure(Exception("Use at least $MAX_FULL_NAME_LENGTH characters"))
 
-                fullName.matches(Regex("[A-Za-z0-9 ]+")) ->
+                fullName.matches(Regex("[^A-Za-z0-9]")) ->
                     Result.Failure(Exception("Full name contains special characters"))
 
                 else -> Result.Success(fullName)
@@ -153,7 +152,7 @@ sealed interface AuthValidator<T> {
                     Result.Failure(Exception("Use at least $MAX_PHONE_LENGTH characters"))
 
                 // match do not contain special characters. Only '+', '-', '(', ')', ' ' and numbers
-                phone.matches(Regex("^[()+\\-0-9\\s]+\$")) ->
+                phone.matches(Regex("[^+\\-()0-9 ]")) ->
                     Result.Failure(Exception("Phone contains special characters"))
 
                 else -> Result.Success(phone)
@@ -163,7 +162,6 @@ sealed interface AuthValidator<T> {
 
     object PhonesValidator {
         fun validate(phones: List<String>): List<Result<String>> {
-            Timber.e("phones list: $phones")
             return phones.map { phone ->
                 PhoneValidator.validate(phone)
             }

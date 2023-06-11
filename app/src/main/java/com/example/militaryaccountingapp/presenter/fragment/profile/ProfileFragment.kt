@@ -2,20 +2,21 @@ package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentProfileBinding
 import com.example.militaryaccountingapp.domain.helper.Result
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileFragment :
+class ProfileFragment() :
     BaseViewModelFragment<FragmentProfileBinding, ViewData, ProfileViewModel>() {
 
-    override val viewModel: ProfileViewModel by activityViewModels()
+    override val viewModel: ProfileViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentProfileBinding
         get() = FragmentProfileBinding::inflate
 
@@ -46,9 +47,11 @@ class ProfileFragment :
     override fun render(data: ViewData) {
         log.d("render")
         if (data.isLoggingOut is Result.Success) {
-            findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
+            findNavController().apply {
+                navigate(R.id.action_navigation_profile_to_loginFragment)
+            }
         }
-        ProfileHelper.setupAvatarWithIntent(
+        AvatarHelper.setupAvatarWithIntent(
             requireActivity(),
             binding.avatar,
             data.userProfileUri
