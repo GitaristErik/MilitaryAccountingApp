@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.databinding.ItemFilterUserBinding
 import com.example.militaryaccountingapp.presenter.model.filter.UserFilterUi
 import com.example.militaryaccountingapp.presenter.shared.adapter.UsersFilterAdapter.UserViewHolder
-import com.example.militaryaccountingapp.presenter.utils.TransitionUtils
+import com.example.militaryaccountingapp.presenter.utils.ui.TransitionUtils
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
 import com.google.android.material.checkbox.MaterialCheckBox
 

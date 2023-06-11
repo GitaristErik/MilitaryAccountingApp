@@ -1,6 +1,11 @@
 package com.example.militaryaccountingapp.di
 
+import com.example.militaryaccountingapp.data.repository.AuthRepositoryImpl
 import com.example.militaryaccountingapp.data.repository.DataRepositoryImpl
+import com.example.militaryaccountingapp.data.storage.AuthStorage
+import com.example.militaryaccountingapp.data.storage.Storage
+import com.example.militaryaccountingapp.domain.entity.user.User
+import com.example.militaryaccountingapp.domain.repository.AuthRepository
 import com.example.militaryaccountingapp.domain.repository.DataRepository
 import dagger.Binds
 import dagger.Module
@@ -15,5 +20,13 @@ abstract class DataModule {
     @Singleton
     @Binds
     abstract fun bindHistoryRepository(impl: DataRepositoryImpl): DataRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindAuthStorage(impl: AuthStorage): Storage<String, User>
 
 }

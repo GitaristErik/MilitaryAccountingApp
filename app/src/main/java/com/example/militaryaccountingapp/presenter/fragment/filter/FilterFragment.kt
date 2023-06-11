@@ -16,11 +16,14 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.DateStringsCustom
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.reflect.full.createInstance
 
-
+@AndroidEntryPoint
 // TODO change to bottom sheet
-class FilterFragment : BaseViewModelFragment<FragmentFiltersBinding, ViewData, FilterViewModel>() {
+class FilterFragment @Inject constructor() :
+    BaseViewModelFragment<FragmentFiltersBinding, ViewData, FilterViewModel>() {
 
     override val viewModel: FilterViewModel by activityViewModels()
 

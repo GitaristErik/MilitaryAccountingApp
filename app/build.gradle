@@ -84,6 +84,11 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1"
+
     // Lifecycle Component
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
@@ -108,10 +113,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     ksp "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
 
-    //Coil
-//    implementation "io.coil-kt:coil:$coil_version"
-//    implementation "io.coil-kt:coil-svg:$coil_version"
-
     // Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glideVersion"
@@ -119,11 +120,6 @@ dependencies {
 
     //Gson
     implementation 'com.google.code.gson:gson:2.10.1'
-
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // Avatars Group
     implementation project(path: ':GroupAvatars')
@@ -153,10 +149,6 @@ dependencies {
     implementation 'com.google.zxing:core:3.5.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
-    // google vision
-    implementation 'com.google.android.gms:play-services-vision:20.1.3'
-    implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.2.0'
-
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -170,8 +162,23 @@ dependencies {
     // Circle Indicator (To fix the xml preview "Missing classes" error)
     implementation 'me.relex:circleindicator:2.1.6'
     implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0'
-
-
 //    implementation 'io.github.igreenwood.loupe:loupe:1.2.2'
 //    implementation 'io.github.igreenwood.loupe:extensions:1.0.1' // optional
+
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-common-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    //Facebook auth
+//    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-login:latest.release'
+    //Google auth
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

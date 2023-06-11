@@ -8,7 +8,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +23,6 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.TimelineDecora
 import com.google.android.material.chip.Chip
 import com.lriccardo.timelineview.TimelineView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HistoryFragment :
@@ -63,13 +61,10 @@ class HistoryFragment :
         }
     }
 
-    override fun observeData() {
-        super.observeData()
-        viewLifecycleOwner.lifecycleScope.launch {
-            filterViewModel.data
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collect { renderFilter(it) }
-        }
+    override suspend fun observeCustomData() {
+        filterViewModel.data
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .collect { renderFilter(it) }
     }
 
     private fun setupFilterFragment() {

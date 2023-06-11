@@ -21,15 +21,49 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VD, VM : BaseViewModel<VD
         observeData()
     }
 
-    protected open fun observeData() {
+    private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.data
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { render(it) }
+
+            viewModel.toast
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { message ->
+                    message?.let {
+                        renderToast(it)
+                        viewModel.onToastShown()
+                    }
+                }
+
+            viewModel.spinner
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { renderSpinner(it) }
+
+            observeCustomData()
         }
     }
 
+    protected open suspend fun observeCustomData() = Unit
+
     protected open fun render(data: VD) = Unit
+
+
+    protected open fun renderSpinner(show: Boolean) {
+        provideProgressBar?.invoke()?.visibility =
+            if (show) View.VISIBLE else View.GONE
+        log.i("show progress bar: $show")
+    }
+
+    protected open val provideProgressBar: (() -> View)? = null
+
+    protected open fun renderToast(message: Any) {
+        when (message) {
+            is Int -> showToast(message)
+            is String -> showToast(message)
+            else -> throw IllegalArgumentException("Unknown message type")
+        }
+    }
 
     @VisibleForTesting
     fun setInitialData(initialData: VD) {

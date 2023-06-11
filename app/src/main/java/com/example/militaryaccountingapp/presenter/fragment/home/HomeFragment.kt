@@ -12,7 +12,6 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.TabsViewPagerA
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeViewModel>() {
 

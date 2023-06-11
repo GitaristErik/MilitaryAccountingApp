@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentTreeViewBinding
 import com.example.militaryaccountingapp.databinding.ItemTreeNodeViewBinding
@@ -16,7 +15,6 @@ import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
 import com.gg.gapo.treeviewlib.GapoTreeView
 import com.gg.gapo.treeviewlib.model.NodeState
 import com.gg.gapo.treeviewlib.model.NodeViewData
-import kotlinx.coroutines.launch
 
 class TreeViewFragment() :
     BaseViewModelFragment<FragmentTreeViewBinding, FilterViewModel.ViewData, FilterViewModel>(),
@@ -42,15 +40,12 @@ class TreeViewFragment() :
 
     private lateinit var treeView: GapoTreeView<TreeNodeItem>
 
-    override fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.dataNodes
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    renderTreeView(it)
-                }
-        }
-        super.observeData()
+    override suspend fun observeCustomData() {
+        viewModel.dataNodes
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .collect {
+                renderTreeView(it)
+            }
     }
 
     override fun render(data: FilterViewModel.ViewData) {

@@ -11,11 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentStatisticsBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
-import com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragment
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ChartType
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ViewData
@@ -32,7 +30,6 @@ import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -75,19 +72,10 @@ class StatisticsFragment :
         }
     }
 
-    override fun observeData() {
-        super.observeData()
-        viewLifecycleOwner.lifecycleScope.launch {
-            filterViewModel.data
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
-                .collect { renderFilter(it) }
-        }
-    }
-
-    private fun setupFilterFragment() {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.filters, FilterFragment::class.java, null)
-            .commit()
+    override suspend fun observeCustomData() {
+        filterViewModel.data
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+            .collect { renderFilter(it) }
     }
 
     private fun setupCountButtons() {

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentAddBinding
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddFragment : BaseViewModelFragment<FragmentAddBinding, ViewData, AddOrEditViewModel>() {
 
-    override val viewModel: AddOrEditViewModel by navGraphViewModels(R.id.mobile_navigation)
+    override val viewModel: AddOrEditViewModel by activityViewModels<AddOrEditViewModel>()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentAddBinding
         get() = FragmentAddBinding::inflate

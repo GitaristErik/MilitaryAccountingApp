@@ -16,9 +16,9 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ItemCategoryGridBinding
 import com.example.militaryaccountingapp.databinding.ItemCategoryListBinding
 import com.example.militaryaccountingapp.presenter.model.CategoryUi
-import com.example.militaryaccountingapp.presenter.utils.TransitionUtils
 import com.example.militaryaccountingapp.presenter.utils.common.constant.ViewType
 import com.example.militaryaccountingapp.presenter.utils.image.GlideUtils
+import com.example.militaryaccountingapp.presenter.utils.ui.TransitionUtils
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.initAsQrMini
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
 

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.esafirm.imagepicker.features.ImagePickerLauncher
@@ -18,7 +17,6 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddCategoryFragment :
@@ -39,20 +37,17 @@ class AddCategoryFragment :
         setupDescription()
     }
 
-    override fun observeData() {
-        super.observeData()
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.dataImages
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    AddFragmentHelper.renderImagesCarousel(
-                        binding.carousel,
-                        binding.carouselEmpty,
-                        binding.buttonRemoveCurrentImage,
-                        it
-                    )
-                }
-        }
+    override suspend fun observeCustomData() {
+        viewModel.dataImages
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .collect {
+                AddFragmentHelper.renderImagesCarousel(
+                    binding.carousel,
+                    binding.carouselEmpty,
+                    binding.buttonRemoveCurrentImage,
+                    it
+                )
+            }
     }
 
     private var isDataInit = false

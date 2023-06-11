@@ -1,4 +1,4 @@
-package com.example.militaryaccountingapp.presenter.utils
+package com.example.militaryaccountingapp.presenter.utils.ui
 
 /**
  * Created by rizky.kharisma on 12/01/23.

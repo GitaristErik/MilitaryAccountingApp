@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.Duration
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

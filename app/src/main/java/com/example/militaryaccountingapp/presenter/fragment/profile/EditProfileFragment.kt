@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateMargins
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerLauncher
 import com.esafirm.imagepicker.features.ImagePickerMode
@@ -29,9 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditProfileFragment :
     BaseViewModelFragment<FragmentEditProfileBinding, ViewData, ProfileViewModel>() {
 
-    override val viewModel: ProfileViewModel by navGraphViewModels(R.id.mobile_navigation)
-
-    //    override val viewModel: ProfileViewModel by activityViewModels<ProfileViewModel>()
+    override val viewModel: ProfileViewModel by activityViewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEditProfileBinding
         get() = FragmentEditProfileBinding::inflate
 

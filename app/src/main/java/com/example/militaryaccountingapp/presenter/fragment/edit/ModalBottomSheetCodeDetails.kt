@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navGraphViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ModalBottomSheetCodeBinding
 import com.example.militaryaccountingapp.presenter.model.Barcode
@@ -21,7 +21,7 @@ class ModalBottomSheetCodeDetails : BottomSheetDialogFragment() {
         ModalBottomSheetCodeBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: AddOrEditViewModel by navGraphViewModels(R.id.mobile_navigation)
+    private val viewModel: AddOrEditViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

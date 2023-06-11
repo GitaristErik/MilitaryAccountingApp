@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.presenter
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.militaryaccountingapp.domain.helper.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -48,5 +49,76 @@ abstract class BaseViewModel<T>(initial: T) : ViewModel() {
     @VisibleForTesting
     fun setInitialData(initial: T) {
         _data.value = initial
+    }
+
+
+    // Toast declaration
+    protected val _toast: MutableStateFlow<Any?> = MutableStateFlow(null)
+    open val toast: StateFlow<Any?> = _toast.asStateFlow()
+    fun onToastShown() {
+        _toast.value = null
+    }
+
+
+    // Spinner declaration
+    protected val _spinner: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    open val spinner: StateFlow<Boolean> = _spinner.asStateFlow()
+
+    protected fun safeRunJobWithLoading(
+        dispatcher: CoroutineDispatcher,
+        task: suspend CoroutineScope.() -> Unit,
+    ) {
+        createJobWithLoading(dispatcher) {
+            safeRunJob(dispatcher, task)
+        }
+    }
+
+    protected fun createJobWithLoading(
+        dispatcher: CoroutineDispatcher,
+        block: suspend () -> Unit
+    ) = viewModelScope.launch(dispatcher) {
+        try {
+            _spinner.value = true
+            block()
+        } catch (error: Throwable) {
+            Timber.e(error.message.toString())
+            _toast.value = error.message
+        } finally {
+            _spinner.value = false
+        }
+    }
+
+
+    /**
+     * Wrapper for Result object to handle success, failure, loading and cancel states
+     * @param result Result object
+     * @param onSuccessAction action to perform on success
+     * @return Any
+     * @see Result
+     */
+    protected suspend fun <D, O> resultWrapper(
+        result: Result<D>,
+        onSuccessAction: suspend (data: D) -> Result<O>
+    ): Result<O> = when (result) {
+        is Result.Success -> {
+            _spinner.value = false
+            onSuccessAction(result.data)
+        }
+
+        is Result.Failure -> {
+//            _toast.value = result.throwable.message
+            Result.Failure(result.throwable, result.type)
+        }
+
+        is Result.Canceled -> {
+//            _toast.value = R.string.request_canceled
+            Result.Canceled(result.throwable)
+        }
+
+        is Result.Loading -> {
+//            _toast.value = R.string.request_loading
+            _spinner.value = true
+            Result.Loading()
+        }
     }
 }
