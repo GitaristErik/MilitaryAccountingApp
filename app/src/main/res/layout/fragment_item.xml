@@ -1,14 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presenter.fragment.details.DetailsItemFragment">
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            style="?attr/collapsingToolbarLayoutLargeStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:toolbarId="@id/toolbar">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_anchor="@+id/appBarLayout"
+                app:layout_collapseMode="pin"
+                app:menu="@menu/top_app_bar_details"
+                app:navigationIcon="@drawable/ic_arrow_back_24dp"
+                app:title="@string/item.title" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            tools:context=".presenter.fragment.edit.AddFragment">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:textStyle="italic"
+                android:elegantTextHeight="true"
+                android:textColor="?colorTertiary"
+                android:textAlignment="textEnd"
+                android:paddingHorizontal="@dimen/padding.small"
+                android:text="Water/Food"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+
+
+            <!--    Description  -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.large"
+                android:text="@string/item.description.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:paddingHorizontal="@dimen/margin.small"
+                android:elegantTextHeight="true"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.small"
+                android:textStyle="italic"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+
+
+
+
+            <!--    Photos  -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/add.images.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginVertical="@dimen/margin.small"
+                android:visibility="gone"
+                app:carouselGravity="CENTER"
+                app:carouselType="BLOCK"
+                app:infiniteCarousel="true"
+                app:showCaption="false" />
+
+
+            <FrameLayout
+                android:id="@+id/carousel_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin.small"
+                    android:layout_marginVertical="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/add.image.label.empty"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textColor="?colorSecondary"
+                    android:textStyle="italic" />
+            </FrameLayout>
+
+            <!-- quantity -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/add.count.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorPrimarySurface"
+                android:text="0"
+                android:layout_marginHorizontal="@dimen/padding.standard"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+
+
+            <!--    Codes -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_qr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.large"
+                android:text="@string/add.codes.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+            <!--    barcode -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.small"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_code_list" />
+
+
+            <!-- Categories -->
+            <include
+                android:id="@+id/tabs"
+                layout="@layout/fragment_tabs_category_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.standard"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@id/details_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_icon" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/tabs_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/margin.standard"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tabs" />
+
+            <!-- Last Changed -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/last_changed_label"
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/category.changed.title"
+                app:layout_constraintBottom_toTopOf="@id/last_changed_date"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/count_btn_all" />
+
+            <include
+                android:id="@+id/last_changed_date"
+                layout="@layout/item_last_changed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/last_changed_btn_all"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/last_changed_label" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/last_changed_btn_all"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/category.changed.more.title"
+                app:icon="@drawable/ic_arrow_forward_24dp"
+                app:iconTint="?colorOnSecondaryContainer"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/last_changed_date" />
+
+            <!-- History -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/history_label"
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/category.history.title"
+                app:layout_constraintBottom_toTopOf="@id/history_chart"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/last_changed_btn_all" />
+
+            <Spinner
+                android:id="@+id/history_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                app:layout_constraintBaseline_toBaselineOf="@id/history_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/history_label" />
+
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/history_chart"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@id/history_btn_all"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/history_label" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/history_btn_all"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/category.history.more.title"
+                app:icon="@drawable/ic_arrow_forward_24dp"
+                app:iconTint="?colorOnSecondaryContainer"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/history_chart" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
