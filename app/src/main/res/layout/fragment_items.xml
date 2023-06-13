@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     tools:context=".presenter.fragment.items.ItemsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello world" />
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        tools:listitem="@layout/item_item_list" />
 
-</FrameLayout>
+    <include
+        android:id="@+id/layout_error"
+        layout="@layout/layout_error_full_page"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading_full_page"
+        android:visibility="gone" />
+</androidx.appcompat.widget.LinearLayoutCompat>

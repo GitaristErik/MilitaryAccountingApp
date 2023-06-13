@@ -26,7 +26,8 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VD, VM : BaseViewModel<VD
             viewModel.data
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { render(it) }
-
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.toast
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { message ->
@@ -35,12 +36,11 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VD, VM : BaseViewModel<VD
                         viewModel.onToastShown()
                     }
                 }
-
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.spinner
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { renderSpinner(it) }
-
-            observeCustomData()
         }
     }
 

@@ -85,14 +85,16 @@ class CategoryAdapter(
         ) = binding.run {
 
             categoryTitle.text = data.name
-            allCount.text = data.allCount.toString()
+//            allCount.text = data.allCount.toString()
             itemCount.text = data.itemsCount.toString()
-            nestedCount.text = data.nestedCount.toString()
+            nestedCount.text = data.categoriesCount.toString()
 
             categoryImage.transitionName = TransitionUtils.imageTransitionName(data.id.toString())
-            categoryImage.load(data.imageUrl) {
-                thumbnail = thumbnailImage
-                imageOnLoadingDrawable = loadingDrawable
+            if (data.imageUrl.isNotEmpty()) {
+                categoryImage.load(data.imageUrl) {
+                    thumbnail = thumbnailImage
+                    imageOnLoadingDrawable = loadingDrawable
+                }
             }
 
             avatarGroup.dataSource = data.usersAvatars.toMutableList()

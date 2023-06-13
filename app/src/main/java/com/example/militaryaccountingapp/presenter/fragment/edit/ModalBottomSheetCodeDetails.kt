@@ -8,20 +8,24 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ModalBottomSheetCodeBinding
-import com.example.militaryaccountingapp.presenter.model.Barcode
+import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.presenter.utils.common.ext.asFormattedDateString
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.initAsQrFull
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ModalBottomSheetCodeDetails : BottomSheetDialogFragment() {
 
     private val binding: ModalBottomSheetCodeBinding by lazy {
         ModalBottomSheetCodeBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: AddOrEditViewModel by activityViewModels()
+    private val viewModel: AddOrEditViewModel by lazy {
+        val vm by activityViewModels<AddOrEditViewModel>(); vm
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,10 +45,13 @@ class ModalBottomSheetCodeDetails : BottomSheetDialogFragment() {
             date.text = barcode.timestamp.asFormattedDateString()
             qrData.text = barcode.code
             qrImage.initAsQrFull(barcode.code)
-            qrDelete.setOnClickListener {
-                startDeleteDialog {
-                    viewModel.deleteCode(barcode)
-                    dismiss()
+            if (requireArguments().getBoolean("isRenderDelete")) {
+                qrDelete.visibility = View.VISIBLE
+                qrDelete.setOnClickListener {
+                    startDeleteDialog {
+                        viewModel.deleteCode(barcode)
+                        dismiss()
+                    }
                 }
             }
         }

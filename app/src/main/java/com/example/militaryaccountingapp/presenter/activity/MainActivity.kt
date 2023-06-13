@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ActivityMainBinding
+import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.internal.ToolbarUtils
@@ -26,7 +27,7 @@ import timber.log.Timber
 import java.time.Duration
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FabScreen {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -96,7 +97,13 @@ class MainActivity : AppCompatActivity() {
                 componentsHelper.setToolbarDrawableStart(0)
                 componentsHelper.hideSearch()
                 componentsHelper.hideFab()
+                if (destination.id == R.id.itemFragment ||
+                    destination.id == R.id.categoryFragment
+                ) {
+                    componentsHelper.showFab()
+                }
             }
+
 
             if (destination.id in listOf(
                     R.id.navigation_home,
@@ -122,6 +129,19 @@ class MainActivity : AppCompatActivity() {
         return navHostFragment?.navController
     }
 
+    override fun showFab() {
+        ComponentsHelper().showFab()
+    }
+
+    override fun hideFab() {
+        ComponentsHelper().hideFab()
+    }
+
+    override fun setOnClickFabListener(onFabClick: ((View) -> Unit)) {
+        binding.fab.setOnClickListener {
+            onFabClick(it)
+        }
+    }
 
     private inner class ComponentsHelper {
         @SuppressLint("RestrictedApi")
@@ -173,7 +193,6 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.show()
         }
 
-
         fun hideBottomNavigation() {
             binding.navView.visibility = View.GONE
         }
@@ -192,7 +211,7 @@ class MainActivity : AppCompatActivity() {
 
         fun setupFab(navController: NavController) {
             binding.fab.setOnClickListener {
-                navController.navigate(R.id.action_navigation_home_to_addFragment)
+
             }
             setupFabInsets()
         }

@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin.small"
                 android:text="@string/profile.edit.delete.avatar"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/avatar"
@@ -101,16 +102,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/avatar_divider">
 
-
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/login_layout"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile.login.hint"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="5"
-                    app:counterOverflowTextColor="?attr/colorPrimarySurface"
-                    app:counterTextColor="?attr/colorError"
                     app:errorEnabled="true"
                     app:helperText="@string/profile.login.helper"
                     app:prefixText="\@\"
@@ -219,45 +216,18 @@
                     android:text="@string/profile.phone.title"
                     android:textColor="?attr/colorOnSurface" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/phone_container"
+                <com.example.militaryaccountingapp.presenter.utils.ui.PhoneListCustomView
+                    android:id="@+id/phone_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/margin.small.extra"
-                        android:elegantTextHeight="true"
-                        android:hint="@string/profile.phone.hint"
-                        android:inputType="phone"
-                        android:text="+380-00-000-00-00" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/add_phone_layout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/profile.phone.add.hint"
-                    app:endIconDrawable="@drawable/ic_add_24dp"
-                    app:endIconMode="custom"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/add_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:elegantTextHeight="true"
-                        android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="vertical" />
 
 
                 <!-- password -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/label_password"
                     style="@style/TextAppearance.Material3.TitleMedium"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin.standard"
@@ -266,9 +236,11 @@
                     android:textColor="?attr/colorOnSurface" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_layout"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginVertical="@dimen/margin.small.extra"
                     android:hint="@string/profile.password.hint"
                     app:passwordToggleEnabled="true"
@@ -283,8 +255,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/repassword_layout"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin.small.extra"
                     android:hint="@string/profile.repassword.hint"
@@ -300,6 +274,18 @@
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -27,7 +27,6 @@ suspend fun <T> Task<T>.await(): Results<T> {
         addOnCompleteListener {
             val e = exception
             if (e == null) {
-                @Suppress("UNCHECKED_CAST")
                 if (isCanceled) {
                     cont.cancel()
                 } else {

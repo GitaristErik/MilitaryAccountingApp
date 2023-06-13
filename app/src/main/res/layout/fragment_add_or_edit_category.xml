@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presenter.fragment.edit.AddFragment">
+    tools:context=".presenter.fragment.edit.AddOrEditCategoryFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/height.tabs.addition"
-        tools:context=".presenter.fragment.edit.AddFragment">
+        android:paddingTop="@dimen/height.tabs.addition">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_title"
@@ -34,17 +33,6 @@
                 android:inputType="text|textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- description -->
-
-        <!--    <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/label_description"
-                style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elegantTextHeight="true"
-                android:text="@string/add.description.label"
-                android:textColor="?attr/colorOnSurface" />-->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_description"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -64,7 +52,6 @@
                 android:minLines="3" />
             <!--tools:text="Water"-->
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <!--    Photos  -->
         <com.google.android.material.textview.MaterialTextView
@@ -108,8 +95,8 @@
 
 
         <FrameLayout
-            android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/margin.standard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
@@ -145,22 +132,6 @@
 
         </FrameLayout>
 
-        <!-- quantity -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/label_quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin.standard"
-            android:text="@string/add.count.label"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
-
-        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
-            android:id="@+id/layout_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginVertical="@dimen/margin.small" />
-
         <!--    Codes -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_qr"
@@ -170,7 +141,6 @@
             android:text="@string/add.codes.label"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-        <!--    barcode -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCodes"
             android:layout_width="match_parent"
@@ -189,5 +159,6 @@
             android:text="@string/add.code.button"
             app:icon="@drawable/ic_add_24dp"
             app:iconTint="?colorOnSecondaryContainer" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

@@ -4,6 +4,8 @@ import com.example.militaryaccountingapp.domain.entity.data.Action
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.user.User
+import com.example.militaryaccountingapp.domain.entity.user.UserPermission
+import com.example.militaryaccountingapp.domain.helper.Results
 
 interface DataRepository {
 
@@ -20,12 +22,14 @@ interface DataRepository {
         filters: Set<ActionType> = emptySet(),
     ): List<Triple<Action, Data?, User>>
 
-    suspend fun search(
-        query: String,
-        limit: Int = -1,
-        filter: SortFilter = SortFilter.NAME,
+    suspend fun getAllDataByUserId(userId: String): Results<Pair<List<Data>, List<String>>>
+
+    suspend fun getDataByParent(
+        clazz: Class<out Data>,
+        parentId: String?,
+        userId: String,
+        sortType: SortFilter = SortFilter.NAME,
         isAscending: Boolean = true,
-        usersIds: List<String> = emptyList(),
-    ): List<Data>
+    ): Results<Map<Data, List<UserPermission>>>
 
 }

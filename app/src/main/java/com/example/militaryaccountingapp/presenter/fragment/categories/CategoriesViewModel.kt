@@ -1,5 +1,13 @@
 package com.example.militaryaccountingapp.presenter.fragment.categories
 
+import androidx.lifecycle.viewModelScope
+import com.example.militaryaccountingapp.domain.entity.data.Category
+import com.example.militaryaccountingapp.domain.helper.Results
+import com.example.militaryaccountingapp.domain.repository.CategoryRepository
+import com.example.militaryaccountingapp.domain.repository.DataRepository
+import com.example.militaryaccountingapp.domain.repository.ItemRepository
+import com.example.militaryaccountingapp.domain.repository.UserRepository
+import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.categories.CategoriesViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.CategoryUi
@@ -9,73 +17,114 @@ import com.example.militaryaccountingapp.presenter.utils.common.constant.ViewTyp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Math.random
 import javax.inject.Inject
-import kotlin.math.nextDown
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
+    private val dataRepository: DataRepository,
+    private val userRepository: UserRepository,
+    private val itemRepository: ItemRepository,
+    private val categoryRepository: CategoryRepository,
+    private val getCurrentUserUseCase: CurrentUserUseCase
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     data class ViewData(
         val viewType: ViewType = ViewType.LIST,
         val orderBy: OrderBy = OrderBy.DESCENDING,
         val sortType: SortType = SortType.NAME,
-        val categories: List<CategoryUi> = emptyList(),
+        val mainData: Results<List<CategoryUi>> = Results.Loading(emptyList()),
+        val cache: List<CategoryUi> = emptyList(),
+        val page: Long = 1L,
     )
 
     val viewType: ViewType get() = data.value.viewType
     val orderBy: OrderBy get() = data.value.orderBy
     val sortType: SortType get() = data.value.sortType
 
+    var parentId: String? = null
 
     init {
         fetch()
     }
 
-    private fun reload() {
+    fun reload() {
         Timber.d("reload")
 //        _data.update { it.copy(page = 1L) }
         fetch()
     }
 
+
     private fun fetch() {
-        safeRunJob(Dispatchers.IO) {
-            val categories = getCategories()
-            _data.update {
-                it.copy(categories = categories)
+        safeRunJobWithLoading(Dispatchers.IO) {
+            val currentUser = getCurrentUserUseCase() ?: return@safeRunJobWithLoading
+
+            val res: Results<List<CategoryUi>> = resultWrapper(
+                dataRepository.getDataByParent(
+                    Category::class.java,
+                    parentId = parentId ?: currentUser.rootCategoryId,
+                    userId = currentUser.id,
+                    sortType = mapSortType(),
+                    isAscending = orderBy == OrderBy.ASCENDING
+                )
+            ) { dataListMap ->
+                val usersIds = dataListMap.values.flatten().map { it.userId }.distinct()
+                val avatarsAllUsers = userRepository.getUsersAvatars(usersIds)
+
+                val categories = dataListMap.map { (data, permissions) ->
+                    CategoryUi(
+                        id = data.id,
+                        name = data.name,
+                        description = data.description,
+                        imageUrl = data.imagesUrls.firstOrNull() ?: "",
+                        usersAvatars = permissions.mapNotNull {
+                            if (it.userId == currentUser.id) null
+                            else avatarsAllUsers[it.userId] ?: ""
+                        },
+                        qrCode = data.barCodes.firstOrNull()?.code,
+                        parentId = data.parentId,
+                    )
+                }
+                Results.Success(categories)
+            }
+            _data.update { it.copy(mainData = res) }
+
+            if (res is Results.Success) {
+                calculateStatistics(res.data)
             }
         }
     }
 
-    private fun getCategories(): List<CategoryUi> {
-        val rand: (Int, Int) -> Int = { x1, x2 ->
-            val f = random() / 1.0.nextDown()
-            val x = x1 * (1.0 - f) + x2 * f
-            x.toInt()
-        }
+    private fun calculateStatistics(
+        categories: List<CategoryUi>
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        val newCategories = categories.map { category ->
+            val itemsCountRes = itemRepository.getItemsCount(category.id)
+            val itemsCount = (itemsCountRes as? Results.Success)?.data?.toInt() ?: 0
+            val categoriesCountRes = categoryRepository.getCategoriesCount(category.id)
+            val categoriesCount = (categoriesCountRes as? Results.Success)?.data?.toInt() ?: 0
+//            val allCount = itemsCount + categoriesCount
 
-        return List(8) { i ->
-            val avatars = List<String>(rand(0, 6)) {
-                "https://media.npr.org/assets/img/2016/10/26/hacksaw-ridge-hacksawridge_d22-10131_rgb_sq-9241d1a7ee125fdfde8abd5e8585484682c1efbf-s800-c85.jpg"
-            }
-            log.d("#${i} avatars count: ${avatars.size}")
-            CategoryUi(
-                id = i,
-                name = "Category #${i}",
-                description = "Description for category #${i}",
-                itemsCount = rand(0, 10),
-                nestedCount = rand(0, 4),
-                allCount = rand(0, 20),
-                imageUrl = "",
-                color = "#FFFFFF",
-                usersAvatars = avatars,
-                qrCode = "This is the test data for QR code",
-                parentId = null,
+            category.copy(
+                itemsCount = itemsCount,
+                categoriesCount = categoriesCount,
+//                allCount = allCount
             )
         }
+        _data.update { it.copy(mainData = Results.Success(newCategories)) }
     }
+
+
+    private fun mapSortType(): DataRepository.SortFilter {
+        return when (sortType) {
+            SortType.NAME -> DataRepository.SortFilter.NAME
+            SortType.DATE_CREATED -> DataRepository.SortFilter.DATE_CREATED
+            SortType.DATE_UPDATED -> DataRepository.SortFilter.DATE_UPDATED
+            SortType.DESCRIPTION -> DataRepository.SortFilter.DESCRIPTION
+        }
+    }
+
 
     fun changeSortType(sortType: SortType) {
         _data.update { it.copy(sortType = sortType) }

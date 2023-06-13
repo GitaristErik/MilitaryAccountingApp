@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
-            tools:context=".presenter.fragment.edit.AddFragment">
+            tools:context=".presenter.fragment.edit.AddOrEditFragment">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/location"
@@ -166,29 +166,6 @@
                 tools:listitem="@layout/item_code_list" />
 
 
-            <!-- Categories -->
-            <include
-                android:id="@+id/tabs"
-                layout="@layout/fragment_tabs_category_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.standard"
-                android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@id/details_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/category_icon" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/tabs_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/margin.standard"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tabs" />
-
             <!-- Last Changed -->
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/last_changed_label"
@@ -197,20 +174,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin.standard"
                 android:text="@string/category.changed.title"
-                app:layout_constraintBottom_toTopOf="@id/last_changed_date"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/count_btn_all" />
 
             <include
-                android:id="@+id/last_changed_date"
+                android:id="@+id/last_changed_layout"
                 layout="@layout/item_last_changed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/last_changed_btn_all"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/last_changed_label" />
 
             <com.google.android.material.button.MaterialButton
@@ -222,10 +194,7 @@
                 android:text="@string/category.changed.more.title"
                 app:icon="@drawable/ic_arrow_forward_24dp"
                 app:iconTint="?colorOnSecondaryContainer"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/last_changed_date" />
+                app:layout_constraintHorizontal_bias="1"/>
 
             <!-- History -->
             <com.google.android.material.textview.MaterialTextView
@@ -236,9 +205,7 @@
                 android:layout_marginTop="@dimen/margin.standard"
                 android:text="@string/category.history.title"
                 app:layout_constraintBottom_toTopOf="@id/history_chart"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/last_changed_btn_all" />
 
             <Spinner
@@ -258,8 +225,6 @@
                 android:layout_height="350dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@id/history_btn_all"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/history_label" />
 
             <com.google.android.material.button.MaterialButton
@@ -271,9 +236,7 @@
                 android:text="@string/category.history.more.title"
                 app:icon="@drawable/ic_arrow_forward_24dp"
                 app:iconTint="?colorOnSecondaryContainer"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/history_chart" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -34,12 +34,12 @@ sealed class Results<out T> {
     }
 
     companion object {
-        fun <T> Results<T>.anyData() = when (this) {
+        fun <T> Results<T>.anyData(): T? = when (this) {
             is Success -> this.data
             is Loading -> this.oldData
             is Failure -> this.oldData
 //            is Error -> this.exception
-            is Canceled -> this.throwable ?: Unit
+            is Canceled -> null
         }
     }
 }

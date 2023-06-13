@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.databinding.ItemCodeListBinding
-import com.example.militaryaccountingapp.presenter.model.Barcode
+import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.presenter.utils.common.ext.asFormattedDateString
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.initAsQrMini
 

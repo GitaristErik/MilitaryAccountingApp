@@ -167,4 +167,24 @@ sealed interface AuthValidator<T> {
             }
         }
     }
+
+    object TitleValidator : AuthValidator<String> {
+        private const val MAX_TITLE_LENGTH = 100
+        private const val MIN_TITLE_LENGTH = 3
+
+        override fun validate(data: String): Results<String> {
+            val title = data.trim()
+
+            return when {
+                title.length > MAX_TITLE_LENGTH ->
+                    Results.Failure(Exception("Use at least $MAX_TITLE_LENGTH characters"))
+
+                title.length < MIN_TITLE_LENGTH ->
+                    Results.Failure(Exception("Use at least $MIN_TITLE_LENGTH characters"))
+
+                else -> Results.Success(title)
+            }
+        }
+
+    }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentProfileBinding
+import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
@@ -24,6 +25,7 @@ class ProfileFragment() :
         setupChangeProfile()
         setupAddMember()
         setupLogout()
+        viewModel.fetchUserData()
     }
 
     private fun setupChangeProfile() {
@@ -56,5 +58,28 @@ class ProfileFragment() :
             binding.avatar,
             data.userProfileUri
         )
+
+        renderUser(data.user)
+    }
+
+    private fun renderUser(userRes: Results<User>) {
+        when (userRes) {
+            is Results.Success -> {
+                renderUser(userRes.data)
+            }
+
+            is Results.Failure -> {
+                log.e("renderUser: ${userRes.throwable.message}")
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun renderUser(user: User) {
+        binding.userName.text = user.fullName
+        binding.userRank.text = user.rank
+        val loginText = "@${user.login}"
+        binding.userLogin.text = loginText
     }
 }

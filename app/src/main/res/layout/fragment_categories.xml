@@ -17,4 +17,14 @@
         app:spanCount="2"
         tools:listitem="@layout/item_category_grid" />
 
+    <include
+        android:id="@+id/layout_error"
+        layout="@layout/layout_error_full_page"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading_full_page"
+        android:visibility="gone" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

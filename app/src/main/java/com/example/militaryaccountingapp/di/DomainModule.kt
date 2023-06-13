@@ -5,6 +5,7 @@ import com.example.militaryaccountingapp.domain.repository.AuthRepository
 import com.example.militaryaccountingapp.domain.repository.DataRepository
 import com.example.militaryaccountingapp.domain.usecase.GetHistoryUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
+import com.example.militaryaccountingapp.domain.usecase.auth.EditUserInfoUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.LoginUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.LogoutUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.RegisterUseCase
@@ -59,5 +60,10 @@ object DomainModule {
     fun provideSignInGoogleUseCase(
         repository: AuthRepository
     ) = SignInGoogleUseCase(repository)
+
+    @Provides
+    fun provideEditUserInfoUseCase(
+        repository: AuthRepository
+    ) = EditUserInfoUseCase(repository)
 
 }

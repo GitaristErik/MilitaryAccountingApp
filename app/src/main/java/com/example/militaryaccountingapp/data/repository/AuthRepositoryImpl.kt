@@ -3,10 +3,12 @@ package com.example.militaryaccountingapp.data.repository
 import com.example.militaryaccountingapp.data.helper.ResultHelper.resultWrapper
 import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWrapper
 import com.example.militaryaccountingapp.data.storage.Storage
+import com.example.militaryaccountingapp.domain.entity.data.Category
 import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
+import com.example.militaryaccountingapp.domain.repository.CategoryRepository
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
@@ -16,7 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val storage: Storage<String, User>
+    private val storage: Storage<String, User>,
+    private val categoryRepository: CategoryRepository
 ) : AuthRepository {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -61,9 +64,23 @@ class AuthRepositoryImpl @Inject constructor(
                 deletedAt = null
             )
             Timber.i("Registration Successful!")
-            return@safetyResultWrapper saveUserInStorage(user)
-        }
-        Results.Failure(RuntimeException("Sign in is successfully, but response model is empty"))
+            resultWrapper(
+                categoryRepository.createRootCategory(
+                    Category(
+                        id = firebaseUser.uid,
+                        name = "all",
+                        parentId = null,
+                        userId = firebaseUser.uid
+                    ),
+                    firebaseUser.uid
+                )
+            ) { cat ->
+                user.rootCategoryId = cat.id
+                saveUserInStorage(user)
+            }
+        } ?: Results.Failure(
+            RuntimeException("Sign in is successfully, but response model is empty")
+        )
     }
 
 
@@ -132,6 +149,42 @@ class AuthRepositoryImpl @Inject constructor(
 //        Firebase.auth.signOut()
     }
 
+    override suspend fun editUserInfo(
+        email: String,
+        password: String?,
+        login: String,
+        name: String,
+        fullName: String,
+        rank: String,
+        phones: List<String>
+    ): Results<User> {
+        val user = firebaseAuth.currentUser
+        return if (user != null) {
+            user.updateEmail(email)
+            if (password != null) {
+                user.updatePassword(password)
+            }
+            saveUserInStorage(
+                User(
+                    id = user.uid,
+                    login = login,
+                    email = user.email ?: email,
+                    name = name,
+                    fullName = fullName,
+                    rank = rank,
+                    phones = phones,
+                    rootCategoryId = currentUser!!.rootCategoryId,
+                    imageUrl = currentUser!!.imageUrl,
+                    createdAt = currentUser!!.createdAt,
+                    updatedAt = System.currentTimeMillis(),
+                    deletedAt = currentUser!!.deletedAt,
+                )
+            )
+        } else {
+            Results.Failure(RuntimeException("User not found"))
+        }
+    }
+
 
     private suspend fun signInWithCredential(
         authCredential: AuthCredential
@@ -194,9 +247,9 @@ class AuthRepositoryImpl @Inject constructor(
         Results.Success(it)
     }
 
-    private suspend fun saveUserInStorage(user: User): Results<User> = resultWrapper(
+    private suspend fun saveUserInStorage(user: User): Results<User> = safetyResultWrapper({
         storage.save(user.id, user)
-    ) {
+    }) {
         Timber.i("User saved!")
         currentUser = user
         Results.Success(user)

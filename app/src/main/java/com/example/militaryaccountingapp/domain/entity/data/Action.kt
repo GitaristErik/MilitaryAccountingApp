@@ -1,11 +1,11 @@
 package com.example.militaryaccountingapp.domain.entity.data
 
 data class Action(
-    val id: Int,
-    val action: ActionType,
-    val userId: Int,
-    val itemId: Int?,
-    val categoryId: Int?,
-    val timestamp: Long,
-    val value: Any
+    val id: String = "",
+    val action: ActionType = ActionType.CREATE,
+    val userId: String = "",
+    val itemId: String? = "",
+    val categoryId: String? ="",
+    val timestamp: Long = 0,
+    val value: Any? = null
 )

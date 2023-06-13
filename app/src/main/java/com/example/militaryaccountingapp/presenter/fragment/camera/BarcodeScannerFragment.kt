@@ -4,7 +4,7 @@ import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.activityViewModels
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentBarcodeScannerBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BarcodeScannerFragment :
     BaseViewModelFragment<FragmentBarcodeScannerBinding, ViewData, AddOrEditViewModel>() {
 
-    override val viewModel: AddOrEditViewModel by navGraphViewModels(R.id.mobile_navigation)
+    override val viewModel: AddOrEditViewModel by activityViewModels()//(R.id.mobile_navigation)
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentBarcodeScannerBinding
         get() = FragmentBarcodeScannerBinding::inflate

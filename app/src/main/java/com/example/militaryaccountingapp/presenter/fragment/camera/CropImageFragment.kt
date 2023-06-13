@@ -34,12 +34,12 @@ class CropImageFragment : BaseFragment<FragmentCropUserAvatarBinding>() {
         return if (getUriAndSave("uri_avatar") != null) {
             val vm by activityViewModels<ProfileViewModel>(); vm
         } else if (getUriAndSave("uri_image") != null) {
-            val vm by activityViewModels<AddOrEditViewModel>(); vm
-       } else if (getUriAndSave("uri_user") != null) {
-            val vm by activityViewModels<RegisterViewModel>(); vm
+            val vm by activityViewModels<AddOrEditViewModel>(); vm//(R.id.mobile_navigation); vm
+        } else if (getUriAndSave("uri_user") != null) {
+            val vm by activityViewModels<RegisterViewModel>(); vm//(R.id.navigation_auth); vm
         } else {
             back()
-            val vm by activityViewModels<RegisterViewModel>(); vm
+            val vm by activityViewModels<RegisterViewModel>(); vm//(R.id.navigation_auth); vm
 //            throw IllegalArgumentException("Uri is null")
         }
     }

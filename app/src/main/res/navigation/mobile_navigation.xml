@@ -34,7 +34,32 @@
         tools:layout="@layout/fragment_category">
         <argument
             android:name="id"
-            app:argType="integer" />
+            app:argType="string" />
+        <argument
+            android:name="parentIds"
+            android:defaultValue="@null"
+            app:argType="string[]"
+            app:nullable="true" />
+        <argument
+            android:name="name"
+            android:defaultValue='""'
+            app:argType="string" />
+        <argument
+            android:name="description"
+            android:defaultValue='""'
+            app:argType="string" />
+        <action
+            android:id="@+id/action_categoryFragment_to_modalBottomSheetCodeDetails"
+            app:destination="@id/modalBottomSheetCodeDetails" />
+        <action
+            android:id="@+id/action_categoryFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_itemFragment"
+            app:destination="@id/itemFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_self"
+            app:destination="@id/categoryFragment" />
     </fragment>
 
     <fragment
@@ -44,7 +69,35 @@
         tools:layout="@layout/fragment_item">
         <argument
             android:name="id"
-            app:argType="integer" />
+            app:argType="string" />
+        <argument
+            android:name="parentIds"
+            android:defaultValue="@null"
+            app:argType="string[]"
+            app:nullable="true" />
+        <argument
+            android:name="name"
+            android:defaultValue='""'
+            app:argType="string" />
+        <argument
+            android:name="description"
+            android:defaultValue='""'
+            app:argType="string" />
+        <argument
+            android:name="imageUrlIds"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="count"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_itemFragment_to_modalBottomSheetCodeDetails"
+            app:destination="@id/modalBottomSheetCodeDetails" />
+        <action
+            android:id="@+id/action_itemFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
 
 
@@ -97,18 +150,46 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.AddFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditFragment"
         android:label="@string/add.title"
-        tools:layout="@layout/fragment_add">
+        tools:layout="@layout/fragment_add_or_edit">
         <action
             android:id="@+id/action_addFragment_to_barcodeScannerFragment"
             app:destination="@id/barcodeScannerFragment" />
         <action
             android:id="@+id/action_addFragment_to_modalBottomSheetCodeDetails"
-            app:destination="@id/modalBottomSheetCodeDetails" />
+            app:destination="@id/modalBottomSheetCodeDetails" >
+            <argument
+                android:name="RenderDelete"
+                android:defaultValue="true" />
+        </action>
         <action
             android:id="@+id/action_addFragment_to_cropImageFragment"
             app:destination="@id/cropImageFragment" />
+        <argument
+            android:name="elementId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="parentId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="elementType"
+            app:argType="com.example.militaryaccountingapp.domain.entity.data.Data$Type"
+            android:defaultValue="ITEM" />
+        <action
+            android:id="@+id/action_addFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:popUpTo="@id/categoryFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_addFragment_to_itemFragment"
+            app:destination="@id/itemFragment"
+            app:popUpTo="@id/itemFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -124,8 +205,12 @@
         <argument
             android:name="code"
             android:defaultValue="@null"
-            app:argType="com.example.militaryaccountingapp.presenter.model.Barcode"
+            app:argType="com.example.militaryaccountingapp.domain.entity.data.Barcode"
             app:nullable="true" />
+        <argument
+            android:name="isRenderDelete"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </dialog>
     <fragment
         android:id="@+id/cropImageFragment"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,55 +40,88 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            tools:context=".presenter.fragment.edit.AddOrEditFragment">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_start"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/margin.standard" />
+                android:elegantTextHeight="true"
+                android:maxLines="3"
+                android:paddingHorizontal="@dimen/padding.small"
+                android:text="Water/Food"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="?colorTertiary"
+                android:textStyle="italic" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_end"
-                android:layout_width="wrap_content"
+
+            <!--    Description  -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/margin.standard" />
+                android:layout_marginTop="@dimen/margin.large"
+                android:text="@string/item.description.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-            <!-- Description -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/category_icon"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="@dimen/margin.standard"
-                android:contentDescription="@string/home.item.category.logo.description"
-                android:scaleType="centerCrop"
-                app:layout_anchorGravity="bottom"
-                app:layout_constraintBottom_toTopOf="@id/tabs"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@id/description"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.35"
-                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-                app:srcCompat="@drawable/ic_launcher_background" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/description"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is description. This is description. This is descript This is description. This is description."
-                android:textColor="?colorOnSurfaceVariant"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/category_icon"
-                app:layout_constraintTop_toTopOf="@id/category_icon" />
+                android:layout_marginTop="@dimen/margin.small"
+                android:elegantTextHeight="true"
+                android:paddingHorizontal="@dimen/margin.small"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="italic" />
+
+
+            <!--    Photos  -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/add.images.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginVertical="@dimen/margin.small"
+                android:visibility="gone"
+                app:carouselGravity="CENTER"
+                app:carouselType="BLOCK"
+                app:infiniteCarousel="true"
+                app:showCaption="false" />
+
+
+            <FrameLayout
+                android:id="@+id/carousel_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin.small"
+                    android:layout_marginVertical="@dimen/margin.standard"
+                    android:elegantTextHeight="true"
+                    android:text="@string/add.image.label.empty"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textColor="?colorSecondary"
+                    android:textStyle="italic" />
+            </FrameLayout>
 
 
             <!-- Categories -->
@@ -100,7 +132,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin.standard"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@id/details_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/category_icon" />
@@ -111,65 +142,56 @@
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/margin.standard"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tabs" />
 
-            <!-- Details -->
+            <!--    Codes -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/details_label"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
-                android:layout_width="wrap_content"
+                android:id="@+id/label_qr"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.standard"
-                android:text="@string/category.details.title"
-                app:layout_constraintBottom_toTopOf="@id/qr_label"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tabs" />
+                android:layout_marginTop="@dimen/margin.large"
+                android:text="@string/add.codes.label"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-            <!-- QR -->
+            <!--    barcode -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin.small"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_code_list" />
+
+            <!-- Last Changed -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/qr_label"
+                android:id="@+id/last_changed_label"
                 style="@style/TextAppearance.Material3.LabelLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/category.qr.title"
-                app:layout_constraintBottom_toTopOf="@id/qr_image"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/category.changed.title"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/details_label" />
+                app:layout_constraintTop_toBottomOf="@id/count_btn_all" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/qr_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/margin.standard"
-                android:layout_marginVertical="@dimen/margin.small"
-                android:contentDescription="@string/category.qr.description"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@id/count_label"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@id/qr_data"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/qr_label"
-                app:layout_constraintWidth_percent="0.4"
-                app:srcCompat="@drawable/ic_launcher_background" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/qr_data"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
+            <include
+                android:id="@+id/last_changed_layout"
+                layout="@layout/item_last_changed"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="qr code test data this is description."
-                android:textColor="?colorOnSurfaceVariant"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/qr_image"
-                app:layout_constraintTop_toTopOf="@id/qr_image" />
+                app:layout_constraintBottom_toTopOf="@id/last_changed_btn_all"
+                app:layout_constraintTop_toBottomOf="@id/last_changed_label" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/last_changed_btn_all"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/category.changed.more.title"
+                app:icon="@drawable/ic_arrow_forward_24dp"
+                app:iconTint="?colorOnSecondaryContainer" />
+
 
             <!-- Count -->
             <com.google.android.material.textview.MaterialTextView
@@ -180,9 +202,7 @@
                 android:layout_marginTop="@dimen/margin.standard"
                 android:text="@string/category.count.title"
                 app:layout_constraintBottom_toTopOf="@id/count_chart"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/qr_image" />
 
             <View
@@ -193,60 +213,20 @@
                 android:layout_marginTop="8dp"
                 android:background="?attr/colorTertiaryContainer"
                 app:layout_constraintBottom_toTopOf="@id/count_btn_all"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/count_label" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/count_btn_all"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
                 android:layout_width="wrap_content"
+                android:layout_gravity="end"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin.small.extra"
                 android:text="@string/category.count.more.title"
-                style="@style/Widget.Material3.Button.TonalButton.Icon"
                 app:icon="@drawable/ic_arrow_forward_24dp"
                 app:iconTint="?colorOnSecondaryContainer"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/count_chart" />
-
-            <!-- Last Changed -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/last_changed_label"
-                style="@style/TextAppearance.Material3.LabelLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin.standard"
-                android:text="@string/category.changed.title"
-                app:layout_constraintBottom_toTopOf="@id/last_changed_date"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/count_btn_all" />
-
-            <include
-                layout="@layout/item_last_changed"
-                android:id="@+id/last_changed_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/last_changed_btn_all"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/last_changed_label" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/last_changed_btn_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category.changed.more.title"
-                style="@style/Widget.Material3.Button.TonalButton.Icon"
-                app:icon="@drawable/ic_arrow_forward_24dp"
-                app:iconTint="?colorOnSecondaryContainer"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/last_changed_date" />
 
             <!-- History -->
             <com.google.android.material.textview.MaterialTextView
@@ -257,15 +237,14 @@
                 android:layout_marginTop="@dimen/margin.standard"
                 android:text="@string/category.history.title"
                 app:layout_constraintBottom_toTopOf="@id/history_chart"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/last_changed_btn_all" />
 
             <Spinner
                 android:id="@+id/history_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 app:layout_constraintBaseline_toBaselineOf="@id/history_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1"
@@ -278,25 +257,20 @@
                 android:layout_height="350dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@id/history_btn_all"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/history_label" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/history_btn_all"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:text="@string/category.history.more.title"
-                style="@style/Widget.Material3.Button.TonalButton.Icon"
                 app:icon="@drawable/ic_arrow_forward_24dp"
                 app:iconTint="?colorOnSecondaryContainer"
-                app:layout_constraintEnd_toStartOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/history_chart" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 
 

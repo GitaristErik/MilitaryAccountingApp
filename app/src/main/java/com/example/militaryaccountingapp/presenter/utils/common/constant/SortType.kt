@@ -10,17 +10,17 @@ enum class SortType(val resId: Int?) {
             context.getString(R.string.home_item_header_menu_option1)
     },
 
-    DATE(R.id.option2) {
+    DATE_CREATED(R.id.option2) {
         override fun getDisplayName(context: Context) =
             context.getString(R.string.home_item_header_menu_option2)
     },
 
-    BARCODE(R.id.option3) {
+    DATE_UPDATED(R.id.option3) {
         override fun getDisplayName(context: Context) =
             context.getString(R.string.home_item_header_menu_option3)
     },
 
-    COUNT(R.id.option4) {
+    DESCRIPTION(R.id.option4) {
         override fun getDisplayName(context: Context) =
             context.getString(R.string.home_item_header_menu_option4)
     };

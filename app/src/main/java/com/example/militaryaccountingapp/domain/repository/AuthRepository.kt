@@ -36,4 +36,15 @@ interface AuthRepository {
     suspend fun currentUser(): User?
 
     suspend fun logout()
+
+    suspend fun editUserInfo(
+        email: String,
+        password: String? = null,
+        login: String,
+        name: String,
+        fullName: String,
+        rank: String,
+        phones: List<String>
+    ): Results<User>
+
 }

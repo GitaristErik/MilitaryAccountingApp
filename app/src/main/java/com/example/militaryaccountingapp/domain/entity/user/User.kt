@@ -4,6 +4,7 @@ data class User(
     val id: String = "",
     val login: String = "",
     val email: String = "",
+    var rootCategoryId: String = "",
     val name: String = "",
     val fullName: String = "",
     val rank: String = "",
