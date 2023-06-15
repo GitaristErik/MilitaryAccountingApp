@@ -7,6 +7,7 @@ sealed class Data {
     abstract var imagesUrls: List<String>
     open var parentId: String? = null
     open var allParentIds: List<String> = emptyList()
+    open var allParentNames: List<String> = emptyList()
     open var userId: String? = null
     open var barCodes: List<Barcode> = emptyList()
 

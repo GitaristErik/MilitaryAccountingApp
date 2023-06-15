@@ -64,21 +64,22 @@ class TimeLineAdapter(
     class TimeLineViewHolder(private val binding: ItemTimelineBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(timeline: TimelineUi, onClickListener: (TimelineUi, View) -> Unit) = with(binding) {
-            this.value.text = timeline.value
-            this.title.text = timeline.title
-            this.date.text = timeline.date
-            setOperationChip(timeline.operation)
-            this.location.text = timeline.location
-            this.name.text = timeline.name
+        fun bind(timeline: TimelineUi, onClickListener: (TimelineUi, View) -> Unit) =
+            with(binding) {
+                this.value.text = timeline.value
+                this.title.text = timeline.title
+                this.date.text = timeline.date
+                setOperationChip(timeline.operation)
+                this.location.text = timeline.location
+                this.name.text = timeline.name
 
-            root.setOnClickListener {
-                onClickListener(timeline, it)
-            }
+                root.setOnClickListener {
+                    onClickListener(timeline, it)
+                }
 
-            this.userIcon.load(timeline.userIcon ?: return@with)
+                this.userIcon.load(timeline.userIcon ?: return@with)
 //            this.userIcon.setImageDrawable(timeline.userIcon)
-        }
+            }
 
         private fun setOperationChip(operation: ActionType) {
             val (iconId, titleId) = when (operation) {

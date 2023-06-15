@@ -10,6 +10,8 @@ import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.model.UserNetworkUi
+import com.example.militaryaccountingapp.presenter.shared.adapter.UsersNetworkAdapter
 import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +27,25 @@ class ProfileFragment() :
         setupChangeProfile()
         setupAddMember()
         setupLogout()
+        setupUsersNetwork()
         viewModel.fetchUserData()
+    }
+
+    private val usersAdapter by lazy {
+        UsersNetworkAdapter {
+            findNavController().navigate(
+                ProfileFragmentDirections.actionNavigationProfileToDetailsUserFragment(
+                    userId = it.id,
+                    fullName = it.fullName,
+                    rank = it.rank,
+//                    name = it.name,
+                )
+            )
+        }
+    }
+
+    private fun setupUsersNetwork() {
+        binding.networkUsers.adapter = usersAdapter
     }
 
     private fun setupChangeProfile() {
@@ -36,7 +56,7 @@ class ProfileFragment() :
 
     private fun setupAddMember() {
         binding.addMember.setOnClickListener {
-            findNavController().navigate(ProfileFragmentDirections.actionNavigationProfileToDetailsUserFragment())
+            findNavController().navigate(ProfileFragmentDirections.actionNavigationProfileToUsersListFragment())
         }
     }
 
@@ -60,6 +80,18 @@ class ProfileFragment() :
         )
 
         renderUser(data.user)
+        renderUsers(data.usersNetwork)
+    }
+
+    private fun renderUsers(usersNetwork: Results<List<UserNetworkUi>>) {
+        when (usersNetwork) {
+            is Results.Success -> {
+                log.d("renderUsers in network: ${usersNetwork.data}")
+                usersAdapter.submitList(usersNetwork.data)
+            }
+
+            else -> {}
+        }
     }
 
     private fun renderUser(userRes: Results<User>) {

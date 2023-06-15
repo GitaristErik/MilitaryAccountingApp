@@ -16,4 +16,6 @@ interface HistoryRepository {
         element: ActionElement
     ): Results<Action>
 
+    suspend fun addToHistory(action: Action): Results<Unit>
+    suspend fun getHistory(filters: Set<ActionType>, limit: Long = 100): Results<List<Action>>
 }

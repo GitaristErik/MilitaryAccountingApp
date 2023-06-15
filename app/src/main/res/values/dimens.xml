@@ -18,6 +18,7 @@
     <dimen name="padding.large">24dp</dimen>
     <dimen name="padding.large.extra">32dp</dimen>
     <dimen name="padding.large.extra.double">40dp</dimen>
+    <dimen name="padding.fragment.bottom">32dp</dimen>
 
     <!-- Other -->
     <dimen name="corner.tabs">500dp</dimen>

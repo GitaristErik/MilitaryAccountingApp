@@ -42,6 +42,9 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VD, VM : BaseViewModel<VD
                 .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
                 .collect { renderSpinner(it) }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            observeCustomData()
+        }
     }
 
     protected open suspend fun observeCustomData() = Unit

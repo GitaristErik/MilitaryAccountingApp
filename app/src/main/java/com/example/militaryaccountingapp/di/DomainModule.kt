@@ -2,7 +2,10 @@ package com.example.militaryaccountingapp.di
 
 
 import com.example.militaryaccountingapp.domain.repository.AuthRepository
-import com.example.militaryaccountingapp.domain.repository.DataRepository
+import com.example.militaryaccountingapp.domain.repository.CategoryRepository
+import com.example.militaryaccountingapp.domain.repository.HistoryRepository
+import com.example.militaryaccountingapp.domain.repository.ItemRepository
+import com.example.militaryaccountingapp.domain.repository.UserRepository
 import com.example.militaryaccountingapp.domain.usecase.GetHistoryUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.EditUserInfoUseCase
@@ -23,8 +26,15 @@ object DomainModule {
 
     @Provides
     fun provideGetHistoryUseCase(
-        repository: DataRepository
-    ) = GetHistoryUseCase(repository)
+        repository: HistoryRepository,
+        userRepository: UserRepository,
+        categoryRepository: CategoryRepository,
+        itemRepository: ItemRepository,
+    ) = GetHistoryUseCase(
+        repository,
+        userRepository,
+        categoryRepository, itemRepository
+    )
 
     @Provides
     fun provideCurrentUserUseCase(

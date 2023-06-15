@@ -106,6 +106,8 @@
             android:id="@+id/network_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_marginTop="@dimen/margin.standard"
             android:background="@drawable/background_rounded_rect"
             android:backgroundTint="?colorOnSurfaceInverse"

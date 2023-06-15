@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presenter.fragment.profile.DetailsUserFragment">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -31,6 +30,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginBottom="@dimen/padding.fragment.bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
@@ -223,11 +223,11 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/rv_items_container"
-                android:name="com.example.militaryaccountingapp.presenter.fragment.filter.TreeViewFragment"
+                android:name="com.example.militaryaccountingapp.presenter.fragment.filter.TreeViewUserFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.small"
-                android:elevation="1dp"
+                    android:layout_marginVertical="@dimen/margin.small"
+                    android:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/items_label"
@@ -239,6 +239,7 @@
                 style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/margin.large.extra"
                 android:text="@string/profile.history.title"
                 app:layout_constraintBottom_toTopOf="@id/history_chart"
@@ -249,6 +250,7 @@
 
             <Spinner
                 android:id="@+id/history_spinner"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBaseline_toBaselineOf="@id/history_label"
@@ -260,6 +262,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/history_chart"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="350dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@id/history_btn_more"
@@ -272,6 +275,7 @@
                 style="@style/Widget.Material3.Button.TonalButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="@string/profile.more.button"
                 app:icon="@drawable/ic_arrow_forward_24dp"
                 app:iconTint="?colorOnSecondaryContainer"
@@ -314,4 +318,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

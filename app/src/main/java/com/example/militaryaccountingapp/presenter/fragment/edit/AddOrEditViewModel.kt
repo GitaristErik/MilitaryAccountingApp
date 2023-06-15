@@ -30,7 +30,7 @@ import javax.inject.Inject
 class AddOrEditViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val itemRepository: ItemRepository,
-    private val currentUserUseCase: CurrentUserUseCase
+    private val currentUserUseCase: CurrentUserUseCase,
 ) : BaseViewModel<ViewData>(ViewData()), CroppingSavableViewModel {
 
     data class ViewData(
@@ -53,7 +53,7 @@ class AddOrEditViewModel @Inject constructor(
     var parentId: String? = null
 
     private suspend fun getParentId(): String? {
-        if(parentId == null) {
+        if (parentId == null) {
             parentId = if (elementId == null) {
                 currentUserUseCase()?.rootCategoryId
             } else {
@@ -85,8 +85,9 @@ class AddOrEditViewModel @Inject constructor(
                 )
             } else {
                 categoryRepository.updateCategory(
-                    elementId!!,
-                    mapOf(
+                    id = elementId!!,
+                    userId = currentUserUseCase()!!.id,
+                    query = mapOf(
                         "name" to (data.value.title as Results.Success<String>).data,
                         "description" to data.value.description.trim(),
                         "parentId" to getParentId(),

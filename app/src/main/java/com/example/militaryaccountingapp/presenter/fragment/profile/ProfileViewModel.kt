@@ -1,18 +1,23 @@
 package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
+import com.example.militaryaccountingapp.domain.repository.PermissionRepository
+import com.example.militaryaccountingapp.domain.repository.UserRepository
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.EditUserInfoUseCase
 import com.example.militaryaccountingapp.domain.usecase.auth.LogoutUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.model.UserNetworkUi
 import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
 import com.example.militaryaccountingapp.presenter.utils.ui.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +25,9 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val editUserInfoUseCase: EditUserInfoUseCase,
-    private val currentUserUseCase: CurrentUserUseCase
+    private val currentUserUseCase: CurrentUserUseCase,
+    private val userRepository: UserRepository,
+    private val permissionRepository: PermissionRepository,
 ) : BaseViewModel<ViewData>(ViewData()), CroppingSavableViewModel {
 
     data class ViewData(
@@ -37,12 +44,69 @@ class ProfileViewModel @Inject constructor(
         val userProfileUri: Uri? = null,
         val isLoggingOut: Results<Unit> = Results.Canceled(null),
         val isEdited: Results<Unit> = Results.Canceled(null),
+
+        val usersNetwork: Results<List<UserNetworkUi>> = Results.Loading(null),
     )
 
     init {
         log.d("init")
-        fetchUserData()
+//        fetchUserData()
     }
+
+    private fun fetchUsersNetwork() {
+        viewModelScope.launch(Dispatchers.IO) {
+            currentUserUseCase()?.let { user ->
+                val res = resultWrapper(
+                    userRepository.getUsers(user.usersInNetwork)
+                ) {
+                    loadPermissionsCount(it)
+                    Results.Success(mapToUserNetworkUi(it))
+                }
+                log.e("fetchUsersNetwork: $res")
+                _data.update { viewData -> viewData.copy(usersNetwork = res) }
+            }
+        }
+    }
+
+    private fun loadPermissionsCount(users: List<User>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newUsers = users.map {
+                val readCountRes = permissionRepository.getReadCount(it.id)
+                val editCountRes = permissionRepository.getEditCount(it.id)
+                val shareReadCountRes = permissionRepository.getShareForReadCount(it.id)
+                val editShareCountRes = permissionRepository.getShareForEditCount(it.id)
+
+                val readCount = (readCountRes as? Results.Success)?.data ?: 0
+                val editCount = (editCountRes as? Results.Success)?.data ?: 0
+                val shareReadCount = (shareReadCountRes as? Results.Success)?.data ?: 0
+                val editShareCount = (editShareCountRes as? Results.Success)?.data ?: 0
+
+                UserNetworkUi(
+                    id = it.id,
+                    fullName = it.fullName,
+                    rank = it.rank,
+                    imageUrl = it.imageUrl,
+                    readCount = readCount.toInt(),
+                    editCount = editCount.toInt(),
+                    readShareCount = shareReadCount.toInt(),
+                    editShareCount = editShareCount.toInt(),
+                )
+            }
+            _data.update { viewData ->
+                viewData.copy(usersNetwork = Results.Success(newUsers))
+            }
+        }
+    }
+
+    private fun mapToUserNetworkUi(it: List<User>): List<UserNetworkUi> = it.map { user ->
+        UserNetworkUi(
+            id = user.id,
+            fullName = user.fullName,
+            rank = user.rank,
+            imageUrl = user.imageUrl,
+        )
+    }
+
 
     fun fetchUserData() {
         safeRunJobWithLoading(Dispatchers.IO) {
@@ -68,6 +132,7 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
+        fetchUsersNetwork()
     }
 
 

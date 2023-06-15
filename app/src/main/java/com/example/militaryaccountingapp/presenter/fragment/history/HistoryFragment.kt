@@ -8,25 +8,27 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentHistoryBinding
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
-import com.example.militaryaccountingapp.presenter.fragment.filter.FilterFragment
 import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
+import com.example.militaryaccountingapp.presenter.fragment.history.HistoryViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.ScrollableTopScreen
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimeLineAdapter
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimelineDecorator
 import com.google.android.material.chip.Chip
 import com.lriccardo.timelineview.TimelineView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HistoryFragment :
-    BaseViewModelFragment<FragmentHistoryBinding, HistoryViewModel.ViewData, HistoryViewModel>(),
+    BaseViewModelFragment<FragmentHistoryBinding, ViewData, HistoryViewModel>(),
     ScrollableTopScreen {
 
     override val viewModel: HistoryViewModel by viewModels()
@@ -42,14 +44,13 @@ class HistoryFragment :
     }
 
     override fun initializeView() {
-//        setupFilterFragment()
         setupTimeline()
+        observeCustomData2()
         setupChips()
-        viewModel.loadHistory(limit = pageLimit.value)
     }
 
-    override fun render(data: HistoryViewModel.ViewData) {
-        log.d("render")
+    override fun render(data: ViewData) {
+        log.d("render timeline ${data.timelineItems}")
         timelineAdapter.submitList(data.timelineItems)
     }
 
@@ -61,21 +62,16 @@ class HistoryFragment :
         }
     }
 
-    override suspend fun observeCustomData() {
-        filterViewModel.data
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .collect { renderFilter(it) }
-    }
-
-    private fun setupFilterFragment() {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.filters, FilterFragment::class.java, null)
-            .commit()
+    private fun observeCustomData2() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            filterViewModel.data
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { renderFilter(it) }
+        }
     }
 
     private fun setupTimeline() {
-        timelineAdapter.stateRestorationPolicy =
-            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        timelineAdapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         binding.rvTimeline.let {
             it.layoutManager = LinearLayoutManager(
@@ -124,6 +120,11 @@ class HistoryFragment :
     }
 
     private fun setupChips() {
+        viewModel.checkedFilters.forEach { actionType ->
+            filterMapper(actionType)?.let { binding.chipGroup.check(it) }
+        }
+        viewModel.forceLoadHistory(limit = pageLimit.value.toLong())
+
         binding.chipGroup.children.forEach {
             (it as? Chip)?.setOnCheckedChangeListener { compoundButton, isChecked ->
                 (compoundButton as? Chip)?.apply {
@@ -138,7 +139,7 @@ class HistoryFragment :
             viewModel.loadHistory(
                 page = 0, // TODO add pagination
                 filters = checkedIds.mapNotNull(::chipMapper).toSet(),
-                limit = pageLimit.value
+                limit = pageLimit.value.toLong()
             )
         }
     }
@@ -151,6 +152,17 @@ class HistoryFragment :
         R.id.chip_create -> ActionType.CREATE
         R.id.chip_delete -> ActionType.DELETE
         R.id.chip_restore -> ActionType.RESTORE
+        else -> null
+    }
+
+    private fun filterMapper(chipId: ActionType): Int? = when (chipId) {
+        ActionType.INCREASE_COUNT -> R.id.chip_add
+        ActionType.DECREASE_COUNT -> R.id.chip_decrease
+        ActionType.SHARE -> R.id.chip_share
+        ActionType.UNSHARE -> R.id.chip_unshare
+        ActionType.CREATE -> R.id.chip_create
+        ActionType.DELETE -> R.id.chip_delete
+        ActionType.RESTORE -> R.id.chip_restore
         else -> null
     }
 }

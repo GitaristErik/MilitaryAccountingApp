@@ -12,7 +12,7 @@ import com.example.militaryaccountingapp.presenter.utils.ui.ext.load
 import com.google.android.material.checkbox.MaterialCheckBox
 
 class UsersFilterAdapter(
-    private val onChange: ((Int, Boolean) -> Unit)?,
+    private val onChange: ((String, Boolean) -> Unit)?,
 ) : ListAdapter<UserFilterUi, UserViewHolder>(UsersFilterDiffCallback) {
 
     init {
@@ -41,14 +41,14 @@ class UsersFilterAdapter(
 
         fun bind(
             data: UserFilterUi,
-            onChange: ((Int, Boolean) -> Unit)?,
+            onChange: ((String, Boolean) -> Unit)?,
         ) = binding.run {
             checkbox.isChecked = data.checked
             title.text = data.name
             count.text = data.count.toString()
 
-            icon.transitionName = TransitionUtils.imageTransitionName(data.id.toString())
-            icon.load(data.imageUrl)
+            icon.transitionName = TransitionUtils.imageTransitionName(data.id)
+            data.imageUrl?.let { icon.load(it) }
 
             root.setOnClickListener {
                 checkbox.isChecked = !checkbox.isChecked

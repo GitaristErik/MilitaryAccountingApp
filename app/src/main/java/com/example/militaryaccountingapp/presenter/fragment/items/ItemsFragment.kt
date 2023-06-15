@@ -60,9 +60,9 @@ class ItemsFragment(
                 viewModel.changeSortType(it)
             }
         ).apply {
-            updatingSpaceTopBasedOnView(binding.root) {
+/*            updatingSpaceTopBasedOnView(binding.root) {
                 resources.getDimensionPixelSize(R.dimen.height_tabs)
-            }
+            }*/
         }
     }
 

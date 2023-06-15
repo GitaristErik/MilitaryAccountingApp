@@ -116,7 +116,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     private var currentUser: User? = null
     override suspend fun currentUser(): User? {
-        if (currentUser == null) {
+//        if (currentUser == null) {
             currentUser = firebaseAuth.currentUser?.let {
                 when (val result = storage.load(it.uid)) {
                     is Results.Success -> {
@@ -139,7 +139,7 @@ class AuthRepositoryImpl @Inject constructor(
                     }
                 }
             }
-        }
+//        }
         return currentUser
     }
 

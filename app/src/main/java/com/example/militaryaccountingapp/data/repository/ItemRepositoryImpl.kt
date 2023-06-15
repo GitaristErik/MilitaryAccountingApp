@@ -1,23 +1,27 @@
 package com.example.militaryaccountingapp.data.repository
 
-import com.example.militaryaccountingapp.data.helper.ResultHelper.resultWrapper
 import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWrapper
+import com.example.militaryaccountingapp.domain.entity.data.Action
+import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.domain.entity.data.Item
 import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.UserPermission
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.CategoryRepository
+import com.example.militaryaccountingapp.domain.repository.HistoryRepository
 import com.example.militaryaccountingapp.domain.repository.ItemRepository
 import com.example.militaryaccountingapp.domain.repository.PermissionRepository
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
+import timber.log.Timber
 import javax.inject.Inject
 
 class ItemRepositoryImpl @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val currentUserUseCase: CurrentUserUseCase,
     private val permissionRepository: PermissionRepository,
+    private val historyRepository: HistoryRepository
 ) : ItemRepository {
 
     companion object {
@@ -36,6 +40,7 @@ class ItemRepositoryImpl @Inject constructor(
         categoryRepository.getCategory(item.parentId ?: item.userId!!)
     }) { parentCategory ->
         item.allParentIds = parentCategory.allParentIds + parentCategory.id
+        item.allParentNames = parentCategory.allParentNames + parentCategory.name
         val ref = collection.document()
         item.id = ref.id
 
@@ -49,15 +54,34 @@ class ItemRepositoryImpl @Inject constructor(
             val userPermission = UserPermission(
                 userId = item.userId!!,
                 itemId = item.id,
-                isCanShare = true,
-                isCanShareForWrite = true,
-                isCanWrite = true,
+                canShare = true,
+                canShareForWrite = true,
+                canWrite = true,
             )
             permissionRepository.createPermissionByParent(userPermission, parentCategory.id)
+
+            val action = Action(
+                userId = item.userId!!,
+                itemId = item.id,
+                action = ActionType.CREATE,
+            )
+            historyRepository.addToHistory(action)
             // return result
             Results.Success(item)
         }
     }
+
+    override suspend fun getItems(
+        itemsIds: List<String>
+    ): Results<List<Item>> = safetyResultWrapper({
+        collection
+            .whereIn("id", itemsIds)
+            .get()
+            .await()
+    }) {
+        Results.Success(it.toObjects(Item::class.java))
+    }
+
 
     override suspend fun getItemsCount(parentId: String): Results<Long> = safetyResultWrapper({
         collection
@@ -75,7 +99,40 @@ class ItemRepositoryImpl @Inject constructor(
             collection.document(id)
                 .update(query)
                 .await()
-        }) { Results.Success(null) }
+        }) {
+            currentUserUseCase()?.let { user ->
+                var countParamsToUpdate = query.size
+                if (query.containsKey("count")) {
+                    countParamsToUpdate--
+                    (getItem(id) as? Results.Success)?.data?.let { oldItem ->
+                        val count = oldItem.count - query["count"] as Int
+                        (if (count < 0) ActionType.DECREASE_COUNT
+                        else if (count > 0) ActionType.INCREASE_COUNT
+                        else null)?.let { type ->
+                            val action = Action(
+                                userId = user.id,
+                                itemId = id,
+                                action = type,
+                                value = count
+                            )
+                            historyRepository.addToHistory(action)
+                        }
+                    }
+                }
+                if (countParamsToUpdate > 0) {
+                    val action = Action(
+                        userId = user.id,
+                        itemId = id,
+                        action = ActionType.UPDATE,
+                    )
+                    historyRepository.addToHistory(action)
+                }
+            }
+
+
+
+            Results.Success(null)
+        }
 
 
     override suspend fun deleteItem(id: String): Results<Void?> {
@@ -85,21 +142,50 @@ class ItemRepositoryImpl @Inject constructor(
                 .await()
         }) {
             // TODO delete images from storage
+            currentUserUseCase()?.let { user ->
+                val action = Action(
+                    userId = user.id,
+                    itemId = id,
+                    action = ActionType.DELETE,
+                )
+                historyRepository.addToHistory(action)
+            }
             Results.Success(null)
         }
     }
 
-    override suspend fun getItem(id: String): Results<Item> {
-        return resultWrapper(
-            collection.document(id)
-                .get()
-                .await()
-        ) {
-            when (val item = it.toObject(Item::class.java)) {
-                null -> Results.Failure(ClassCastException("Error while casting item"))
-                else -> Results.Success(item)
-            }
+    override suspend fun getItem(id: String): Results<Item> = safetyResultWrapper({
+        Timber.d("getItem, id: $id")
+        collection.document(id)
+            .get()
+            .await()
+    }) {
+        when (val item = it.toObject(Item::class.java)) {
+            null -> Results.Failure(ClassCastException("Error while casting item"))
+            else -> Results.Success(item)
         }
+    }
+
+    override suspend fun changeRules(
+        elementId: String,
+        userId: String,
+        canRead: Boolean,
+        canEdit: Boolean,
+        canShareRead: Boolean,
+        canShareEdit: Boolean
+    ) {
+        if (canRead) permissionRepository.updatePermission(
+            UserPermission(
+                itemId = elementId,
+                userId = userId,
+                canWrite = canEdit,
+                canShare = canShareRead,
+                canShareForWrite = canShareEdit
+            )
+        ) else permissionRepository.deletePermission(
+            userId = userId,
+            itemId = elementId
+        )
     }
 
     /*

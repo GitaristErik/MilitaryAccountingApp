@@ -7,6 +7,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.esafirm.imagepicker.features.ImagePickerLauncher
@@ -22,6 +23,7 @@ import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import com.example.militaryaccountingapp.presenter.utils.image.CarouselHelper
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.imaginativeworld.whynotimagecarousel.listener.CarouselOnScrollListener
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
@@ -46,19 +48,22 @@ class AddOrEditCategoryFragment :
         setupCodes()
         setupTitle()
         setupDescription()
+        observeCustomData2()
     }
 
-    override suspend fun observeCustomData() {
-        viewModel.dataImages
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .collect {
-                CarouselHelper.renderImagesCarousel(
-                    binding.carousel,
-                    binding.carouselEmpty,
-                    imageUrls = it,
-                    binding.buttonRemoveCurrentImage,
-                )
-            }
+    private fun observeCustomData2() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.dataImages
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+                .collect {
+                    CarouselHelper.renderImagesCarousel(
+                        binding.carousel,
+                        binding.carouselEmpty,
+                        imageUrls = it,
+                        buttonRemoveCurrentImage = binding.buttonRemoveCurrentImage,
+                    )
+                }
+        }
     }
 
 //    private var isDataInit = false

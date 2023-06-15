@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -17,21 +18,25 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentItemBinding
 import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
+import com.example.militaryaccountingapp.domain.entity.user.UserPermission
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.details.DetailsItemViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.edit.ModalBottomSheetShare
 import com.example.militaryaccountingapp.presenter.model.LastChangedUi
+import com.example.militaryaccountingapp.presenter.model.UserSearchUi
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
+import com.example.militaryaccountingapp.presenter.shared.adapter.UsersSearchAdapter
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChart
 import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
-import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
 import com.example.militaryaccountingapp.presenter.utils.common.ext.asFormattedDateString
 import com.example.militaryaccountingapp.presenter.utils.image.CarouselHelper
 import com.github.mikephil.charting.charts.Chart
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,24 +53,59 @@ class DetailsItemFragment :
         setupCodes()
         setupActionBar()
         setupHistorySpinner()
-//        setupFab()
+        setupUsers()
+        setupMoreButtons()
+        setupShareFragment()
     }
 
-    private fun setupFab() {
-        (requireActivity() as? FabScreen)?.run {
-            showFab()
-            setOnClickFabListener {
-                (viewModel.data.value.item as Results.Success).data.let {
-                    findNavController().navigate(
-                        DetailsCategoryFragmentDirections.actionCategoryFragmentToAddFragment(
-                            elementType = Data.Type.ITEM,
-                            parentId = it.id
+    private fun setupMoreButtons() {
+        binding.lastChangedBtnAll.setOnClickListener {
+            findNavController().navigate(DetailsCategoryFragmentDirections.actionCategoryFragmentToNavigationHistory())
+        }
+    }
+
+
+    private val usersAdapter by lazy {
+        UsersSearchAdapter { user ->
+            viewModel.loadUserPermission(userId = user.id) { permission, id ->
+                log.d("permission is laoded!! id: $id  | $permission")
+                if (permission is Results.Success) {
+                    val nav =
+                        DetailsItemFragmentDirections.actionItemFragmentToModalBottomSheetShare(
+                            userId = user.id,
+                            permission = permission.data,
+                            itemId = id
                         )
-                    )
+                    findNavController().navigate(nav)
                 }
             }
         }
     }
+
+    private fun setupUsers() {
+        binding.rvShare.adapter = usersAdapter
+        binding.rvShare.addItemDecoration(
+            MaterialDividerItemDecoration(
+                requireContext(),
+                MaterialDividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
+    private fun setupShareFragment() {
+        setFragmentResultListener(ModalBottomSheetShare.REQUEST_KEY) { key, bundle ->
+            val perm = bundle.getSerializable(ModalBottomSheetShare.PERMISSION) as UserPermission?
+            val userId = bundle.getString(ModalBottomSheetShare.USER_ID)!!
+            viewModel.setRules(
+                userId = userId,
+                canRead = perm != null,
+                canEdit = perm?.canWrite ?: false,
+                canShareRead = perm?.canShare ?: false,
+                canShareEdit = perm?.canShareForWrite ?: false,
+            )
+        }
+    }
+
 
     private fun setupActionBar() {
         with(requireActivity() as AppCompatActivity) {
@@ -150,10 +190,26 @@ class DetailsItemFragment :
     }
 
     override fun render(data: ViewData) {
+        log.d("render in details ITEMs fragment: codes: ${data.codes} users: ${data.users} lastChanged: ${data.lastChanged} isDeleted: ${data.isDeleted}")
         codesAdapter.submitList(data.codes.toList())
         renderItem(data.item)
         renderLastChanged(data.lastChanged)
         renderDeleted(data.isDeleted)
+        renderUsers(data.users)
+    }
+
+    private fun renderUsers(users: Results<List<UserSearchUi>>) {
+        when (users) {
+            is Results.Success -> {
+                usersAdapter.submitList(users.data)
+            }
+
+            is Results.Failure -> {
+                users.throwable.localizedMessage?.let { showToast(it) }
+            }
+
+            else -> {}
+        }
     }
 
     private fun renderDeleted(deleted: Results<Void?>) {
@@ -174,13 +230,19 @@ class DetailsItemFragment :
     private fun renderLastChanged(lastChanged: Results<LastChangedUi>) = with(binding) {
         if (lastChanged is Results.Success) {
             lastChangedLayout.root.visibility = View.VISIBLE
+            lastChangedLabel.visibility = View.VISIBLE
+            lastChangedBtnAll.visibility = View.VISIBLE
             lastChangedLayout.date.text = lastChanged.data.timestamp.asFormattedDateString()
             lastChangedLayout.user.text = lastChanged.data.name
             lastChangedLayout.rank.text = lastChanged.data.rank
-            Glide.with(root)
-                .load(lastChanged.data.avatarUrl)
-                .into(lastChangedLayout.icon)
+            if (lastChanged.data.avatarUrl?.isNotEmpty() == true) {
+                Glide.with(root)
+                    .load(lastChanged.data.avatarUrl)
+                    .into(lastChangedLayout.icon)
+            }
         } else {
+            lastChangedLabel.visibility = View.GONE
+            lastChangedBtnAll.visibility = View.GONE
             lastChangedLayout.root.visibility = View.GONE
         }
     }
@@ -218,7 +280,7 @@ class DetailsItemFragment :
         count.text = item.count.toString()
         toolbar.title = item.name
         description.text = item.description
-        location.text = item.allParentIds.joinToString(separator = " -> ")
+        location.text = item.allParentNames.joinToString(separator = " -> ")
     }
 
     private fun setupImages() {

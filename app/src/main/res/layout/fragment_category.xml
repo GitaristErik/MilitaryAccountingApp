@@ -40,10 +40,10 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/padding.fragment.bottom"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
             tools:context=".presenter.fragment.edit.AddOrEditFragment">
@@ -205,22 +205,20 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintTop_toBottomOf="@id/qr_image" />
 
-            <View
+            <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/count_chart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="?attr/colorTertiaryContainer"
-                app:layout_constraintBottom_toTopOf="@id/count_btn_all"
-                app:layout_constraintTop_toBottomOf="@id/count_label" />
+                android:layout_height="500dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/count_group" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/count_btn_all"
                 style="@style/Widget.Material3.Button.TonalButton.Icon"
                 android:layout_width="wrap_content"
-                android:layout_gravity="end"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginTop="@dimen/margin.small.extra"
                 android:text="@string/category.count.more.title"
                 app:icon="@drawable/ic_arrow_forward_24dp"
@@ -232,6 +230,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/history_label"
                 style="@style/TextAppearance.Material3.LabelLarge"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin.standard"
@@ -242,6 +241,7 @@
 
             <Spinner
                 android:id="@+id/history_spinner"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -253,6 +253,7 @@
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/history_chart"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:layout_marginTop="8dp"
@@ -262,6 +263,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/history_btn_all"
                 style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -270,6 +272,26 @@
                 app:iconTint="?colorOnSecondaryContainer"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintTop_toBottomOf="@id/history_chart" />
+
+
+            <!-- SHARE -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/share_label"
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.standard"
+                android:text="@string/category.share.label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin.small"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_search_user" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 

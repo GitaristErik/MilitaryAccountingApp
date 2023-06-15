@@ -70,7 +70,6 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin.standard"
         android:nestedScrollingEnabled="true"
         app:defaultNavHost="true"
         app:layout_anchor="@id/appBarLayout"

@@ -66,7 +66,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             is Int -> toast.setText(message)
             is String -> toast.setText(message)
         }
-        toast.show()
+//        toast.show()
     }
 
     private var toastMessage: String = ""

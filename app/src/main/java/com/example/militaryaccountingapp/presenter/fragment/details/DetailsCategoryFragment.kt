@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -18,12 +18,18 @@ import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentCategoryBinding
 import com.example.militaryaccountingapp.domain.entity.data.Category
 import com.example.militaryaccountingapp.domain.entity.data.Data
+import com.example.militaryaccountingapp.domain.entity.user.UserPermission
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
 import com.example.militaryaccountingapp.presenter.fragment.details.DetailsCategoryViewModel.ViewData
+import com.example.militaryaccountingapp.presenter.fragment.edit.ModalBottomSheetShare
 import com.example.militaryaccountingapp.presenter.model.LastChangedUi
+import com.example.militaryaccountingapp.presenter.model.UserSearchUi
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import com.example.militaryaccountingapp.presenter.shared.adapter.TabsViewPagerAdapter
+import com.example.militaryaccountingapp.presenter.shared.adapter.UsersSearchAdapter
+import com.example.militaryaccountingapp.presenter.shared.chart.count.ChartPieBinder
+import com.example.militaryaccountingapp.presenter.shared.chart.count.ListenerValueSelected
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChart
@@ -33,7 +39,9 @@ import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
 import com.example.militaryaccountingapp.presenter.utils.common.ext.asFormattedDateString
 import com.example.militaryaccountingapp.presenter.utils.image.CarouselHelper
 import com.github.mikephil.charting.charts.Chart
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,6 +63,61 @@ class DetailsCategoryFragment :
         observeCustomData2()
         setupViewPager()
         setupFab()
+        setupMoreButtons()
+        setupUsers()
+        setupShareFragment()
+    }
+
+    private fun setupMoreButtons() {
+        binding.lastChangedBtnAll.setOnClickListener {
+            findNavController().navigate(DetailsCategoryFragmentDirections.actionCategoryFragmentToNavigationHistory())
+        }
+        binding.countBtnAll.setOnClickListener {
+            findNavController().navigate(DetailsCategoryFragmentDirections.actionCategoryFragmentToNavigationStatistics())
+        }
+    }
+
+
+    private val usersAdapter by lazy {
+        UsersSearchAdapter { user ->
+            viewModel.loadUserPermission(userId = user.id) { permission, id ->
+                log.d("permission is laoded!! id: $id  | $permission")
+                if (permission is Results.Success) {
+                    val nav =
+                        DetailsCategoryFragmentDirections.actionCategoryFragmentToModalBottomSheetShare(
+                            userId = user.id,
+                            permission = permission.data,
+                            categoryId = id
+                        )
+                    findNavController().navigate(nav)
+                }
+            }
+        }
+    }
+
+
+    private fun setupUsers() {
+        binding.rvShare.adapter = usersAdapter
+        binding.rvShare.addItemDecoration(
+            MaterialDividerItemDecoration(
+                requireContext(),
+                MaterialDividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
+    private fun setupShareFragment() {
+        setFragmentResultListener(ModalBottomSheetShare.REQUEST_KEY) { key, bundle ->
+            val perm = bundle.getSerializable(ModalBottomSheetShare.PERMISSION) as UserPermission?
+            val userId = bundle.getString(ModalBottomSheetShare.USER_ID)!!
+            viewModel.setRules(
+                userId = userId,
+                canRead = perm != null,
+                canEdit = perm?.canWrite ?: false,
+                canShareRead = perm?.canShare ?: false,
+                canShareEdit = perm?.canShareForWrite ?: false,
+            )
+        }
     }
 
     private fun setupFab() {
@@ -204,9 +267,38 @@ class DetailsCategoryFragment :
     }
 
     override fun render(data: ViewData) {
+        log.d("render in details category fragment: codes: ${data.codes} users: ${data.users} lastChanged: ${data.lastChanged} isDeleted: ${data.isDeleted}")
         codesAdapter.submitList(data.codes.toList())
         renderLastChanged(data.lastChanged)
         renderDeleted(data.isDeleted)
+        renderUsers(data.users)
+        renderCountChart(data.chartData ?: return)
+    }
+
+    private val countChartUsers by lazy {
+        ChartPieBinder(requireContext(), binding.countChart, ListenerValueSelected).apply {
+            bind("All Items")
+        }
+    }
+
+    private fun renderCountChart(
+        entries: List<PieEntry>
+    ) {
+        countChartUsers.setData(entries)
+    }
+
+    private fun renderUsers(users: Results<List<UserSearchUi>>) {
+        when (users) {
+            is Results.Success -> {
+                usersAdapter.submitList(users.data)
+            }
+
+            is Results.Failure -> {
+                users.throwable.localizedMessage?.let { showToast(it) }
+            }
+
+            else -> {}
+        }
     }
 
     private fun renderDeleted(deleted: Results<Unit>) {
@@ -227,14 +319,20 @@ class DetailsCategoryFragment :
     private fun renderLastChanged(lastChanged: Results<LastChangedUi>) = with(binding) {
         if (lastChanged is Results.Success) {
             lastChangedLayout.root.visibility = View.VISIBLE
+            lastChangedLabel.visibility = View.VISIBLE
+            lastChangedBtnAll.visibility = View.VISIBLE
             lastChangedLayout.date.text = lastChanged.data.timestamp.asFormattedDateString()
             lastChangedLayout.user.text = lastChanged.data.name
             lastChangedLayout.rank.text = lastChanged.data.rank
-            Glide.with(root)
-                .load(lastChanged.data.avatarUrl)
-                .into(lastChangedLayout.icon)
+            if (lastChanged.data.avatarUrl?.isNotEmpty() == true) {
+                Glide.with(root)
+                    .load(lastChanged.data.avatarUrl)
+                    .into(lastChangedLayout.icon)
+            }
         } else {
             lastChangedLayout.root.visibility = View.GONE
+            lastChangedLabel.visibility = View.GONE
+            lastChangedBtnAll.visibility = View.GONE
         }
     }
 
@@ -259,11 +357,7 @@ class DetailsCategoryFragment :
 
             is Results.Failure -> {
                 renderSpinner(false)
-                Toast.makeText(
-                    context,
-                    category.throwable.message ?: "Error while loading category",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(category.throwable.message ?: "Error while loading category")
             }
 
             else -> {
@@ -275,7 +369,7 @@ class DetailsCategoryFragment :
     private fun renderCategory(category: Category) = with(binding) {
         toolbar.title = category.name
         description.text = category.description
-        location.text = category.allParentIds.joinToString(separator = " -> ")
+        location.text = category.allParentNames.joinToString(separator = " -> ")
     }
 
 
@@ -290,7 +384,7 @@ class DetailsCategoryFragment :
     private val codesAdapter by lazy {
         BarCodeAdapter { barcode ->
             findNavController().navigate(
-                DetailsItemFragmentDirections.actionItemFragmentToModalBottomSheetCodeDetails(
+                DetailsCategoryFragmentDirections.actionCategoryFragmentToModalBottomSheetCodeDetails(
                     code = barcode,
                     isRenderDelete = false
                 )
@@ -326,7 +420,8 @@ class DetailsCategoryFragment :
         invalidate()
     }
 
-    private fun setupHistorySpinner() {
+    private fun setupHistorySpinner() {}
+    private fun setupHistorySpinner2() {
         binding.historySpinner.apply {
             this.adapter = ArrayAdapter.createFromResource(
                 this@DetailsCategoryFragment.requireContext(),

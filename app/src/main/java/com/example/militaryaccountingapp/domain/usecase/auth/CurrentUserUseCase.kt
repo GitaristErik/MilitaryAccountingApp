@@ -7,5 +7,5 @@ import javax.inject.Inject
 open class CurrentUserUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    open suspend operator fun invoke(): User? = authRepository.currentUser()
+    open suspend operator fun invoke(): User? =authRepository.currentUser()
 }

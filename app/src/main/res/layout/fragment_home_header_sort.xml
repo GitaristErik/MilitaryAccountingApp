@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin.small"
     android:background="@drawable/background_header_sort_tools"
     android:orientation="horizontal">
+<!--    android:layout_marginTop="@dimen/margin.small"-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_order_by"
@@ -25,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
+        android:visibility="invisible"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical|start"

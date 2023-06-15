@@ -14,12 +14,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ActivityMainBinding
 import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
+import com.example.militaryaccountingapp.presenter.shared.delegation.SearchableScreenContract
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.internal.ToolbarUtils
+import com.google.android.material.search.SearchBar
+import com.google.android.material.search.SearchView
 import com.google.android.material.shape.MaterialShapeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,7 +31,7 @@ import timber.log.Timber
 import java.time.Duration
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), FabScreen {
+class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -102,6 +106,11 @@ class MainActivity : AppCompatActivity(), FabScreen {
                 ) {
                     componentsHelper.showFab()
                 }
+
+                if (destination.id == R.id.usersListFragment) {
+                    componentsHelper.showSearch()
+                    binding.searchBar.setPadding(16, 0,0,0)
+                }
             }
 
 
@@ -129,19 +138,6 @@ class MainActivity : AppCompatActivity(), FabScreen {
         return navHostFragment?.navController
     }
 
-    override fun showFab() {
-        ComponentsHelper().showFab()
-    }
-
-    override fun hideFab() {
-        ComponentsHelper().hideFab()
-    }
-
-    override fun setOnClickFabListener(onFabClick: ((View) -> Unit)) {
-        binding.fab.setOnClickListener {
-            onFabClick(it)
-        }
-    }
 
     private inner class ComponentsHelper {
         @SuppressLint("RestrictedApi")
@@ -255,5 +251,20 @@ class MainActivity : AppCompatActivity(), FabScreen {
     companion object {
         private const val DURATION_SEARCH = 300L
     }
+
+
+    override fun showFab() = ComponentsHelper().showFab()
+    override fun hideFab() = ComponentsHelper().hideFab()
+    override fun setOnClickFabListener(onFabClick: ((View) -> Unit)) {
+        binding.fab.setOnClickListener {
+            onFabClick(it)
+        }
+    }
+
+    override fun showSearch() = ComponentsHelper().showSearch()
+    override fun hideSearch() = ComponentsHelper().hideSearch()
+    override fun getSearchView(): SearchView = binding.searchView
+    override fun getSearchBar(): SearchBar = binding.searchBar
+    override fun searchViewList(): RecyclerView = binding.rvSuggestion
 }
 

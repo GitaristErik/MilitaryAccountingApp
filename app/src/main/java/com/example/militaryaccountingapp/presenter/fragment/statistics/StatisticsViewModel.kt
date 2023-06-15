@@ -1,5 +1,6 @@
 package com.example.militaryaccountingapp.presenter.fragment.statistics
 
+import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
@@ -7,8 +8,11 @@ import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChartItem
 import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
+import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -21,6 +25,7 @@ class StatisticsViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewDa
 
     data class ViewData(
         val countChartType: ChartType? = null,
+        val countChartData: List<PieEntry>? = null,
         val historyChartType: ChartData? = null,
     )
 
@@ -34,14 +39,23 @@ class StatisticsViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewDa
     }
 
     fun changeCountChartType(chartType: KClass<out ChartType>?) {
-        val chart = when (chartType) {
-            ChartType.Count::class -> ChartType.Count()
-            ChartType.Users::class -> ChartType.Users()
-            else -> null
+        when (chartType) {
+            ChartType.Count::class -> loadCountChart()
+            ChartType.Users::class -> loadUsersChart()
+            else -> _data.update { it.copy(countChartType = null) }
         }
-
-        _data.update { it.copy(countChartType = chart) }
     }
+
+    private fun loadCountChart() {
+        _data.update { it.copy(countChartType = ChartType.Count)}//, countChartData = chartData) }
+    }
+
+
+    var usersChartData: List<PieEntry>? = null
+    private fun loadUsersChart() {
+        _data.update { it.copy(countChartType = ChartType.Users, countChartData = usersChartData) }
+    }
+
 
     fun changeHistoryChartType(chartType: KClass<out ChartData>?) {
         val data = List(10) {
@@ -73,9 +87,9 @@ class StatisticsViewModel @Inject constructor() : BaseViewModel<ViewData>(ViewDa
 
     sealed class ChartType() {
 
-        class Count() : ChartType()
+        object Count : ChartType()
 
-        class Users() : ChartType()
+        object Users : ChartType()
 
     }
 }

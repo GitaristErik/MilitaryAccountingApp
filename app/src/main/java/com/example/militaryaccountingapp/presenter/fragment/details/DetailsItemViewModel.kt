@@ -3,13 +3,18 @@ package com.example.militaryaccountingapp.presenter.fragment.details
 import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.domain.entity.data.Item
+import com.example.militaryaccountingapp.domain.entity.user.User
+import com.example.militaryaccountingapp.domain.entity.user.UserPermission
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.HistoryRepository
 import com.example.militaryaccountingapp.domain.repository.ItemRepository
+import com.example.militaryaccountingapp.domain.repository.PermissionRepository
 import com.example.militaryaccountingapp.domain.repository.UserRepository
+import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.details.DetailsItemViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.LastChangedUi
+import com.example.militaryaccountingapp.presenter.model.UserSearchUi
 import com.example.militaryaccountingapp.presenter.shared.chart.history.ChartData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.DayData
 import com.example.militaryaccountingapp.presenter.shared.chart.history.HistoryChartItem
@@ -34,6 +39,8 @@ class DetailsItemViewModel @Inject constructor(
     private val itemsRepository: ItemRepository,
     private val historyRepository: HistoryRepository,
     private val userRepository: UserRepository,
+    private val permissionRepository: PermissionRepository,
+    private val currentUserUseCase: CurrentUserUseCase,
 ) : BaseViewModel<ViewData>(ViewData()) {
 
     init {
@@ -46,6 +53,7 @@ class DetailsItemViewModel @Inject constructor(
         val item: Results<Item> = Results.Loading(null),
         val lastChanged: Results<LastChangedUi> = Results.Loading(null),
         val isDeleted: Results<Void?> = Results.Loading(null),
+        val users: Results<List<UserSearchUi>> = Results.Loading(),
     )
 
     private val _dataImages: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
@@ -77,41 +85,68 @@ class DetailsItemViewModel @Inject constructor(
     }
 
 
+    private fun fetchUsersNetwork() {
+        viewModelScope.launch(Dispatchers.IO) {
+            currentUserUseCase()?.let { user ->
+                val res = resultWrapper(
+                    userRepository.getUsers(user.usersInNetwork)
+                ) {
+                    Results.Success(mapToUserSearchUi(it))
+                }
+                log.e("fetchUsersNetwork: $res")
+                _data.update { viewData -> viewData.copy(users = res) }
+            }
+        }
+    }
+
+    private fun mapToUserSearchUi(it: List<User>): List<UserSearchUi> = it.map { user ->
+        UserSearchUi(
+            id = user.id,
+            fullName = user.fullName,
+            name = user.name,
+            rank = user.rank,
+            imageUrl = user.imageUrl,
+        )
+    }
+
+
     private fun fetch(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val item = itemsRepository.getItem(id)
-            val barcodes = (item as? Results.Success)?.data?.barCodes?.toSet() ?: emptySet()
+            val barcodes = (item as? Results.Success)
+                ?.data?.barCodes?.toSet() ?: emptySet()
             _data.update {
                 it.copy(item = item, codes = barcodes)
             }
             getLastChanged(id)
+            fetchUsersNetwork()
         }
     }
 
-    private fun getLastChanged(itemId: String) {
-        safeRunJobWithLoading(Dispatchers.IO) {
-            val res: Results<LastChangedUi> = resultWrapper(
-                historyRepository.getLastAction(
-                    id = itemId,
-                    element = HistoryRepository.ActionElement.ITEM
-                )
-            ) {
-                resultWrapper(
-                    userRepository.getUser(it.userId)
-                ) { user ->
-                    Results.Success(
-                        LastChangedUi(
-                            timestamp = it.timestamp,
-                            name = user.name,
-                            rank = user.rank,
-                            avatarUrl = user.imageUrl
-                        )
+    private suspend fun getLastChanged(itemId: String) {
+//        safeRunJobWithLoading(Dispatchers.IO) {
+        val res: Results<LastChangedUi> = resultWrapper(
+            historyRepository.getLastAction(
+                id = itemId,
+                element = HistoryRepository.ActionElement.ITEM
+            )
+        ) {
+            resultWrapper(
+                userRepository.getUser(it.userId)
+            ) { user ->
+                Results.Success(
+                    LastChangedUi(
+                        timestamp = it.timestamp,
+                        name = user.name,
+                        rank = user.rank,
+                        avatarUrl = user.imageUrl
                     )
-                }
+                )
             }
-
-            _data.update { it.copy(lastChanged = res) }
         }
+
+        _data.update { it.copy(lastChanged = res) }
+//        }
     }
 
     fun deleteItem() {
@@ -156,6 +191,41 @@ class DetailsItemViewModel @Inject constructor(
 
     fun handleShowedDeleted() {
         _data.update { it.copy(isDeleted = Results.Loading(null)) }
+    }
+
+    fun setRules(
+        userId: String,
+        canRead: Boolean,
+        canEdit: Boolean,
+        canShareRead: Boolean,
+        canShareEdit: Boolean
+    ) {
+        val elementId = (_data.value.item as? Results.Success)?.data?.id ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            itemsRepository.changeRules(
+                elementId,
+                userId,
+                canRead,
+                canEdit,
+                canShareRead,
+                canShareEdit
+            )
+        }
+    }
+
+    fun loadUserPermission(
+        userId: String,
+        handleOnLoad: (Results<UserPermission?>, String) -> Unit
+    ) {
+        val elementId = (_data.value.item as? Results.Success)?.data?.id ?: return
+        viewModelScope.launch {
+            handleOnLoad(
+                permissionRepository.getPermission(
+                    itemId = elementId,
+                    userId = userId
+                ), elementId
+            )
+        }
     }
 
 }

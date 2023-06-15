@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/margin.standard"
         app:shapeAppearance="@style/ShapeAppearanceOverlay.App.Circle"
-        tools:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/ic_avatar_default" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"

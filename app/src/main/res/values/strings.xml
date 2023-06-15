@@ -99,6 +99,7 @@
     <string name="category.changed.more.title">See More</string>
     <string name="category.history.title">History</string>
     <string name="category.history.more.title">See More</string>
+    <string name="category.share.label">Share</string>
 
     <!-- Item fragment -->
     <string name="item.title">Item</string>
@@ -111,6 +112,7 @@
     <string name="item.history.more.title">See More</string>
     <string name="item.description.label">Description</string>
     <string name="item.location.label">Location</string>
+    <string name="item.share.label">Share</string>
 
     <!-- :Add fragment Tabs title -->
     <string name="tab_title_category">Category</string>
@@ -297,5 +299,13 @@
     <string name="auth.invalid.password">Password must be > 6 characters</string>
     <string name="auth.with.facebook">Continue with Facebook</string>
     <string name="auth.with.googe">Continue with Google</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="share_this_element">Set access rules for this user</string>
+    <string name="share.set.rules">Update access rules</string>
+    <string name="share.check.read">Can read this element</string>
+    <string name="share.check.edit">Can edit this element</string>
+    <string name="share.check.edit.share">Can share for edit with another users</string>
+    <string name="share.check.read.share">Can share with another users</string>
 
 </resources>

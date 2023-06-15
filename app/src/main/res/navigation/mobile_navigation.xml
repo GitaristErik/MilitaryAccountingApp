@@ -60,6 +60,15 @@
         <action
             android:id="@+id/action_categoryFragment_self"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_modalBottomSheetShare"
+            app:destination="@id/modalBottomSheetShare" />
+        <action
+            android:id="@+id/action_categoryFragment_to_navigation_statistics"
+            app:destination="@id/navigation_statistics" />
+        <action
+            android:id="@+id/action_categoryFragment_to_navigation_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
     <fragment
@@ -98,6 +107,12 @@
         <action
             android:id="@+id/action_itemFragment_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_itemFragment_to_modalBottomSheetShare"
+            app:destination="@id/modalBottomSheetShare" />
+        <action
+            android:id="@+id/action_itemFragment_to_navigation_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
 
@@ -129,6 +144,9 @@
             app:destination="@id/navigation_auth"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_profile_to_usersListFragment"
+            app:destination="@id/usersListFragment" />
 
     </fragment>
 
@@ -146,7 +164,26 @@
         android:id="@+id/detailsUserFragment"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserFragment"
         android:label="@string/profile.details.title"
-        tools:layout="@layout/fragment_details_user" />
+        tools:layout="@layout/fragment_details_user" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="fullName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="rank"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
     <fragment
         android:id="@+id/addFragment"
@@ -279,5 +316,36 @@
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/usersListFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.profile.UsersListFragment"
+        android:label="fragment_users_list"
+        tools:layout="@layout/fragment_users_list" >
+        <action
+            android:id="@+id/action_usersListFragment_to_detailsUserFragment"
+            app:destination="@id/detailsUserFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/modalBottomSheetShare"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.edit.ModalBottomSheetShare"
+        android:label="ModalBottomSheetShare" >
+        <argument
+            android:name="permission"
+            app:argType="com.example.militaryaccountingapp.domain.entity.user.UserPermission"
+            app:nullable="true" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="itemId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="categoryId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 
 </navigation>

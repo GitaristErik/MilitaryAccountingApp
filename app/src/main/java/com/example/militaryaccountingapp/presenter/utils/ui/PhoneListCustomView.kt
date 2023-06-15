@@ -11,6 +11,7 @@ import com.example.militaryaccountingapp.databinding.ItemPhoneAddBinding
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
 import com.google.android.material.textfield.TextInputEditText
+import timber.log.Timber
 
 class PhoneListCustomView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
@@ -57,6 +58,7 @@ class PhoneListCustomView(context: Context, attrs: AttributeSet) : LinearLayout(
         foreachPhoneView { view, _ ->
             phones.add(view.text.toString())
         }
+        Timber.d(phones.toString())
         return phones
     }
 

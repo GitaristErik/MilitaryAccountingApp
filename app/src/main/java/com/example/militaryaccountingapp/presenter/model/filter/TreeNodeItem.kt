@@ -7,9 +7,9 @@ data class TreeNodeItem(
     override val nodeViewId: String,
     val child: List<TreeNodeItem>,
     val name: String,
-    val id: Int,
+    val id: String,
     val checked: Boolean = false,
-    val parentCategoryId: Int? = null,
+//    val parentCategoryId: String? = null,
     val isCategory: Boolean = false,
 ) : NodeData<TreeNodeItem> {
     override fun getNodeChild(): List<TreeNodeItem> = child

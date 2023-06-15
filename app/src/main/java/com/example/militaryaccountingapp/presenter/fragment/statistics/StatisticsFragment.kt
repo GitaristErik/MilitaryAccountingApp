@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentStatisticsBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
@@ -30,6 +31,7 @@ import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -47,13 +49,14 @@ class StatisticsFragment :
 //        setupFilterFragment()
         setupCountButtons()
         setupHistorySpinner()
+        observeCustomData2()
     }
 
     override fun render(data: ViewData) {
         log.d("render")
         when (data.countChartType) {
             is ChartType.Count -> renderCountChartItems()
-            is ChartType.Users -> renderCountChartUsers()
+            is ChartType.Users -> data.countChartData?.let(::renderCountChartUsers)
             else -> setupCountChart()
         }
         renderHistoryChart(data.historyChartType)
@@ -64,6 +67,9 @@ class StatisticsFragment :
         log.d("render")
         if (data.isFiltersSelected) {
             binding.countGroup.isEnabled = true
+            viewModel.usersChartData = data.usersUi
+                .filter { it.id in data.selectedUsersId }
+                .map { PieEntry(it.count.toFloat(), it.name, it.count.toString()) }
             viewModel.changeHistoryChartType(DayData::class)
         } else {
             binding.countGroup.clearChecked()
@@ -72,10 +78,18 @@ class StatisticsFragment :
         }
     }
 
-    override suspend fun observeCustomData() {
-        filterViewModel.data
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
-            .collect { renderFilter(it) }
+    /*    override suspend fun observeCustomData() {
+            filterViewModel.data
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { renderFilter(it) }
+        }*/
+
+    private fun observeCustomData2() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            filterViewModel.data
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { renderFilter(it) }
+        }
     }
 
     private fun setupCountButtons() {
@@ -118,7 +132,7 @@ class StatisticsFragment :
     }
 
     private fun renderCountChartUsers(
-        entries: List<PieEntry> = ChartPieBinder.getDatasetEntries(3, 10f)
+        entries: List<PieEntry>// = ChartPieBinder.getDatasetEntries(3, 10f)
     ) {
         binding.countChartViewUsers.visibility = View.VISIBLE
         binding.countChartViewItems.visibility = View.INVISIBLE
@@ -128,6 +142,7 @@ class StatisticsFragment :
     private fun renderCountChartItems(
         entries: List<TestData> = TestData.generateTestData()
     ) {
+        log.d("renderCountChartItems $entries")
         binding.countChartViewUsers.visibility = View.INVISIBLE
         binding.countChartViewItems.visibility = View.VISIBLE
         countChartItems.setData(
@@ -140,9 +155,9 @@ class StatisticsFragment :
         else chartData = data
 
         if (data == null) {
-            setHistoryChartNoDataText()
+//            setHistoryChartNoDataText()
         } else {
-            historyChart.displayData(data)
+//            historyChart.displayData(data)
         }
     }
 
@@ -160,7 +175,9 @@ class StatisticsFragment :
     }
 
 
-    private fun setupHistorySpinner() {
+    private fun setupHistorySpinner() {}
+
+    private fun setupHistorySpinner2() {
         binding.historySpinner.apply {
             this.adapter = ArrayAdapter.createFromResource(
                 this@StatisticsFragment.requireContext(),
