@@ -244,6 +244,7 @@
     <string name="profile.edit.title">Personal Info</string>
     <string name="profile.edit.change.avatar">Change Avatar</string>
     <string name="profile.edit.delete.avatar">Delete Avatar</string>
+    <string name="users.list.title">Search User</string>
 
 
     <!-- Scan fragment -->
@@ -307,5 +308,6 @@
     <string name="share.check.edit">Can edit this element</string>
     <string name="share.check.edit.share">Can share for edit with another users</string>
     <string name="share.check.read.share">Can share with another users</string>
+
 
 </resources>

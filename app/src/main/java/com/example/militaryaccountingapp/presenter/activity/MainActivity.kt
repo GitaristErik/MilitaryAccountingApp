@@ -90,8 +90,23 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
         componentsHelper.setupNavInsets()
         componentsHelper.setupFab(navController)
         componentsHelper.setSysInsets()
+        componentsHelper.setupBackButton()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in listOf(
+                    R.id.navigation_home,
+                    R.id.navigation_history,
+                    R.id.navigation_statistics,
+                    R.id.navigation_profile,
+                )
+            ) {
+                componentsHelper.showActionBar()
+                componentsHelper.showBottomNavigation()
+            } else {
+                componentsHelper.hideActionBar()
+                componentsHelper.hideBottomNavigation()
+            }
+
             if (destination.id == R.id.navigation_home) {
                 componentsHelper.setToolbarDrawableStart(R.drawable.flag_version4)
                 componentsHelper.showSearch()
@@ -109,23 +124,12 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
 
                 if (destination.id == R.id.usersListFragment) {
                     componentsHelper.showSearch()
-                    binding.searchBar.setPadding(16, 0,0,0)
+                    componentsHelper.showActionBar()
+                    componentsHelper.showHomeActionBar(true)
+                    binding.searchBar.setPadding(16, 0, 0, 0)
+                } else {
+                    componentsHelper.showHomeActionBar(false)
                 }
-            }
-
-
-            if (destination.id in listOf(
-                    R.id.navigation_home,
-                    R.id.navigation_history,
-                    R.id.navigation_statistics,
-                    R.id.navigation_profile,
-                )
-            ) {
-                componentsHelper.showActionBar()
-                componentsHelper.showBottomNavigation()
-            } else {
-                componentsHelper.hideActionBar()
-                componentsHelper.hideBottomNavigation()
             }
         }
     }
@@ -146,6 +150,12 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
                 it.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableResId, 0, 0, 0)
                 it.compoundDrawablePadding =
                     padding ?: resources.getDimensionPixelSize(R.dimen.padding_small_extra)
+            }
+        }
+
+        fun setupBackButton() {
+            binding.toolbar.setNavigationOnClickListener {
+                findNavController()?.navigateUp()
             }
         }
 
@@ -187,6 +197,12 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
 
         fun showActionBar() {
             supportActionBar?.show()
+        }
+
+        fun showHomeActionBar(isDisplay: Boolean) {
+            supportActionBar?.setHomeButtonEnabled(isDisplay)
+            supportActionBar?.setDisplayShowHomeEnabled(isDisplay)
+            supportActionBar?.setDisplayHomeAsUpEnabled(isDisplay)
         }
 
         fun hideBottomNavigation() {

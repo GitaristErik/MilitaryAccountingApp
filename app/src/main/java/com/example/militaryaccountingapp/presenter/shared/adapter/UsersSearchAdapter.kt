@@ -43,7 +43,7 @@ class UsersSearchAdapter(
             onClick: ((UserSearchUi) -> Unit)?
         ) = binding.run {
             rank.text = data.rank
-            name.text = data.rank
+            name.text = data.name
             fullName.text = data.fullName
 
             icon.transitionName = TransitionUtils.imageTransitionName(data.id)

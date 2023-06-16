@@ -319,7 +319,7 @@
     <fragment
         android:id="@+id/usersListFragment"
         android:name="com.example.militaryaccountingapp.presenter.fragment.profile.UsersListFragment"
-        android:label="fragment_users_list"
+        android:label="@string/users.list.title"
         tools:layout="@layout/fragment_users_list" >
         <action
             android:id="@+id/action_usersListFragment_to_detailsUserFragment"

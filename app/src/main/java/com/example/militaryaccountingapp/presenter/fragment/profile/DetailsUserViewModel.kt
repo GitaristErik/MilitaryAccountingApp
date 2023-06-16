@@ -57,15 +57,17 @@ class DetailsUserViewModel @Inject constructor(
                 val categories =
                     (categoryRepository.getCategories(categoriesIds) as Results.Success).data
                 val items = (itemRepository.getItems(itemsIds) as Results.Success).data
-                val nodes = FilterViewModel.findRootCategories(categories).map { category ->
-                    FilterViewModel.convertCategoryToTreeNodeItem(
-                        category,
-                        categories + items,
-                        cache = cache
-                    )
+                if((data.value.inNetwork as? Results.Success)?.data == true) {
+                    val nodes = FilterViewModel.findRootCategories(categories).map { category ->
+                        FilterViewModel.convertCategoryToTreeNodeItem(
+                            category,
+                            categories + items,
+                            cache = cache
+                        )
+                    }
+                    log.d("loadNodes | nodes: $nodes")
+                    _dataNodes.update { nodes }
                 }
-                log.d("loadNodes | nodes: $nodes")
-                _dataNodes.update { nodes }
             }
         }
     }
@@ -129,8 +131,9 @@ class DetailsUserViewModel @Inject constructor(
         (data.value.user as? Results.Success)?.data?.let { user ->
             viewModelScope.launch(Dispatchers.IO) {
                 currentUserUseCase()?.let { cUser ->
+                    log.d("executeMemberAction | user: $user | cUser: $cUser | isAdd: $isAdd")
                     val res = userRepository.updateCurrentUserInfo(
-                        user.id, mapOf(
+                        cUser.id, mapOf(
                             "usersInNetwork" to if (isAdd) {
                                 cUser.usersInNetwork.toSet().plus(user.id).toList()
                             } else {
@@ -138,6 +141,7 @@ class DetailsUserViewModel @Inject constructor(
                             }
                         )
                     )
+                    log.d("executeMemberAction | res: $res")
                     if (res is Results.Success) {
                         _toast.value = if (isAdd) "User add to your network!"
                         else "User remove from your network!"

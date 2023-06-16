@@ -24,31 +24,4 @@ interface ItemRepository {
     )
 
     suspend fun getItems(itemsIds: List<String>): Results<List<Item>>
-
-    /*
-
-        */
-/**
-     * @param limit group size (-1 - all)
-     * @param page page number (0 - first)
-     * @param parentId id of parent category (null - all)
-     * @param userId id of user (null - all)
-     * @param query query string for search by filters
-     * @param filters set of filters for search
-     * @param isAscending true - ascending, false - descending
-     * @param sortType sort type for returned list
-     *//*
-
-    suspend fun getItems(
-        limit: Int = -1,
-        page: Int = 0,
-        parentId: Int? = null,
-        userId: Int? = null,
-        query: String,
-        filters: Set<Filters> = emptySet(),
-        isAscending: Boolean = true,
-        sortType: SortType = SortType.NAME,
-    ): Result<List<Item>>
-*/
-
 }

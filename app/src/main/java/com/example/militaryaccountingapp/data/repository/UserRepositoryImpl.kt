@@ -6,7 +6,9 @@ import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.UserRepository
+import com.example.militaryaccountingapp.presenter.utils.common.ext.toTitleCase
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await as awaitCoroutine
 
@@ -21,9 +23,9 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
     override suspend fun getUser(id: String): Results<User> = resultWrapper(
         collection.document(id).get().await()
-    ) {
-        it.toObject(User::class.java)?.let { user ->
-            Results.Success(user)
+    ) { documentSnapshot ->
+        documentSnapshot.toObject(User::class.java)?.let { user ->
+            Results.Success(user.also { normalizeUserName(it) })
         } ?: Results.Failure(Exception("Error while cast user"))
     }
 
@@ -32,8 +34,8 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
         collection
             .whereIn("id", ids)
             .get().await()
-    }) {
-        Results.Success(it.toObjects(User::class.java))
+    }) { snapshot ->
+        Results.Success(snapshot.toObjects(User::class.java).also { normalizeUsersNames(it) })
     }
 
     override suspend fun getUsersAvatars(
@@ -90,7 +92,9 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     */
 
 
-    override suspend fun searchUsers(cleanText: String): Results<List<User>> {
+    override suspend fun searchUsers(query: String): Results<List<User>> {
+        val cleanText = query.lowercase(Locale.getDefault())
+
         val query1 = collection
             .orderBy("name")
             .startAt(cleanText)
@@ -121,7 +125,20 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
             }
         }
 
+        normalizeUsersNames(results)
         return Results.Success(results)
+    }
+
+    private fun normalizeUsersNames(users: List<User>) {
+        users.forEach { normalizeUserName(it) }
+    }
+
+    private fun normalizeUserName(user: User) {
+        user.apply {
+            fullName = fullName.toTitleCase()
+            rank = rank.toTitleCase()
+            name = name.toTitleCase()
+        }
     }
 
     override suspend fun updateCurrentUserInfo(
