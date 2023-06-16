@@ -60,7 +60,7 @@ class DetailsItemFragment :
 
     private fun setupMoreButtons() {
         binding.lastChangedBtnAll.setOnClickListener {
-            findNavController().navigate(DetailsCategoryFragmentDirections.actionCategoryFragmentToNavigationHistory())
+            findNavController().navigate(DetailsItemFragmentDirections.actionItemFragmentToNavigationHistory())
         }
     }
 
