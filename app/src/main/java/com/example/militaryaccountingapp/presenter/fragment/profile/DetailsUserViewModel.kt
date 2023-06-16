@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
+import com.example.militaryaccountingapp.domain.helper.Results.Companion.anyData
 import com.example.militaryaccountingapp.domain.repository.CategoryRepository
 import com.example.militaryaccountingapp.domain.repository.ItemRepository
 import com.example.militaryaccountingapp.domain.repository.PermissionRepository
@@ -50,19 +51,16 @@ class DetailsUserViewModel @Inject constructor(
         nodesJob = viewModelScope.launch(Dispatchers.IO) {
             delay(300)
             val res = permissionRepository.getPermissionsByUsers(
-                currentUser,
-                allUsers
+                currentUser, allUsers
             )
             (res as? Results.Success)?.data?.let { (categoriesIds, itemsIds) ->
                 val categories =
                     (categoryRepository.getCategories(categoriesIds) as Results.Success).data
                 val items = (itemRepository.getItems(itemsIds) as Results.Success).data
-                if((data.value.inNetwork as? Results.Success)?.data == true) {
+                if ((data.value.inNetwork as? Results.Success)?.data == true) {
                     val nodes = FilterViewModel.findRootCategories(categories).map { category ->
                         FilterViewModel.convertCategoryToTreeNodeItem(
-                            category,
-                            categories + items,
-                            cache = cache
+                            category, categories + items, cache = cache
                         )
                     }
                     log.d("loadNodes | nodes: $nodes")
@@ -101,21 +99,30 @@ class DetailsUserViewModel @Inject constructor(
                 userRepository.getUser(userid)
             ) {
                 log.d("get user SUCCESS: $it")
-                loadInNetwork()
+                loadInNetwork(it.id)
                 Results.Success(it)
             }
             _data.update { it.copy(user = res) }
         }
     }
 
-    private fun loadInNetwork() {
+    private fun loadInNetwork(selectedUserId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            currentUserUseCase()?.let { user ->
-                user.usersInNetwork.let { users ->
-                    _data.update { it.copy(inNetwork = Results.Success(users.contains(user.id))) }
-                    loadNodes(user.id, users)
+            log.d("loadInNetwork | start")
+            currentUserUseCase()?.let { currentUser ->
+                log.d("loadInNetwork | current user: $currentUser")
+                currentUser.usersInNetwork.let { usersInNetwork ->
+                    log.d("loadInNetwork | users in network cUser: $usersInNetwork")
+                    _data.update {
+                        it.copy(
+                            inNetwork = Results.Success(
+                                usersInNetwork.contains(selectedUserId)
+                            )
+                        )
+                    }
+                    loadNodes(currentUser.id, usersInNetwork)
                 }
-            }
+            } ?: log.d("loadInNetwork | current user is null")
         }
     }
 
@@ -145,7 +152,9 @@ class DetailsUserViewModel @Inject constructor(
                     if (res is Results.Success) {
                         _toast.value = if (isAdd) "User add to your network!"
                         else "User remove from your network!"
-                        loadInNetwork()
+                        loadInNetwork(
+                            data.value.user.anyData()?.id ?: return@launch
+                        )
                     } else {
                         log.e("Error update user info: $res")
                     }

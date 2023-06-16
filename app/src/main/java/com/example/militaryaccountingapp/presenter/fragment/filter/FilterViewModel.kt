@@ -78,14 +78,19 @@ class FilterViewModel @Inject constructor(
                 data.value.selectedUsersId.toList()
             )
             (res as? Results.Success)?.data?.let { (categoriesIds, itemsIds) ->
-                val categories =
-                    (categoryRepository.getCategories(categoriesIds) as Results.Success).data
-                val items = (itemRepository.getItems(itemsIds) as Results.Success).data
-                val nodes = findRootCategories(categories).map { category ->
-                    convertCategoryToTreeNodeItem(category, categories + items, cache = cache)
+                val categoriesRes = categoryRepository.getCategories(categoriesIds)
+                val itemsRes = itemRepository.getItems(itemsIds)
+                if (categoriesRes is Results.Success && itemsRes is Results.Success) {
+                    val items = itemsRes.data
+                    val categories = categoriesRes.data
+                    val nodes = findRootCategories(categories).map { category ->
+                        convertCategoryToTreeNodeItem(category, categories + items, cache = cache)
+                    }
+                    log.d("loadNodes | nodes: $nodes")
+                    _dataNodes.update { nodes }
+                } else {
+                    log.e("Error loadNodes | categoriesRes: $categoriesRes | itemsRes: $itemsRes")
                 }
-                log.d("loadNodes | nodes: $nodes")
-                _dataNodes.update { nodes }
             }
         }
     }

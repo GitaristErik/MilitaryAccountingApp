@@ -97,15 +97,16 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
         val query1 = collection
             .orderBy("name")
+//            .endAt("\uf8ff")
             .startAt(cleanText)
-            .endAt(cleanText + "\uf8ff")
+            .endAt("$cleanText\uf8ff")
 //            .whereGreaterThanOrEqualTo("name", cleanText)
 //            .whereLessThanOrEqualTo("name", cleanText)
 
         val query2 = collection
             .orderBy("email")
             .startAt(cleanText)
-            .endAt(cleanText + "\uf8ff")
+            .endAt("$cleanText\uf8ff")
 //            .whereGreaterThanOrEqualTo("email", cleanText)
 //            .whereLessThanOrEqualTo("email", cleanText)
 

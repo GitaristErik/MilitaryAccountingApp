@@ -7,10 +7,10 @@
     tools:context=".presenter.fragment.statistics.StatisticsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginBottom="@dimen/padding.fragment.bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin" >
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/padding.fragment.bottom">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/filters"
@@ -211,10 +211,10 @@
             android:id="@+id/history_label"
             style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin.large.extra"
             android:text="@string/statistics.history.title"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,19 +223,19 @@
         <Spinner
             android:id="@+id/history_spinner"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/history_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/history_label" />
 
         <com.github.mikephil.charting.charts.LineChart
-            android:visibility="gone"
             android:id="@+id/historyChartView"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginVertical="@dimen/margin.small"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/history_spinner"
             app:layout_constraintHorizontal_bias="0"
