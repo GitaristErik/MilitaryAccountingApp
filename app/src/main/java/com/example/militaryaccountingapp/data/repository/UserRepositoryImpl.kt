@@ -144,7 +144,7 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
     override suspend fun updateCurrentUserInfo(
         id: String,
-        mapOf: Map<String, List<Any>>
+        mapOf: Map<String, Any>
     ): Results<Unit> = safetyResultWrapper({
         collection
             .document(id)

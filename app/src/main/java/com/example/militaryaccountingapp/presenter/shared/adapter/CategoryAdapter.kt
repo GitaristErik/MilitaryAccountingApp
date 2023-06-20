@@ -97,7 +97,9 @@ class CategoryAdapter(
                 }
             }
 
-            avatarGroup.dataSource = data.usersAvatars.toMutableList()
+            avatarGroup.dataSource = data.usersAvatars.map {
+                it ?: R.drawable.ic_avatar_default
+            }.toMutableList()
 
             data.qrCode?.let { qrImage.initAsQrMini(it) }
 

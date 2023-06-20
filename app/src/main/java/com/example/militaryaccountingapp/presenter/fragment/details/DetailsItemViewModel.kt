@@ -60,6 +60,18 @@ class DetailsItemViewModel @Inject constructor(
     private val _dataImages: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
     val dataImages: StateFlow<Set<String>> = _dataImages.asStateFlow()
 
+    private fun loadImages() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ca = _data.value.item
+            if (ca is Results.Success) {
+                _dataImages.update {
+                    ca.data.imagesUrls.toSet()
+                }
+            }
+        }
+    }
+
+
     fun sendArguments(
         id: String,
         name: String,
@@ -123,6 +135,7 @@ class DetailsItemViewModel @Inject constructor(
             _data.update {
                 it.copy(item = item, codes = barcodes)
             }
+            loadImages()
             getLastChanged(id)
             fetchUsersNetwork()
         }

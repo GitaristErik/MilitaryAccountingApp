@@ -59,6 +59,8 @@ object AvatarHelper {
                 it.load(R.drawable.ic_avatar_default)
             } else {
                 it.load(uri)
+                    .centerCrop()
+                    .circleCrop()
             }
         }.into(view)
 

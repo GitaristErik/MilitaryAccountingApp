@@ -6,6 +6,7 @@ import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.domain.entity.data.Category
 import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
+import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.CategoryRepository
@@ -15,6 +16,7 @@ import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
 import com.example.militaryaccountingapp.presenter.utils.ui.AuthValidator
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -76,16 +78,26 @@ class AddOrEditViewModel @Inject constructor(
     private fun saveCategory() {
         safeRunJobWithLoading(Dispatchers.IO) {
             val result = if (elementId == null) {
-                categoryRepository.createCategory(
-                    Category(
-                        name = (data.value.title as Results.Success<String>).data,
-                        description = data.value.description.trim(),
-                        parentId = parentId,
-                        userId = currentUser!!.id,
-                        barCodes = data.value.codes.toList()
-//                        imagesUrls = dataImages.value, TODO add images push
+                resultWrapper(
+                    categoryRepository.createCategory(
+                        Category(
+                            name = (data.value.title as Results.Success<String>).data,
+                            description = data.value.description.trim(),
+                            parentId = parentId,
+                            userId = currentUser!!.id,
+                            barCodes = data.value.codes.toList()
+                        )
                     )
-                )
+                ) { category ->
+                    categoryRepository.updateCategory(
+                        id = category.id,
+                        userId = currentUser!!.id,
+                        query = mapOf(
+                            "imagesUrls" to saveImages(category.id, Data.Type.CATEGORY)
+                        )
+                    )
+                }
+
             } else {
                 categoryRepository.updateCategory(
                     id = elementId!!,
@@ -94,8 +106,8 @@ class AddOrEditViewModel @Inject constructor(
                         "name" to (data.value.title as Results.Success<String>).data,
                         "description" to data.value.description.trim(),
                         "parentId" to parentId,
-                        "barCodes" to data.value.codes.toList()
-                        // - TODO save images
+                        "barCodes" to data.value.codes.toList(),
+                        "imagesUrls" to saveImages(elementId!!, Data.Type.CATEGORY)
                     )
                 )
             }
@@ -106,17 +118,25 @@ class AddOrEditViewModel @Inject constructor(
     private fun saveItem() {
         safeRunJobWithLoading(Dispatchers.IO) {
             val result = if (elementId == null) {
-                itemRepository.createItem(
-                    Item(
-                        name = (data.value.title as Results.Success<String>).data,
-                        description = data.value.description,
-                        count = data.value.count,
-                        parentId = parentId,
-                        userId = currentUser!!.id,
-                        barCodes = data.value.codes.toList()
-//                        imagesUrls = dataImages.value, TODO add images push
+                resultWrapper(
+                    itemRepository.createItem(
+                        Item(
+                            name = (data.value.title as Results.Success<String>).data,
+                            description = data.value.description,
+                            count = data.value.count,
+                            parentId = parentId,
+                            userId = currentUser!!.id,
+                            barCodes = data.value.codes.toList(),
+                        )
                     )
-                )
+                ) { item ->
+                    itemRepository.updateItem(
+                        id = item.id,
+                        query = mapOf(
+                            "imagesUrls" to saveImages(item.id, Data.Type.ITEM)
+                        )
+                    )
+                }
             } else {
                 itemRepository.updateItem(
                     elementId!!,
@@ -125,13 +145,35 @@ class AddOrEditViewModel @Inject constructor(
                         "description" to data.value.description,
                         "count" to data.value.count,
                         "parentId" to parentId,
-                        "barCodes" to data.value.codes.toList()
-                        // - TODO save images
+                        "barCodes" to data.value.codes.toList(),
+                        "imagesUrls" to saveImages(elementId!!, Data.Type.ITEM)
                     )
                 )
             }
             _data.update { it.copy(saveState = result) }
         }
+    }
+
+    private suspend fun saveImages(id: String, type: Data.Type): MutableList<String> {
+        val images: MutableList<String> = mutableListOf()
+        log.d("saveImages id=$id type=$type images=${_dataImages.value}")
+        _dataImages.value.forEach { imageUri ->
+            val uri = Uri.parse(imageUri)
+            resultWrapper(
+                FirebaseStorage.getInstance()
+                    .reference
+                    .child((if (type == Data.Type.CATEGORY) "categories" else "items") + "/$id/${uri.lastPathSegment + Date().time}")
+                    .putFile(uri)
+                    .await()
+            ) { task ->
+                // if success, update user avatar url
+                resultWrapper(task.storage.downloadUrl.await()) {
+                    images.add(it.toString())
+                    Results.Success(true)
+                }
+            }
+        }
+        return images
     }
 
 
@@ -273,6 +315,7 @@ class AddOrEditViewModel @Inject constructor(
                     loadedData = result
                 )
             }
+            _dataImages.update { item.imagesUrls.toSet() }
         } else {
             _data.update {
                 it.copy(loadedData = result)
@@ -292,6 +335,8 @@ class AddOrEditViewModel @Inject constructor(
                     loadedData = result
                 )
             }
+            // fetch images
+            _dataImages.update { category.imagesUrls.toSet() }
         } else {
             _data.update {
                 it.copy(loadedData = result)

@@ -77,9 +77,21 @@ class DetailsCategoryViewModel @Inject constructor(
     private val _dataImages: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
     val dataImages: StateFlow<Set<String>> = _dataImages.asStateFlow()
 
+
     private val _dataCategory: MutableStateFlow<Results<Category>> =
         MutableStateFlow(Results.Loading(null))
     val dataCategory: StateFlow<Results<Category>> = _dataCategory.asStateFlow()
+
+    private fun loadImages() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ca = _dataCategory.value
+            if (ca is Results.Success) {
+                _dataImages.update {
+                    ca.data.imagesUrls.toSet()
+                }
+            }
+        }
+    }
 
 
     fun sendArguments(
@@ -142,6 +154,7 @@ class DetailsCategoryViewModel @Inject constructor(
                 ?.data?.barCodes?.toSet() ?: emptySet()
             _data.update { it.copy(codes = barcodes) }
             _dataCategory.update { categoryResults }
+            loadImages()
             getLastChanged(id)
             fetchUsersNetwork()
         }

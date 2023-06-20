@@ -36,12 +36,14 @@ class EditProfileFragment :
 
 
     override fun initializeView() {
+        log.d("viewModel link $viewModel")
         setupActionBar()
         setupPhotoPick()
         setupAutofillHints()
     }
 
     override fun render(data: ViewData) {
+        log.d("render edit user $data")
         renderEdit(data.isEdited)
         renderEmail(data.email)
         renderName(data.name)

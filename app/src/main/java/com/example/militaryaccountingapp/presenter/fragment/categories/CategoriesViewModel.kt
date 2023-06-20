@@ -74,9 +74,9 @@ class CategoriesViewModel @Inject constructor(
                         name = data.name,
                         description = data.description,
                         imageUrl = data.imagesUrls.firstOrNull() ?: "",
-                        usersAvatars = permissions.mapNotNull {
+                        usersAvatars = permissions.map {
                             if (it == currentUser.id) null
-                            else avatarsAllUsers[it] ?: ""
+                            else avatarsAllUsers[it]
                         },
                         qrCode = data.barCodes.firstOrNull()?.code,
                         parentId = data.parentId,

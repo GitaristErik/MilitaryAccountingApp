@@ -17,6 +17,6 @@ interface UserRepository {
 
     suspend fun searchUsers(query: String): Results<List<User>>
 
-    suspend fun updateCurrentUserInfo(id: String, mapOf: Map<String, List<Any>>): Results<Unit>
+    suspend fun updateCurrentUserInfo(id: String, mapOf: Map<String, Any>): Results<Unit>
 
 }

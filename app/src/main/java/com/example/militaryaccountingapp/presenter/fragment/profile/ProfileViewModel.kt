@@ -2,6 +2,7 @@ package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.PermissionRepository
@@ -14,6 +15,7 @@ import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewM
 import com.example.militaryaccountingapp.presenter.model.UserNetworkUi
 import com.example.militaryaccountingapp.presenter.shared.CroppingSavableViewModel
 import com.example.militaryaccountingapp.presenter.utils.ui.AuthValidator
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -123,6 +125,7 @@ class ProfileViewModel @Inject constructor(
         safeRunJobWithLoading(Dispatchers.IO) {
             _data.update { viewData ->
                 currentUserUseCase().let {
+                    log.d("fetchUserData: $it")
                     if (it != null) {
                         viewData.copy(
                             name = Results.Success(it.name),
@@ -226,7 +229,28 @@ class ProfileViewModel @Inject constructor(
                         rank = rank,
                         phones = phones,
                     )
-                ) { Results.Success(Unit) }
+                ) { user ->
+                    // send avatar to storage
+                    data.value.userProfileUri?.let { imageUri ->
+                        resultWrapper(
+                            FirebaseStorage.getInstance()
+                                .reference
+                                .child("avatars/${user.id}")
+                                .putFile(imageUri)
+                                .await()
+                        ) { task ->
+                            // if success, update user avatar url
+                            resultWrapper(task.storage.downloadUrl.await()) {
+                                userRepository.updateCurrentUserInfo(
+                                    user.id, mapOf(
+                                        "imageUrl" to it.toString()
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    Results.Success(Unit)
+                }
                 _data.update { it.copy(isEdited = res) }
             }
         }

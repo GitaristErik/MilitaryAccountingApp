@@ -49,10 +49,10 @@ class ItemsViewModel @Inject constructor(
             val currentUser = getCurrentUserUseCase() ?: return@safeRunJobWithLoading
 
             val res: Results<List<ItemUi>> = resultWrapper(
-/*                dataRepository.getDataByParent(
-                    Item::class.java,
-                    sortType = mapSortType(),
-                )*/
+                /*                dataRepository.getDataByParent(
+                                    Item::class.java,
+                                    sortType = mapSortType(),
+                                )*/
                 itemsRepository.getItems(
                     userId = currentUser.id,
                     parentId = parentId ?: currentUser.rootCategoryId,
@@ -69,9 +69,9 @@ class ItemsViewModel @Inject constructor(
                         description = data.description,
                         count = data.count,
                         imageUrl = data.imagesUrls.firstOrNull() ?: "",
-                        usersAvatars = permissions.mapNotNull {
+                        usersAvatars = permissions.map {
                             if (it == currentUser.id) null
-                            else avatarsAllUsers[it] ?: ""
+                            else avatarsAllUsers[it]
                         },
                         qrCode = data.barCodes.firstOrNull()?.code,
                         parentId = data.parentId,

@@ -1,8 +1,9 @@
 package com.example.militaryaccountingapp.presenter.fragment.profile
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentProfileBinding
@@ -19,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment() :
     BaseViewModelFragment<FragmentProfileBinding, ViewData, ProfileViewModel>() {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: ProfileViewModel by activityViewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentProfileBinding
         get() = FragmentProfileBinding::inflate
 
@@ -29,6 +30,7 @@ class ProfileFragment() :
         setupLogout()
         setupUsersNetwork()
         viewModel.fetchUserData()
+        log.d("viewModel link $viewModel")
     }
 
     private val usersAdapter by lazy {
@@ -67,7 +69,7 @@ class ProfileFragment() :
     }
 
     override fun render(data: ViewData) {
-        log.d("render")
+        log.d("render profile user $data")
         if (data.isLoggingOut is Results.Success) {
             findNavController().apply {
                 navigate(R.id.action_navigation_profile_to_loginFragment)
@@ -111,5 +113,15 @@ class ProfileFragment() :
     private fun renderUser(user: User) {
         binding.userName.text = user.fullName
         binding.userRank.text = user.rank
+        AvatarHelper.setupAvatarWithIntent(
+            requireActivity(),
+            binding.avatar,
+            Uri.parse(user.imageUrl)
+        )
+/*        if (!user.imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(user.imageUrl)
+                .into(binding.avatar)
+        }*/
     }
 }

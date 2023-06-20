@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -95,7 +96,9 @@ class ItemsAdapter(
                 }
             }
 
-            avatarGroup.dataSource = data.usersAvatars.toMutableList()
+            avatarGroup.dataSource = data.usersAvatars.map {
+                it ?: ContextCompat.getDrawable(root.context, R.drawable.ic_avatar_default)!!
+            }.toMutableList()
 
             data.qrCode?.let { qrImage.initAsQrMini(it) }
 
