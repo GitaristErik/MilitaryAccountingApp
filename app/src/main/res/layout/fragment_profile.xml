@@ -22,6 +22,7 @@
             android:contentDescription="@string/profile.icon.description"
             android:elevation="6dp"
             android:scaleType="fitXY"
+            android:tint="?colorOnSurface"
             android:background="?colorSurfaceVariant"
             app:layout_constraintEnd_toStartOf="@id/user_name"
             app:layout_constraintHorizontal_bias="0"
