@@ -104,7 +104,6 @@ class DetailsUserFragment :
 
                 binding.email.text = user.data.email
                 binding.phone.text = user.data.phones.joinToString("\n")
-                binding.userLogin.text = user.data.login
             }
 
             is Results.Loading -> {

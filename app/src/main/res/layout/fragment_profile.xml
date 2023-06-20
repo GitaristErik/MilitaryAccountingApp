@@ -59,11 +59,12 @@
             android:text="Командир"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toTopOf="@id/user_login"
+            app:layout_constraintBottom_toBottomOf="@id/avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/user_name"
             app:layout_constraintTop_toBottomOf="@id/user_name" />
+<!--
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/user_login"
@@ -79,6 +80,7 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/user_name"
             app:layout_constraintTop_toBottomOf="@id/user_rank" />
+-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonChangeProfile"

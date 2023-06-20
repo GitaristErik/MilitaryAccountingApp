@@ -40,7 +40,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun register(
         email: String,
         password: String,
-        login: String,
+//        login: String,
         name: String,
         fullName: String,
         rank: String,
@@ -51,7 +51,7 @@ class AuthRepositoryImpl @Inject constructor(
         it.user?.let { firebaseUser ->
             val user = User(
                 id = firebaseUser.uid,
-                login = login,
+//                login = login,
                 email = email,
                 name = name,
                 fullName = fullName,
@@ -71,8 +71,7 @@ class AuthRepositoryImpl @Inject constructor(
                         name = "all",
                         parentId = null,
                         userId = firebaseUser.uid
-                    ),
-                    firebaseUser.uid
+                    )
                 )
             ) { cat ->
                 user.rootCategoryId = cat.id
@@ -152,7 +151,6 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun editUserInfo(
         email: String,
         password: String?,
-        login: String,
         name: String,
         fullName: String,
         rank: String,
@@ -167,7 +165,6 @@ class AuthRepositoryImpl @Inject constructor(
             saveUserInStorage(
                 User(
                     id = user.uid,
-                    login = login,
                     email = user.email ?: email,
                     name = name,
                     fullName = fullName,
@@ -206,18 +203,10 @@ class AuthRepositoryImpl @Inject constructor(
 
                 val pict: String = if (it.photoUrl == null) "" else it.photoUrl.toString()
 
-                val generateRandomLogin: () -> String = {
-                    val login = (email.substringBefore("@") + result.user!!.uid.takeLast(4))
-                        .replace("[^A-Za-z0-9]".toRegex(), "")
-                    Timber.d("randomLogin: $login")
-                    login
-                }
-
                 return saveUserInStorage(
                     User(
                         id = result.user!!.uid,
                         name = name,
-                        login = generateRandomLogin(),
                         rank = "",
                         email = email,
                         fullName = name,

@@ -238,6 +238,7 @@
     <string name="profile.phone.hint">Enter phone number</string>
     <string name="profile.phone.add.hint">Add a phone number</string>
     <string name="profile.items.title">Items</string>
+    <string name="profile.items.self.title">For me</string>
     <string name="profile.history.title">History</string>
     <string name="profile.network.delete.button">Delete from my network</string>
     <string name="profile.network.add.button">Add to my network</string>

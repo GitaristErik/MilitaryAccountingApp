@@ -68,13 +68,14 @@ class DetailsItemFragment :
     private val usersAdapter by lazy {
         UsersSearchAdapter { user ->
             viewModel.loadUserPermission(userId = user.id) { permission, id ->
-                log.d("permission is laoded!! id: $id  | $permission")
+                log.d("permission is loaded!! id: $id  | $permission")
                 if (permission is Results.Success) {
-                    val nav =
-                        DetailsItemFragmentDirections.actionItemFragmentToModalBottomSheetShare(
+                    val nav = DetailsItemFragmentDirections
+                        .actionItemFragmentToModalBottomSheetShare(
                             userId = user.id,
                             permission = permission.data,
-                            itemId = id
+                            itemId = id,
+                            grantedUserId = viewModel.currentUser?.id!!
                         )
                     findNavController().navigate(nav)
                 }

@@ -10,7 +10,6 @@
         suspend operator fun invoke(
             email: String,
             password: String? = null,
-            login: String,
             name: String,
             fullName: String = "",
             rank: String = "",
@@ -18,7 +17,6 @@
         ): Results<User> = authRepository.editUserInfo(
             email,
             password,
-            login,
             name,
             fullName,
             rank,

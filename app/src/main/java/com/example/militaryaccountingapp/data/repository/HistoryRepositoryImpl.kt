@@ -57,16 +57,58 @@ class HistoryRepositoryImpl @Inject constructor() : HistoryRepository {
 
     override suspend fun getHistory(
         filters: Set<ActionType>,
-        limit: Long
+        limit: Long,
+        usersIds: List<String>?,
+        categoriesIds: List<String>?,
+        itemsIds: List<String>?,
+        dateStart: Long?,
+        dateEnd: Long?
     ): Results<List<Action>> = safetyResultWrapper({
         collection
             .let { query ->
                 if (filters.isNotEmpty()) {
+                    Timber.d("getHistory | Filters: $filters")
                     query.whereIn("action", filters.toList())
                 } else {
                     query
                 }
-            }.orderBy("timestamp", Direction.DESCENDING)
+            }.let { query ->
+                if (!usersIds.isNullOrEmpty()) {
+                    Timber.d("getHistory | Users ids: $usersIds")
+                    query.whereIn("userId", usersIds)
+                } else {
+                    query
+                }
+            }.let { query ->
+                if (!categoriesIds.isNullOrEmpty()) {
+                    Timber.d("getHistory | Categories ids: $categoriesIds")
+                    query.whereIn("categoryId", categoriesIds)
+                } else {
+                    query
+                }
+            }.let { query ->
+                if (!itemsIds.isNullOrEmpty()) {
+                    Timber.d("getHistory | Items ids: $itemsIds")
+                    query.whereIn("itemId", itemsIds)
+                } else {
+                    query
+                }
+            }.let { query ->
+                if (dateStart != null) {
+                    Timber.d("getHistory | Date start: $dateStart")
+                    query.whereGreaterThanOrEqualTo("timestamp", dateStart)
+                } else {
+                    query
+                }
+            }.let { query ->
+                if (dateEnd != null) {
+                    Timber.d("getHistory | Date end: $dateEnd")
+                    query.whereLessThanOrEqualTo("timestamp", dateEnd)
+                } else {
+                    query
+                }
+            }
+            .orderBy("timestamp", Direction.DESCENDING)
             .limit(limit)
             .get().await()
     }) {

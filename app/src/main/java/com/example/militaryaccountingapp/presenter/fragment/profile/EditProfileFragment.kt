@@ -44,7 +44,6 @@ class EditProfileFragment :
     override fun render(data: ViewData) {
         renderEdit(data.isEdited)
         renderEmail(data.email)
-        renderLogin(data.login)
         renderName(data.name)
         renderFullName(data.fullName)
         renderRank(data.rank)
@@ -110,7 +109,6 @@ class EditProfileFragment :
                         R.id.edit -> with(binding) {
                             viewModel.save(
                                 email = editEmail.text.toString(),
-                                login = editLogin.text.toString(),
                                 name = editName.text.toString(),
                                 fullName = editFullName.text.toString(),
                                 rank = editRank.text.toString(),
@@ -146,10 +144,6 @@ class EditProfileFragment :
 
     private fun renderEmail(email: Results<String>) {
         binding.editEmail.renderValidate(email)
-    }
-
-    private fun renderLogin(login: Results<String>) {
-        binding.editLogin.renderValidate(login, binding.loginLayout)
     }
 
     private fun renderRank(rank: Results<String>) {

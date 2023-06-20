@@ -50,6 +50,7 @@ class StatisticsFragment :
         setupCountButtons()
         setupHistorySpinner()
         observeCustomData2()
+        log.d("viewModel link $filterViewModel")
     }
 
     override fun render(data: ViewData) {

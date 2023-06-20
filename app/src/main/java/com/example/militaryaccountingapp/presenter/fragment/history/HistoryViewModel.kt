@@ -9,11 +9,13 @@ import com.example.militaryaccountingapp.domain.usecase.GetHistoryUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
 import com.example.militaryaccountingapp.presenter.fragment.history.HistoryViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.TimelineUi
+import com.example.militaryaccountingapp.presenter.utils.common.constant.FilterDate
 import com.example.militaryaccountingapp.presenter.utils.common.ext.asFormattedDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,35 +26,78 @@ HistoryViewModel @Inject constructor(
 
     data class ViewData(
         val timelineItems: List<TimelineUi> = emptyList(),
+        val filterDate: FilterDate = FilterDate.PickDay(Date().time),
     )
+
+    val filterDate: FilterDate get() = _data.value.filterDate
+
 
     init {
         Timber.d("init")
 //        forceLoadHistory(100)
     }
 
-    var checkedFilters = emptySet<ActionType>()
+    var checkedFilters: Set<ActionType>? = null
+
+    private var usersIds: List<String>? = null
+    private var itemsIds: List<String>? = null
+    private var categoriesIds: List<String>? = null
+
 
     fun loadHistory(
-        limit: Long = 100,
+        limit: Long = 25,
+        usersIds: List<String>? = this.usersIds,
+        categoriesIds: List<String>? = this.categoriesIds,
+        itemsIds: List<String>? = this.itemsIds,
         filters: Set<ActionType> = emptySet(),
         page: Int = 0
     ) {
-        if (checkedFilters == filters) return
-        else forceLoadHistory(limit, filters, page)
+        if (checkedFilters == filters || usersIds == null || categoriesIds == null || itemsIds == null)
+            return
+        else forceLoadHistory(
+            limit = limit,
+            filters = filters,
+            usersIds = usersIds,
+            categoriesIds = categoriesIds,
+            itemsIds = itemsIds,
+            page = page
+        )
     }
 
-    fun forceLoadHistory(
-        limit: Long = 100,
+    private fun forceLoadHistory(
+        limit: Long = 25,
+        usersIds: List<String>? = null,
+        categoriesIds: List<String>? = null,
+        itemsIds: List<String>? = null,
         filters: Set<ActionType> = emptySet(),
         page: Int = 0,
     ) {
         safeRunJobWithLoading(Dispatchers.IO) {
 //            delay(DELAY)
+            this@HistoryViewModel.usersIds = usersIds
+            this@HistoryViewModel.categoriesIds = categoriesIds
+            this@HistoryViewModel.itemsIds = itemsIds
+
+            log.d("forceLoadHistory with limit = $limit, filters = $filters, page = $page || date = $filterDate")
             val i = resultWrapper(
                 getHistoryUseCase(
                     limit = limit,
-                    filters = filters
+                    usersIds = usersIds,
+//                    categoriesIds = categoriesIds,
+//                    itemsIds = itemsIds,
+                    filters = filters,
+                    dateStart = when (filterDate) {
+                        is FilterDate.PickDay -> filterDate.date
+                        is FilterDate.Range -> (filterDate as FilterDate.Range).startDate
+                        is FilterDate.After -> (filterDate as FilterDate.After).date
+                        is FilterDate.Before -> null
+                    }?.let { it - 24 * 60 * 60 * 1000 },
+                    dateEnd = when (filterDate) {
+                        is FilterDate.PickDay -> filterDate.date + 24 * 60 * 60 * 1000
+                        is FilterDate.Range -> (filterDate as FilterDate.Range).date
+                        is FilterDate.After -> null
+                        is FilterDate.Before -> (filterDate as FilterDate.Before).date
+                    },
                 )
             ) {
                 checkedFilters = filters
@@ -100,6 +145,15 @@ HistoryViewModel @Inject constructor(
             name = item.third.name,
             userIcon = item.third.imageUrl,
         )
+    }
+
+    fun changeDateSelection(date: FilterDate) {
+        _data.update {
+            it.copy(
+                filterDate = date,
+            )
+        }
+        loadHistory()
     }
 
 

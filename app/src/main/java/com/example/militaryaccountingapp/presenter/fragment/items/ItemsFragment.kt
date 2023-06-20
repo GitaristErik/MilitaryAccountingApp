@@ -34,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ItemsFragment(
     private val parentId: String = "",
     private val getItemDetailsDirections: (ItemUi) -> NavDirections,
+    private val otherIds: List<String> = emptyList(),
 ) : BaseViewModelFragment<FragmentItemsBinding, ViewData, ItemsViewModel>(),
     ChangeableListViewTypeScreen by ChangeableListViewTypeScreenImpl(),
     LoadingHandlerScreen by LoadingHandlerScreenImpl(),

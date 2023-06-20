@@ -16,11 +16,6 @@ interface DataRepository {
         NAME,
     }
 
-    suspend fun getHistory(
-        limit: Int = -1,
-        page: Int = 0,
-        filters: Set<ActionType> = emptySet(),
-    ): List<Triple<Action, Data?, User>>
 
     suspend fun getAllDataByUserId(userId: String): Results<Pair<List<Data>, List<String>>>
 

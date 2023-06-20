@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentTreeViewBinding
 import com.example.militaryaccountingapp.databinding.ItemTreeNodeViewBinding
@@ -16,7 +15,6 @@ import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
 import com.gg.gapo.treeviewlib.GapoTreeView
 import com.gg.gapo.treeviewlib.model.NodeState
 import com.gg.gapo.treeviewlib.model.NodeViewData
-import kotlinx.coroutines.launch
 
 class TreeViewFragment() :
     BaseViewModelFragment<FragmentTreeViewBinding, FilterViewModel.ViewData, FilterViewModel>(),
@@ -29,7 +27,8 @@ class TreeViewFragment() :
     override val viewModel: FilterViewModel by activityViewModels()
 
     override fun initializeView() {
-        observeCustomData2()
+        log.d("viewModel link $viewModel")
+//        observeCustomData2()
     }
 
 
@@ -44,14 +43,12 @@ class TreeViewFragment() :
     private var treeView: GapoTreeView<TreeNodeItem>? = null
 
 
-    private fun observeCustomData2() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.dataNodes
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    renderTreeView(it)
-                }
-        }
+    override suspend fun observeCustomData() {
+        viewModel.dataNodes
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .collect {
+                renderTreeView(it)
+            }
     }
 
     override fun render(data: FilterViewModel.ViewData) {
@@ -66,6 +63,7 @@ class TreeViewFragment() :
     }
 
     private fun renderTreeView(data: List<TreeNodeItem>) {
+        log.d("renderTreeView $data")
         try {
             binding.rvItems.removeItemDecorationAt(0)
         } catch (_: Exception) {
@@ -133,6 +131,7 @@ class TreeViewFragment() :
         child: List<NodeViewData<TreeNodeItem>>,
         isSelected: Boolean
     ) -> Unit)? = null
+
 
     private fun viewModelHandlerImpl(
         node: NodeViewData<TreeNodeItem>,

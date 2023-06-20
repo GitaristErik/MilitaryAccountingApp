@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUserAuthorized(userId, categoryId, itemId) {
+      let categoryPath =  /databases/$(database)/documents/users/$(userId)/permissions_categories/$(categoryId);
+      let itemPath = /databases/$(database)/documents/users/$(userId)/permissions_items/$(itemId);
+
+      return (categoryId != null && exists(categoryPath)) || (itemId != null && exists(itemPath));
+    }
+
+    function isUserCanEdit(userId, categoryId, itemId) {
+      let user_item = get(/databases/$(database)/documents/users/$(userId)/permissions_items/$(itemId));
+      let user_category = get(/databases/$(database)/documents/users/$(userId)/permissions_categories/$(categoryId));
+      
+      return (categoryId != null && user_category.data.canWrite == true) || 
+                (itemId != null && user_item.data.canWrite == true);
+    }
+
+    function isCanShare(userId, categoryId, itemId) {
+      let user_item = get(/databases/$(database)/documents/users/$(userId)/permissions_items/$(itemId));
+      let user_category = get(/databases/$(database)/documents/users/$(userId)/permissions_categories/$(categoryId));
+      
+      return (categoryId != null && user_category.data.canShare == true) || 
+                (itemId != null && user_item.data.canShare == true);
+    }
+
+    function isGranter(userId, categoryId, itemId) {
+      let user_item = get(/databases/$(database)/documents/users/$(userId)/permissions_items/$(itemId));
+      let user_category = get(/databases/$(database)/documents/users/$(userId)/permissions_categories/$(categoryId));
+      
+      return (userId == request.auth.uid) || 
+             (categoryId != null && request.auth.uid in user_category.data.grantedUserId) || 
+             (itemId != null && request.auth.uid in user_item.data.grantedUserId);
+    }
+
+    function isMine(userId, categoryId, itemId) {
+        let item = get(/databases/$(database)/documents/items/$(itemId));
+        let category = get(/databases/$(database)/documents/categories/$(categoryId));
+       
+        return (categoryId != null && request.auth.uid == category.data.userId) || 
+                 (itemId != null && request.auth.uid == item.data.userId);
+    }
+
+    // match /users/{userId} {
+    //   allow read: if isAuthenticated() && request.auth.uid == userId;
+    //   allow write: if false;
+    // }
+
+    match /categories/{categoryId} {
+      allow read: if isAuthenticated() && isUserAuthorized(request.auth.uid, categoryId, null);
+      allow write: if isAuthenticated() && isUserCanEdit(request.auth.uid, null, null);
+      allow create: if isAuthenticated();
+    }
+
+    match /items/{itemId} {
+      allow read: if isAuthenticated() && isUserAuthorized(request.auth.uid, null, itemId);
+      allow write: if isAuthenticated() && isUserCanEdit(request.auth.uid, null, null);
+      allow create: if isAuthenticated();
+    }
+
+    // match /actions/{actionId} {
+    //   allow read: if isAuthenticated() && isUserAuthorized(request.auth.uid, null, null);
+    //   allow write: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+    // }
+
+    match /users/{userId}/permissions_categories/{permissionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+            (isGranter(userId, permissionId, null) || isMine(userId, permissionId, null));
+      allow create: if isCanShare(request.auth.uid, permissionId, null);
+    }
+
+    match /users/{userId}/permissions_items/{permissionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+            (isGranter(userId, null, permissionId) || isMine(userId, null, permissionId));
+      allow create: if isCanShare(request.auth.uid, null, permissionId);
+    }
+  }
+}

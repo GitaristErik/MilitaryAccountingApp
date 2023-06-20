@@ -87,7 +87,8 @@ class DetailsCategoryFragment :
                         DetailsCategoryFragmentDirections.actionCategoryFragmentToModalBottomSheetShare(
                             userId = user.id,
                             permission = permission.data,
-                            categoryId = id
+                            categoryId = id,
+                            grantedUserId = viewModel.currentUser?.id!!
                         )
                     findNavController().navigate(nav)
                 }

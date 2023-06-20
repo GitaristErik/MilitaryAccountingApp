@@ -34,7 +34,6 @@ class ProfileViewModel @Inject constructor(
         val email: Results<String> = Results.Loading(""),
 //        val password: Results<String> = Results.Loading(""),
 //        val repassword: Results<String> = Results.Loading(""),
-        val login: Results<String> = Results.Loading(""),
         val name: Results<String> = Results.Success(""),
         val fullName: Results<String> = Results.Success(""),
         val rank: Results<String> = Results.Success(""),
@@ -59,7 +58,7 @@ class ProfileViewModel @Inject constructor(
                 val res = resultWrapper(
                     userRepository.getUsers(user.usersInNetwork)
                 ) {
-                    loadPermissionsCount(it)
+                    loadPermissionsCount(currentUserId = user.id, destinationUsers = it)
                     Results.Success(mapToUserNetworkUi(it))
                 }
                 log.e("fetchUsersNetwork: $res")
@@ -68,13 +67,25 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun loadPermissionsCount(users: List<User>) {
+    private fun loadPermissionsCount(currentUserId: String, destinationUsers: List<User>) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newUsers = users.map {
-                val readCountRes = permissionRepository.getReadCount(it.id)
-                val editCountRes = permissionRepository.getEditCount(it.id)
-                val shareReadCountRes = permissionRepository.getShareForReadCount(it.id)
-                val editShareCountRes = permissionRepository.getShareForEditCount(it.id)
+            val newUsers = destinationUsers.map { destinationUser ->
+                val readCountRes = permissionRepository.getReadCount(
+                    destinationUserId = destinationUser.id,
+                    grantUserId = currentUserId
+                )
+                val editCountRes = permissionRepository.getEditCount(
+                    destinationUserId = destinationUser.id,
+                    grantUserId = currentUserId
+                )
+                val shareReadCountRes = permissionRepository.getShareForReadCount(
+                    destinationUserId = destinationUser.id,
+                    grantUserId = currentUserId
+                )
+                val editShareCountRes = permissionRepository.getShareForEditCount(
+                    destinationUserId = destinationUser.id,
+                    grantUserId = currentUserId
+                )
 
                 val readCount = (readCountRes as? Results.Success)?.data ?: 0
                 val editCount = (editCountRes as? Results.Success)?.data ?: 0
@@ -82,10 +93,10 @@ class ProfileViewModel @Inject constructor(
                 val editShareCount = (editShareCountRes as? Results.Success)?.data ?: 0
 
                 UserNetworkUi(
-                    id = it.id,
-                    fullName = it.fullName,
-                    rank = it.rank,
-                    imageUrl = it.imageUrl,
+                    id = destinationUser.id,
+                    fullName = destinationUser.fullName,
+                    rank = destinationUser.rank,
+                    imageUrl = destinationUser.imageUrl,
                     readCount = readCount.toInt(),
                     editCount = editCount.toInt(),
                     readShareCount = shareReadCount.toInt(),
@@ -116,7 +127,6 @@ class ProfileViewModel @Inject constructor(
                         viewData.copy(
                             name = Results.Success(it.name),
                             email = Results.Success(it.email),
-                            login = Results.Success(it.login),
                             fullName = Results.Success(it.fullName),
                             rank = Results.Success(it.rank),
                             phones = it.phones.map { phone -> Results.Success(phone) },
@@ -171,7 +181,6 @@ class ProfileViewModel @Inject constructor(
 
     fun save(
         email: String,
-        login: String,
         name: String,
         fullName: String,
         rank: String,
@@ -180,7 +189,6 @@ class ProfileViewModel @Inject constructor(
         val emailResult = AuthValidator.EmailValidator.validate(email)
 //        val passwordResult = AuthValidator.PasswordValidator.validate(password)
 //        val repasswordResult = AuthValidator.RepasswordValidator.validate(repassword)
-        val loginResult = AuthValidator.LoginValidator.validate(login)
         val nameResult = AuthValidator.NameValidator.validate(name)
         val fullNameResult = AuthValidator.FullNameValidator.validate(fullName)
         val rankResult = AuthValidator.RankValidator.validate(rank)
@@ -191,7 +199,6 @@ class ProfileViewModel @Inject constructor(
                 email = emailResult,
 //                password = passwordResult,
 //                repassword = repasswordResult,
-                login = loginResult,
                 name = nameResult,
                 fullName = fullNameResult,
                 rank = rankResult,
@@ -204,7 +211,6 @@ class ProfileViewModel @Inject constructor(
             emailResult,
 //            passwordResult,
 //            repasswordResult,
-            loginResult,
             nameResult,
             fullNameResult,
             rankResult,
@@ -215,7 +221,6 @@ class ProfileViewModel @Inject constructor(
                 val res = resultWrapper(
                     editUserInfoUseCase(
                         email = email,
-                        login = login,
                         name = name,
                         fullName = fullName,
                         rank = rank,

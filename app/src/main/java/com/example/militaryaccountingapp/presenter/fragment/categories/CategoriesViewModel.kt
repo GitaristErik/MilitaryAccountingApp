@@ -1,7 +1,6 @@
 package com.example.militaryaccountingapp.presenter.fragment.categories
 
 import androidx.lifecycle.viewModelScope
-import com.example.militaryaccountingapp.domain.entity.data.Category
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.CategoryRepository
 import com.example.militaryaccountingapp.domain.repository.DataRepository
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val userRepository: UserRepository,
     private val itemRepository: ItemRepository,
     private val categoryRepository: CategoryRepository,
@@ -61,26 +59,24 @@ class CategoriesViewModel @Inject constructor(
             val currentUser = getCurrentUserUseCase() ?: return@safeRunJobWithLoading
 
             val res: Results<List<CategoryUi>> = resultWrapper(
-                dataRepository.getDataByParent(
-                    Category::class.java,
-                    parentId = parentId ?: currentUser.rootCategoryId,
+                categoryRepository.getCategories(
                     userId = currentUser.id,
-                    sortType = mapSortType(),
+                    parentId = parentId ?: currentUser.rootCategoryId,
                     isAscending = orderBy == OrderBy.ASCENDING
                 )
-            ) { dataListMap ->
-                val usersIds = dataListMap.values.flatten().map { it.userId }.distinct()
+            ) { categoryList ->
+                val usersIds = categoryList.values.flatten().map { it }.distinct()
                 val avatarsAllUsers = userRepository.getUsersAvatars(usersIds)
 
-                val categories = dataListMap.map { (data, permissions) ->
+                val categories = categoryList.map { (data, permissions) ->
                     CategoryUi(
                         id = data.id,
                         name = data.name,
                         description = data.description,
                         imageUrl = data.imagesUrls.firstOrNull() ?: "",
                         usersAvatars = permissions.mapNotNull {
-                            if (it.userId == currentUser.id) null
-                            else avatarsAllUsers[it.userId] ?: ""
+                            if (it == currentUser.id) null
+                            else avatarsAllUsers[it] ?: ""
                         },
                         qrCode = data.barCodes.firstOrNull()?.code,
                         parentId = data.parentId,

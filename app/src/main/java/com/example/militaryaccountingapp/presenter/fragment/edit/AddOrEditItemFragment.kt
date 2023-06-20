@@ -82,7 +82,6 @@ class AddOrEditItemFragment :
     private fun renderSaveState(saveState: Results<Any?>) {
         when (saveState) {
             is Results.Success -> {
-                viewModel.onSaveRendered()
                 if (viewModel.elementId == null) {
                     showToast(R.string.save_create_success)
                     (saveState.data as? Item)?.let { savedData ->
@@ -99,7 +98,7 @@ class AddOrEditItemFragment :
                     }
                 } else {
                     showToast(R.string.save_edit_success)
-                    log.e("viewModel.elementId = ${viewModel.elementId}    | 97 line")
+                    log.e("viewModel.elementId = ${viewModel.elementId}    | 101 line")
                     AddOrEditFragmentDirections.actionAddFragmentToItemFragment(
                         id = viewModel.elementId!!,
                         name = binding.editTitle.text.toString(),
@@ -107,16 +106,17 @@ class AddOrEditItemFragment :
                         count = binding.layoutQuantity.value,
                     )
                 }
+                viewModel.onSaveRendered()
             }
 
             is Results.Failure -> {
-                viewModel.onSaveRendered()
                 showToast(
                     getString(
                         if (viewModel.elementId == null) R.string.save_create_fail
                         else R.string.save_edit_fail
                     ) + "\n" + saveState.throwable.message
                 )
+                viewModel.onSaveRendered()
             }
 
             else -> {}
@@ -158,11 +158,6 @@ class AddOrEditItemFragment :
                 viewModel.addImages(it.map(Image::uri))
             }
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-//        isDataInit = false
     }
 
     private val codesAdapter by lazy {

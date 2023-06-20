@@ -2,6 +2,7 @@ package com.example.militaryaccountingapp.presenter.fragment.profile
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.helper.Results.Companion.anyData
@@ -11,9 +12,10 @@ import com.example.militaryaccountingapp.domain.repository.PermissionRepository
 import com.example.militaryaccountingapp.domain.repository.UserRepository
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
-import com.example.militaryaccountingapp.presenter.fragment.filter.FilterViewModel
 import com.example.militaryaccountingapp.presenter.fragment.profile.DetailsUserViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.filter.TreeNodeItem
+import com.example.militaryaccountingapp.presenter.utils.common.constant.ApiConstant
+import com.example.militaryaccountingapp.presenter.utils.ui.TreeNodeHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,31 +44,74 @@ class DetailsUserViewModel @Inject constructor(
     private val _dataNodes = MutableStateFlow<List<TreeNodeItem>>(emptyList())
     val dataNodes: MutableStateFlow<List<TreeNodeItem>> = _dataNodes
 
+    private val _dataSelfNodes = MutableStateFlow<List<TreeNodeItem>>(emptyList())
+    val dataSelfNodes: MutableStateFlow<List<TreeNodeItem>> = _dataSelfNodes
+
 
     // Runner
     private var nodesJob: Job? = null
     private val cache = mutableMapOf<String, TreeNodeItem>()
-    private fun loadNodes(currentUser: String, allUsers: List<String>) {
+    private fun loadNodes(currentUser: String, selectedUser: String) {
         stopRunningJob(nodesJob)
         nodesJob = viewModelScope.launch(Dispatchers.IO) {
-            delay(300)
-            val res = permissionRepository.getPermissionsByUsers(
-                currentUser, allUsers
-            )
-            (res as? Results.Success)?.data?.let { (categoriesIds, itemsIds) ->
-                val categories =
-                    (categoryRepository.getCategories(categoriesIds) as Results.Success).data
-                val items = (itemRepository.getItems(itemsIds) as Results.Success).data
-                if ((data.value.inNetwork as? Results.Success)?.data == true) {
-                    val nodes = FilterViewModel.findRootCategories(categories).map { category ->
-                        FilterViewModel.convertCategoryToTreeNodeItem(
-                            category, categories + items, cache = cache
-                        )
+            delay(ApiConstant.DELAY_NODES_LOAD)
+
+            (permissionRepository.getPermissionsIdsByUsers(
+                destinationUserId = selectedUser,
+                grantUserId = currentUser,
+                type = Data.Type.CATEGORY
+            ) as? Results.Success)?.data?.let { categoriesIds ->
+
+                (permissionRepository.getPermissionsIdsByUsers(
+                    destinationUserId = selectedUser,
+                    grantUserId = currentUser,
+                    type = Data.Type.ITEM
+                ) as? Results.Success)?.data?.let { itemsIds ->
+
+                    val categoriesRes = categoryRepository.getCategories(categoriesIds)
+                    val itemsRes = itemRepository.getItems(itemsIds)
+                    log.d("loadNodesHandler categoriesRes=$categoriesRes itemsRes=$itemsRes")
+                    TreeNodeHelper.loadNodesHandler(categoriesRes, itemsRes, cache) { nodes ->
+                        log.d("loadNodesHandler nodes=$nodes")
+                        _dataNodes.update { nodes }
                     }
-                    log.d("loadNodes | nodes: $nodes")
-                    _dataNodes.update { nodes }
-                }
-            }
+
+                } ?: log.d("loadNodesHandler error load items")
+            } ?: log.d("loadNodesHandler error load categories")
+        }
+    }
+
+
+    // Runner
+    private var nodesSelfJob: Job? = null
+    private val cacheSelf = mutableMapOf<String, TreeNodeItem>()
+    private fun loadNodesSelf(currentUser: String, selectedUser: String) {
+        stopRunningJob(nodesSelfJob)
+        nodesSelfJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(ApiConstant.DELAY_NODES_LOAD)
+
+            (permissionRepository.getPermissionsIdsByUsers(
+                destinationUserId = currentUser,
+                grantUserId = selectedUser,
+                type = Data.Type.CATEGORY
+            ) as? Results.Success)?.data?.let { categoriesIds ->
+
+                (permissionRepository.getPermissionsIdsByUsers(
+                    destinationUserId = currentUser,
+                    grantUserId = selectedUser,
+                    type = Data.Type.ITEM
+                ) as? Results.Success)?.data?.let { itemsIds ->
+
+                    val categoriesRes = categoryRepository.getCategories(categoriesIds)
+                    val itemsRes = itemRepository.getItems(itemsIds)
+                    log.d("loadNodesHandler Self categoriesRes=$categoriesRes itemsRes=$itemsRes")
+                    TreeNodeHelper.loadNodesHandler(categoriesRes, itemsRes, cacheSelf) { nodes ->
+                        log.d("loadNodesHandler self nodes=$nodes")
+                        _dataSelfNodes.update { nodes }
+                    }
+
+                } ?: log.d("loadNodesHandler error load Self items")
+            } ?: log.d("loadNodesHandler error load Self categories")
         }
     }
 
@@ -120,9 +165,10 @@ class DetailsUserViewModel @Inject constructor(
                             )
                         )
                     }
-                    loadNodes(currentUser.id, usersInNetwork)
+                    loadNodes(currentUser.id, selectedUserId)
+                    loadNodesSelf(currentUser.id, selectedUserId)
                 }
-            } ?: log.d("loadInNetwork | current user is null")
+            } ?: log.e("loadInNetwork | current user is null")
         }
     }
 

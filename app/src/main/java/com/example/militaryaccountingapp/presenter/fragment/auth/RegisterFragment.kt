@@ -48,7 +48,6 @@ class RegisterFragment :
         renderEmail(data.email)
         renderPassword(data.password)
         renderRepassword(data.repassword)
-        renderLogin(data.login)
         renderName(data.name)
         renderFullName(data.fullName)
         renderRank(data.rank)
@@ -72,7 +71,6 @@ class RegisterFragment :
                 email = editEmail.text.toString(),
                 password = editPassword.text.toString(),
                 repassword = editRepassword.text.toString(),
-                login = editLogin.text.toString(),
                 name = editName.text.toString(),
                 fullName = editFullName.text.toString(),
                 rank = editRank.text.toString(),
@@ -147,10 +145,6 @@ class RegisterFragment :
 
     private fun renderRepassword(repassword: Results<String>) {
         binding.editRepassword.renderValidate(repassword, binding.repasswordLayout)
-    }
-
-    private fun renderLogin(login: Results<String>) {
-        binding.editLogin.renderValidate(login, binding.loginLayout)
     }
 
     private fun renderRank(rank: Results<String>) {

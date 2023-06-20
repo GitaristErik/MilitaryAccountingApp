@@ -1,8 +1,8 @@
 package com.example.militaryaccountingapp.presenter.fragment.items
 
-import com.example.militaryaccountingapp.domain.entity.data.Item
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.DataRepository
+import com.example.militaryaccountingapp.domain.repository.ItemRepository
 import com.example.militaryaccountingapp.domain.repository.UserRepository
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.example.militaryaccountingapp.presenter.BaseViewModel
@@ -19,9 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ItemsViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val userRepository: UserRepository,
-//    private val codeRepository: BarcodeRepository,
+    private val itemsRepository: ItemRepository,
     private val getCurrentUserUseCase: CurrentUserUseCase
 ) : BaseViewModel<ViewData>(ViewData()) {
 
@@ -50,27 +49,29 @@ class ItemsViewModel @Inject constructor(
             val currentUser = getCurrentUserUseCase() ?: return@safeRunJobWithLoading
 
             val res: Results<List<ItemUi>> = resultWrapper(
-                dataRepository.getDataByParent(
+/*                dataRepository.getDataByParent(
                     Item::class.java,
-                    parentId = parentId ?: currentUser.rootCategoryId,
-                    userId = currentUser.id,
                     sortType = mapSortType(),
+                )*/
+                itemsRepository.getItems(
+                    userId = currentUser.id,
+                    parentId = parentId ?: currentUser.rootCategoryId,
                     isAscending = orderBy == OrderBy.ASCENDING
                 )
-            ) { dataListMap ->
-                val usersIds = dataListMap.values.flatten().map { it.userId }.distinct()
+            ) { itemList ->
+                val usersIds = itemList.values.flatten().map { it }.distinct()
                 val avatarsAllUsers = userRepository.getUsersAvatars(usersIds)
 
-                val items = dataListMap.map { (data, permissions) ->
+                val items = itemList.map { (data, permissions) ->
                     ItemUi(
                         id = data.id,
                         name = data.name,
                         description = data.description,
-                        count = (data as Item).count,
+                        count = data.count,
                         imageUrl = data.imagesUrls.firstOrNull() ?: "",
                         usersAvatars = permissions.mapNotNull {
-                            if (it.userId == currentUser.id) null
-                            else avatarsAllUsers[it.userId] ?: ""
+                            if (it == currentUser.id) null
+                            else avatarsAllUsers[it] ?: ""
                         },
                         qrCode = data.barCodes.firstOrNull()?.code,
                         parentId = data.parentId,

@@ -7,12 +7,11 @@ interface CategoryRepository {
 
     suspend fun createCategory(
         category: Category,
-        userId: String?
     ): Results<Category>
 
     suspend fun createRootCategory(
         category: Category,
-        userId: String?
+//        userId: String?
     ): Results<Category>
 
     suspend fun getCategory(id: String): Results<Category>
@@ -33,6 +32,7 @@ interface CategoryRepository {
     suspend fun changeRules(
         elementId: String,
         userId: String,
+        grantUserId: String,
         canRead: Boolean,
         canEdit: Boolean,
         canShareRead: Boolean,
@@ -40,4 +40,10 @@ interface CategoryRepository {
     )
 
     suspend fun getCategories(categoriesIds: List<String>): Results<List<Category>>
+
+    suspend fun getCategories(
+        parentId: String,
+        userId: String,
+        isAscending: Boolean
+    ): Results<Map<Category, List<String>>>
 }

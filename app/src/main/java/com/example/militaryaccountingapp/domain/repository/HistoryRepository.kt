@@ -17,5 +17,13 @@ interface HistoryRepository {
     ): Results<Action>
 
     suspend fun addToHistory(action: Action): Results<Unit>
-    suspend fun getHistory(filters: Set<ActionType>, limit: Long = 100): Results<List<Action>>
+    suspend fun getHistory(
+        filters: Set<ActionType>,
+        limit: Long = 100,
+        usersIds: List<String>? = null,
+        categoriesIds: List<String>? = null,
+        itemsIds: List<String>? = null,
+        dateStart: Long? = null,
+        dateEnd: Long? = null
+    ): Results<List<Action>>
 }

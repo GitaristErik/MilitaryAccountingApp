@@ -111,7 +111,5 @@ class ProfileFragment() :
     private fun renderUser(user: User) {
         binding.userName.text = user.fullName
         binding.userRank.text = user.rank
-        val loginText = "@${user.login}"
-        binding.userLogin.text = loginText
     }
 }

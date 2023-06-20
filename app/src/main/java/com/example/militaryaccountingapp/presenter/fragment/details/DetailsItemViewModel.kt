@@ -2,6 +2,7 @@ package com.example.militaryaccountingapp.presenter.fragment.details
 
 import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.domain.entity.data.Barcode
+import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.entity.user.UserPermission
@@ -84,10 +85,14 @@ class DetailsItemViewModel @Inject constructor(
         fetch(id)
     }
 
+    var currentUser: User? = null
+        private set
+
 
     private fun fetchUsersNetwork() {
         viewModelScope.launch(Dispatchers.IO) {
             currentUserUseCase()?.let { user ->
+                currentUser = user
                 val res = resultWrapper(
                     userRepository.getUsers(user.usersInNetwork)
                 ) {
@@ -200,15 +205,18 @@ class DetailsItemViewModel @Inject constructor(
         canShareRead: Boolean,
         canShareEdit: Boolean
     ) {
-        val elementId = (_data.value.item as? Results.Success)?.data?.id ?: return
+        val element = (_data.value.item as? Results.Success)?.data ?: return
+        val currentUserId = currentUser?.id ?: return
+
         viewModelScope.launch(Dispatchers.IO) {
             itemsRepository.changeRules(
-                elementId,
-                userId,
-                canRead,
-                canEdit,
-                canShareRead,
-                canShareEdit
+                elementId = element.id,
+                userId = userId,
+                grantUserId = currentUserId,
+                canRead = canRead,
+                canEdit = canEdit,
+                canShareRead = canShareRead,
+                canShareEdit = canShareEdit
             )
         }
     }
@@ -220,9 +228,10 @@ class DetailsItemViewModel @Inject constructor(
         val elementId = (_data.value.item as? Results.Success)?.data?.id ?: return
         viewModelScope.launch {
             handleOnLoad(
-                permissionRepository.getPermission(
-                    itemId = elementId,
-                    userId = userId
+                permissionRepository.getPermissionByUser(
+                    elementId = elementId,
+                    userId = userId,
+                    type = Data.Type.ITEM
                 ), elementId
             )
         }

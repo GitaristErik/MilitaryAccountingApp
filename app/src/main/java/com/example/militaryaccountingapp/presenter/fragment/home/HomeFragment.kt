@@ -44,6 +44,7 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
                 offscreenPageLimit = tabTitles.size
                 adapter = TabsViewPagerAdapter(
                     parentId = currentUser.rootCategoryId,
+                    otherIds = currentUser.sharedRootCategories,
                     tabSize = tabTitles.size,
                     fragmentManager = childFragmentManager,
                     lifecycle = lifecycle,

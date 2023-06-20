@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.presenter.fragment.details
 import androidx.lifecycle.viewModelScope
 import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.domain.entity.data.Category
+import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.entity.user.UserPermission
 import com.example.militaryaccountingapp.domain.helper.Results
@@ -59,8 +60,10 @@ class DetailsCategoryViewModel @Inject constructor(
 
     private suspend fun mapUsersToChart(users: List<User>): List<PieEntry> {
         return users.map {
-            val countItems = (permissionRepository.getReadCount(it.id)
-                    as? Results.Success)?.data?.toInt() ?: 0
+            val countItems = (permissionRepository.getReadCount(
+                destinationUserId = it.id,
+                grantUserId = currentUser!!.id
+            ) as? Results.Success)?.data?.toInt() ?: 0
 
             PieEntry(
                 countItems.toFloat(),
@@ -100,16 +103,19 @@ class DetailsCategoryViewModel @Inject constructor(
         fetch(id)
     }
 
+    var currentUser: User? = null
+        private set
+
     private fun fetchUsersNetwork() {
         viewModelScope.launch(Dispatchers.IO) {
             currentUserUseCase()?.let { user ->
+                currentUser = user
                 val res = resultWrapper(
                     userRepository.getUsers(user.usersInNetwork)
                 ) {
                     _data.update { viewData ->
                         viewData.copy(chartData = mapUsersToChart(it))
                     }
-
                     Results.Success(mapToUserSearchUi(it))
                 }
                 log.e("fetchUsersNetwork: $res")
@@ -223,15 +229,18 @@ class DetailsCategoryViewModel @Inject constructor(
         canShareRead: Boolean,
         canShareEdit: Boolean
     ) {
-        val elementId = (_dataCategory.value as? Results.Success)?.data?.id ?: return
+        val element = (_dataCategory.value as? Results.Success)?.data ?: return
+        val currentUserId = currentUser?.id ?: return
+
         viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.changeRules(
-                elementId,
-                userId,
-                canRead,
-                canEdit,
-                canShareRead,
-                canShareEdit
+                elementId = element.id,
+                userId = userId,
+                grantUserId = currentUserId,
+                canRead = canRead,
+                canEdit = canEdit,
+                canShareRead = canShareRead,
+                canShareEdit = canShareEdit
             )
         }
     }
@@ -243,10 +252,12 @@ class DetailsCategoryViewModel @Inject constructor(
         val elementId = (_dataCategory.value as? Results.Success)?.data?.id ?: return
         viewModelScope.launch {
             handleOnLoad(
-                permissionRepository.getPermission(
-                    categoryId = elementId,
+                permissionRepository.getPermissionByUser(
+                    type = Data.Type.CATEGORY,
+                    elementId = elementId,
                     userId = userId
-                ), elementId
+                ),
+                elementId
             )
         }
     }

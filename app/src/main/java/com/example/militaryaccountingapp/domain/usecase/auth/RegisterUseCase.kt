@@ -10,7 +10,6 @@ open class RegisterUseCase(
     suspend operator fun invoke(
         email: String,
         password: String,
-        login: String,
         name: String,
         fullName: String = "",
         rank: String = "",
@@ -19,7 +18,6 @@ open class RegisterUseCase(
         authRepository.register(
             email,
             password,
-            login,
             name,
             fullName,
             rank,

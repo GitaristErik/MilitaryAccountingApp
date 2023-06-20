@@ -14,9 +14,11 @@ interface ItemRepository {
     suspend fun deleteItem(id: String): Results<Void?>
 
     suspend fun getItemsCount(parentId: String): Results<Long>
+
     suspend fun changeRules(
         elementId: String,
         userId: String,
+        grantUserId: String,
         canRead: Boolean,
         canEdit: Boolean,
         canShareRead: Boolean,
@@ -24,4 +26,11 @@ interface ItemRepository {
     )
 
     suspend fun getItems(itemsIds: List<String>): Results<List<Item>>
+
+    suspend fun getItems(
+        parentId: String,
+        userId: String,
+        isAscending: Boolean
+    ): Results<Map<Item, List<String>>>
+
 }

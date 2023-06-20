@@ -13,7 +13,7 @@ interface AuthRepository {
     suspend fun register(
         email: String,
         password: String,
-        login: String,
+//        login: String,
         name: String,
         fullName: String = "",
         rank: String = "",
@@ -40,7 +40,6 @@ interface AuthRepository {
     suspend fun editUserInfo(
         email: String,
         password: String? = null,
-        login: String,
         name: String,
         fullName: String,
         rank: String,

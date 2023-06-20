@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <!-- Items -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/items_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile.items.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_content" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:background="@drawable/background_rounded_rect"
+        android:backgroundTint="?colorSecondaryContainer"
+        android:elevation="1dp"
+        android:minHeight="32dp"
+        android:overScrollMode="never"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_tree_node_view" />
+    <!--    android:elevation="1dp"-->
+
+<!--    Divider -->
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_items"
+        style="@style/Widget.Material3.MaterialDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin.standard"
+        android:layout_marginVertical="@dimen/margin.large.extra.double"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_items_container" />
+
+    <!-- Self Items -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/self_items_label"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile.items.self.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_items" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items_self"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin.small"
+        android:layout_marginTop="@dimen/margin.standard"
+        android:background="@drawable/background_rounded_rect"
+        android:backgroundTint="?colorSecondaryContainer"
+        android:elevation="1dp"
+        android:minHeight="32dp"
+        android:overScrollMode="never"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_tree_node_view" />
+    <!--    android:elevation="1dp"-->
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

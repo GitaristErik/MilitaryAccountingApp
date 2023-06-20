@@ -34,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CategoriesFragment(
     private val parentId: String = "",
     private val getCategoryDetailsDirections: (CategoryUi) -> NavDirections,
+    private val otherIds: List<String> = emptyList(),
 //    private val redirectToCategoryAdd: () -> Unit,
 ) : BaseViewModelFragment<FragmentCategoriesBinding, ViewData, CategoriesViewModel>(),
     ChangeableListViewTypeScreen by ChangeableListViewTypeScreenImpl(),

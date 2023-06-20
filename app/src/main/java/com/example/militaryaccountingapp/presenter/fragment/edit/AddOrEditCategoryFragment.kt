@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.esafirm.imagepicker.features.ImagePickerLauncher
 import com.esafirm.imagepicker.features.registerImagePicker
 import com.esafirm.imagepicker.model.Image
@@ -21,11 +20,10 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.edit.AddOrEditViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.adapter.BarCodeAdapter
 import com.example.militaryaccountingapp.presenter.utils.image.CarouselHelper
+import com.example.militaryaccountingapp.presenter.utils.image.CarouselHelper.carouselScrollListener
 import com.example.militaryaccountingapp.presenter.utils.ui.ext.renderValidate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.imaginativeworld.whynotimagecarousel.listener.CarouselOnScrollListener
-import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 @AndroidEntryPoint
 class AddOrEditCategoryFragment :
@@ -66,7 +64,7 @@ class AddOrEditCategoryFragment :
         }
     }
 
-//    private var isDataInit = false
+    //    private var isDataInit = false
     override fun render(data: ViewData) {
         log.d("render")
         codesAdapter.submitList(data.codes.toList())
@@ -82,7 +80,6 @@ class AddOrEditCategoryFragment :
             is Results.Success -> {
                 if (viewModel.elementId == null) {
                     showToast(R.string.save_create_success)
-                    viewModel.onSaveRendered()
                     (saveState.data as? Category)?.let { savedData ->
                         findNavController().navigate(
                             AddOrEditFragmentDirections.actionAddFragmentToCategoryFragment(
@@ -101,31 +98,20 @@ class AddOrEditCategoryFragment :
                         description = binding.editDescription.text.toString(),
                     )
                 }
+                viewModel.onSaveRendered()
             }
 
             is Results.Failure -> {
-                viewModel.onSaveRendered()
                 showToast(
                     getString(
                         if (viewModel.elementId == null) R.string.save_create_fail
                         else R.string.save_edit_fail
                     ) + "\n" + saveState.throwable.message
                 )
+                viewModel.onSaveRendered()
             }
 
             else -> {}
-        }
-    }
-
-
-    val carouselScrollListener = object : CarouselOnScrollListener {
-        override fun onScrollStateChanged(
-            recyclerView: RecyclerView,
-            newState: Int,
-            position: Int,
-            carouselItem: CarouselItem?
-        ) {
-            CarouselHelper.currentImageUrl = carouselItem?.imageUrl
         }
     }
 
@@ -165,10 +151,6 @@ class AddOrEditCategoryFragment :
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-//        isDataInit = false
-    }
 
     private val codesAdapter by lazy {
         BarCodeAdapter { barcode ->

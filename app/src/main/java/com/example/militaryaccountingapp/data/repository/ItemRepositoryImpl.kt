@@ -3,6 +3,7 @@ package com.example.militaryaccountingapp.data.repository
 import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWrapper
 import com.example.militaryaccountingapp.domain.entity.data.Action
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
+import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
 import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.UserPermission
@@ -14,6 +15,7 @@ import com.example.militaryaccountingapp.domain.repository.PermissionRepository
 import com.example.militaryaccountingapp.domain.usecase.auth.CurrentUserUseCase
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query.Direction
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,10 +36,7 @@ class ItemRepositoryImpl @Inject constructor(
 
 
     override suspend fun createItem(item: Item): Results<Item> = safetyResultWrapper({
-        item.userId = currentUserUseCase()?.id ?: return@safetyResultWrapper Results.Failure(
-            NullPointerException("User id is null")
-        );
-        categoryRepository.getCategory(item.parentId ?: item.userId!!)
+        categoryRepository.getCategory(item.parentId!!)
     }) { parentCategory ->
         item.allParentIds = parentCategory.allParentIds + parentCategory.id
         item.allParentNames = parentCategory.allParentNames + parentCategory.name
@@ -50,22 +49,26 @@ class ItemRepositoryImpl @Inject constructor(
         safetyResultWrapper({
             ref.set(item).await()
         }) {
-            // create permission for current user
-            val userPermission = UserPermission(
+            permissionRepository.createPermission(
                 userId = item.userId!!,
-                itemId = item.id,
-                canShare = true,
-                canShareForWrite = true,
-                canWrite = true,
+                type = Data.Type.ITEM,
+                UserPermission(
+                    id = item.id,
+                    grantedUsersId = listOf(item.userId!!),
+                    canShare = true,
+                    canShareForWrite = true,
+                    canWrite = true,
+                )
             )
-            permissionRepository.createPermissionByParent(userPermission, parentCategory.id)
 
-            val action = Action(
-                userId = item.userId!!,
-                itemId = item.id,
-                action = ActionType.CREATE,
+            historyRepository.addToHistory(
+                Action(
+                    userId = item.userId!!,
+                    itemId = item.id,
+                    action = ActionType.CREATE,
+                )
             )
-            historyRepository.addToHistory(action)
+
             // return result
             Results.Success(item)
         }
@@ -73,7 +76,8 @@ class ItemRepositoryImpl @Inject constructor(
 
     override suspend fun getItems(
         itemsIds: List<String>
-    ): Results<List<Item>> = safetyResultWrapper({
+    ): Results<List<Item>> = if (itemsIds.isEmpty()) Results.Success(emptyList())
+    else safetyResultWrapper({
         collection
             .whereIn("id", itemsIds)
             .get()
@@ -142,6 +146,11 @@ class ItemRepositoryImpl @Inject constructor(
                 .await()
         }) {
             // TODO delete images from storage
+            permissionRepository.deleteAllPermissions(
+                id = id,
+                type = Data.Type.ITEM,
+            )
+
             currentUserUseCase()?.let { user ->
                 val action = Action(
                     userId = user.id,
@@ -153,6 +162,27 @@ class ItemRepositoryImpl @Inject constructor(
             Results.Success(null)
         }
     }
+
+    override suspend fun getItems(
+        parentId: String,
+        userId: String,
+        isAscending: Boolean
+    ): Results<Map<Item, List<String>>> = safetyResultWrapper({
+        collection.whereEqualTo("parentId", parentId).orderBy(
+            "name",
+            if (isAscending) Direction.ASCENDING else Direction.DESCENDING
+        ).get().await()
+    }) {
+        Results.Success(
+            it.toObjects(Item::class.java).map { item ->
+                item to permissionRepository.getAllUsersIds(
+                    id = item.id,
+                    type = Data.Type.ITEM
+                )
+            }.toMap()
+        )
+    }
+
 
     override suspend fun getItem(id: String): Results<Item> = safetyResultWrapper({
         Timber.d("getItem, id: $id")
@@ -169,22 +199,27 @@ class ItemRepositoryImpl @Inject constructor(
     override suspend fun changeRules(
         elementId: String,
         userId: String,
+        grantUserId: String,
         canRead: Boolean,
         canEdit: Boolean,
         canShareRead: Boolean,
         canShareEdit: Boolean
     ) {
-        if (canRead) permissionRepository.updatePermission(
-            UserPermission(
-                itemId = elementId,
-                userId = userId,
+        if (canRead) permissionRepository.updatePermissionByUser(
+            userId = userId,
+            grantUserId = grantUserId,
+            type = Data.Type.ITEM,
+            permission = UserPermission(
+                id = elementId,
                 canWrite = canEdit,
                 canShare = canShareRead,
                 canShareForWrite = canShareEdit
             )
-        ) else permissionRepository.deletePermission(
+        ) else permissionRepository.deletePermissionByUser(
+            type = Data.Type.ITEM,
             userId = userId,
-            itemId = elementId
+            grantUserId = grantUserId,
+            elementId = elementId
         )
     }
 

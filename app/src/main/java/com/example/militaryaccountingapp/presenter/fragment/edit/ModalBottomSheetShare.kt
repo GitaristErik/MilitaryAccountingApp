@@ -48,6 +48,9 @@ class ModalBottomSheetShare : BottomSheetDialogFragment() {
     private val userId: String by lazy {
         requireArguments().getString("userId")!!
     }
+    private val grantedUserId: String by lazy {
+        requireArguments().getString("grantedUserId")!!
+    }
     private val itemId: String? by lazy {
         requireArguments().getString("itemId")
     }
@@ -62,9 +65,8 @@ class ModalBottomSheetShare : BottomSheetDialogFragment() {
         setRules.setOnClickListener {
             val permission = if (checkboxRead.isChecked) {
                 UserPermission(
-                    userId = userId,
-                    itemId = itemId,
-                    categoryId = categoryId,
+                    id = categoryId ?: itemId!!,
+                    grantedUsersId = listOf(grantedUserId),
                     canWrite = checkboxEdit.isChecked,
                     canShare = checkboxReadShare.isChecked,
                     canShareForWrite = checkboxEditShare.isChecked,

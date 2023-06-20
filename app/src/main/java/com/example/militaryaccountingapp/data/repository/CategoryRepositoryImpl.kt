@@ -1,9 +1,11 @@
 package com.example.militaryaccountingapp.data.repository
 
+import com.example.militaryaccountingapp.data.helper.ResultHelper.resultWrapper
 import com.example.militaryaccountingapp.data.helper.ResultHelper.safetyResultWrapper
 import com.example.militaryaccountingapp.domain.entity.data.Action
 import com.example.militaryaccountingapp.domain.entity.data.ActionType
 import com.example.militaryaccountingapp.domain.entity.data.Category
+import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
 import com.example.militaryaccountingapp.domain.entity.extension.await
 import com.example.militaryaccountingapp.domain.entity.user.UserPermission
@@ -13,6 +15,7 @@ import com.example.militaryaccountingapp.domain.repository.HistoryRepository
 import com.example.militaryaccountingapp.domain.repository.PermissionRepository
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import timber.log.Timber
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await as awaitCoroutine
@@ -33,11 +36,7 @@ class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun createCategory(
         category: Category,
-        userId: String?
     ): Results<Category> = safetyResultWrapper({
-        category.userId = userId ?: return@safetyResultWrapper Results.Failure(
-            NullPointerException("User id is null")
-        );
         getCategory(category.parentId!!)
     }) { parentCategory ->
         category.allParentIds = parentCategory.allParentIds + parentCategory.id
@@ -48,39 +47,14 @@ class CategoryRepositoryImpl @Inject constructor(
         // TODO load photo to storage
         category.imagesUrls = emptyList()
 
-        safetyResultWrapper({
-            ref.set(category).await()
-        }) {
-            val userPermission = UserPermission(
-                userId = category.userId!!,
-                categoryId = category.id,
-                canShare = true,
-                canShareForWrite = true,
-                canWrite = true,
-            )
-            permissionRepository.createPermissionByParent(
-                userPermission,
-                parentCategory.id
-            )
-
-            val action = Action(
-                action = ActionType.CREATE,
-                userId = category.userId!!,
-                categoryId = category.id,
-            )
-            historyRepository.addToHistory(action)
-
-            Results.Success(category)
+        resultWrapper(ref.set(category).await()) {
+            createHandler(category)
         }
     }
 
     override suspend fun createRootCategory(
         category: Category,
-        userId: String?
     ): Results<Category> = safetyResultWrapper({
-        category.userId = userId ?: return@safetyResultWrapper Results.Failure(
-            NullPointerException("User id is null")
-        );
         val ref = collection.document()
         category.id = ref.id
 
@@ -89,23 +63,31 @@ class CategoryRepositoryImpl @Inject constructor(
 
         ref.set(category).await()
     }) {
+        createHandler(category)
+    }
 
-        val userPermission = UserPermission(
+    private suspend fun createHandler(category: Category): Results<Category> {
+        permissionRepository.createPermission(
             userId = category.userId!!,
-            categoryId = category.id,
-            canShare = true,
-            canShareForWrite = true,
-            canWrite = true,
+            type = Data.Type.CATEGORY,
+            UserPermission(
+                grantedUsersId = listOf(category.userId!!),
+                id = category.id,
+                canShare = true,
+                canShareForWrite = true,
+                canWrite = true,
+            ),
         )
-        permissionRepository.createPermission(userPermission)
 
-        val action = Action(
-            action = ActionType.CREATE,
-            userId = category.userId!!,
-            categoryId = category.id,
+        historyRepository.addToHistory(
+            Action(
+                action = ActionType.CREATE,
+                userId = category.userId!!,
+                categoryId = category.id,
+            )
         )
-        historyRepository.addToHistory(action)
-        Results.Success(category)
+
+        return Results.Success(category)
     }
 
 
@@ -121,36 +103,58 @@ class CategoryRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getCategories(
+        parentId: String,
+        userId: String,
+        isAscending: Boolean
+    ): Results<Map<Category, List<String>>> = safetyResultWrapper({
+        collection.whereEqualTo("parentId", parentId).orderBy(
+            "name",
+            if (isAscending) Query.Direction.ASCENDING else Query.Direction.DESCENDING
+        ).get().await()
+    }) {
+        Results.Success(
+            it.toObjects(Category::class.java).map { item ->
+                item to permissionRepository.getAllUsersIds(
+                    id = item.id,
+                    type = Data.Type.CATEGORY
+                )
+            }.toMap()
+        )
+    }
+
     override suspend fun changeRules(
         elementId: String,
         userId: String,
+        grantUserId: String,
         canRead: Boolean,
         canEdit: Boolean,
         canShareRead: Boolean,
         canShareEdit: Boolean
     ) {
         updatePermissionForAllParents(
-            elementId,
-            UserPermission(
-                userId = userId,
-                itemId = null,
-                categoryId = elementId,
+            categoryId = elementId,
+            canRead = canRead,
+            userId = userId,
+            grantUserId = grantUserId,
+            permission = UserPermission(
+                grantedUsersId = listOf(grantUserId),
+                id = elementId,
                 canWrite = canEdit,
                 canShare = canShareRead,
                 canShareForWrite = canShareEdit
-            ),
-            canRead
+            )
         )
     }
 
     private suspend fun updatePermissionForAllParents(
+        grantUserId: String,
+        userId: String,
         categoryId: String,
         permission: UserPermission,
         canRead: Boolean
     ): Results<Unit> {
         try {
-            val batch = firestoreInstance.batch()
-
             // Отримати дочірні категорії вказаної категорії
             // Рекурсивно викликати цю функцію для кожної дочірньої категорії
             for (childCategorySnapshot in collection
@@ -160,9 +164,16 @@ class CategoryRepositoryImpl @Inject constructor(
             ) {
                 val childCategoryId = childCategorySnapshot.id
                 val deleteChildResult =
-                    updatePermissionForAllParents(childCategoryId, permission, canRead)
+                    updatePermissionForAllParents(
+                        grantUserId = grantUserId,
+                        userId = userId,
+                        categoryId = childCategoryId,
+                        permission = permission,
+                        canRead = canRead,
+                    )
                 if (deleteChildResult is Results.Failure) {
-                    return deleteChildResult // Повертаємо помилку, якщо виникла під час видалення дочірньої категорії
+                    // Повертаємо помилку, якщо виникла під час видалення дочірньої категорії
+                    return deleteChildResult
                 }
             }
 
@@ -176,118 +187,62 @@ class CategoryRepositoryImpl @Inject constructor(
                 val itemRef = itemsCollection.document(itemId)
 
                 // Оновити дозволи на елемент
-                val permissionsQuery = permissionsCollection
-                    .whereEqualTo("itemId", itemId)
-                    .whereEqualTo("userId", permission.userId)
+                /*val ref = firestoreInstance
+                    .collection("users")
+                    .document(userId!!)
+                    .collection("permissions_item")
+                    .document(itemId)*/
 
-                if (canRead) {
-                    if (permissionsQuery.get().awaitCoroutine().isEmpty) {
-                        val permissionRef = permissionsCollection.document()
-                        batch.set(
-                            permissionRef, UserPermission(
-                                itemId = itemId,
-                                userId = permission.userId,
-                                canShare = permission.canShare,
-                                canShareForWrite = permission.canShareForWrite,
-                                canWrite = permission.canWrite,
-                            )
-                        )
-                        // Додати до історії
-                        val action = Action(
-                            action = ActionType.SHARE,
-                            userId = permission.userId,
-                            itemId = itemId,
-                        )
-                        historyRepository.addToHistory(action)
-                    } else {
-                        for (permissionSnapshot in permissionsQuery.get().awaitCoroutine()) {
-                            val permissionId = permissionSnapshot.id
-                            val permissionRef = permissionsCollection.document(permissionId)
-                            batch.update(
-                                permissionRef, mapOf(
-                                    "canShare" to permission.canShare,
-                                    "canShareForWrite" to permission.canShareForWrite,
-                                    "canWrite" to permission.canWrite,
-                                )
-                            )
-                        }
-                    }
-                } else {
-                    for (permissionSnapshot in permissionsQuery.get().awaitCoroutine()) {
-                        val permissionId = permissionSnapshot.id
-                        val permissionRef = permissionsCollection.document(permissionId)
-                        batch.delete(permissionRef)
-                    }
-                    // Додати до історії
-                    val action = Action(
-                        action = ActionType.UNSHARE,
-                        userId = permission.userId,
-                        itemId = itemId,
-                    )
-                }
-            }
-
-            // Обновити доступ до категорії
-            val categoryRef = collection.document(categoryId)
-            val categoryPermissionsQuery = permissionsCollection
-                .whereEqualTo("categoryId", categoryId)
-                .whereEqualTo("userId", permission.userId)
-
-            if (canRead) {
-                if (categoryPermissionsQuery.get().awaitCoroutine().isEmpty) {
-                    val permissionRef = permissionsCollection.document()
-                    batch.set(
-                        permissionRef, UserPermission(
-                            categoryId = categoryId,
-                            userId = permission.userId,
-                            canShare = permission.canShare,
-                            canShareForWrite = permission.canShareForWrite,
-                            canWrite = permission.canWrite,
-                        )
-                    )
-                    // Додати до історії
-                    historyRepository.addToHistory(
-                        Action(
-                            action = ActionType.SHARE,
-                            userId = permission.userId,
-                            categoryId = categoryId,
-                        )
-                    )
-                } else {
-                    for (permissionSnapshot in categoryPermissionsQuery.get().awaitCoroutine()) {
-                        val permissionId = permissionSnapshot.id
-                        val permissionRef = permissionsCollection.document(permissionId)
-                        batch.update(
-                            permissionRef, mapOf(
-                                "canShare" to permission.canShare,
-                                "canShareForWrite" to permission.canShareForWrite,
-                                "canWrite" to permission.canWrite,
-                            )
-                        )
-                    }
-                }
-            } else {
-                for (permissionSnapshot in categoryPermissionsQuery.get().awaitCoroutine()) {
-                    val permissionId = permissionSnapshot.id
-                    val permissionRef = permissionsCollection.document(permissionId)
-                    batch.delete(permissionRef)
-                }
-                // Додати до історії
-                historyRepository.addToHistory(
-                    Action(
-                        action = ActionType.UNSHARE,
-                        userId = permission.userId,
-                        categoryId = categoryId,
-                    )
+                updatePermission(
+                    canRead = canRead,
+                    userId = userId,
+                    type = Data.Type.ITEM,
+                    elementId = itemId,
+                    grantUserId = grantUserId,
+                    permission = permission.copy(id = itemId)
                 )
             }
 
-            // Застосувати зміни
-            batch.commit().awaitCoroutine()
+            // Обновити доступ до категорії
+            updatePermission(
+                canRead = canRead,
+                userId = userId,
+                type = Data.Type.CATEGORY,
+                elementId = categoryId,
+                grantUserId = grantUserId,
+                permission = permission.copy(id = categoryId)
+            )
 
             return Results.Success(Unit)
         } catch (e: Exception) {
             return Results.Failure(e)
+        }
+    }
+
+    private suspend inline fun updatePermission(
+        canRead: Boolean,
+        userId: String,
+        elementId: String,
+        type: Data.Type,
+        grantUserId: String,
+        permission: UserPermission
+    ) {
+        if (canRead) {
+            permissionRepository.updatePermissionByUser(
+                userId = userId,
+                grantUserId = grantUserId,
+                type = type,
+                permission = permission.copy(id = elementId),
+                isShareAction = true
+            )
+        } else {
+            permissionRepository.deletePermissionByUser(
+                userId = userId,
+                grantUserId = grantUserId,
+                type = type,
+                elementId = elementId,
+                isShareAction = true
+            )
         }
     }
 
@@ -313,7 +268,6 @@ class CategoryRepositoryImpl @Inject constructor(
 
 
     private val itemsCollection = firestoreInstance.collection("items")
-    private val permissionsCollection = firestoreInstance.collection("permissions")
 
     override suspend fun deleteCategoryAndChildren(
         userId: String,
@@ -359,14 +313,7 @@ class CategoryRepositoryImpl @Inject constructor(
                 batch.delete(itemRef)
 
                 // Видалити дозволи на елемент
-                val permissionsQuery = permissionsCollection
-                    .whereEqualTo("itemId", itemId)
-
-                for (permissionSnapshot in permissionsQuery.get().awaitCoroutine()) {
-                    val permissionId = permissionSnapshot.id
-                    val permissionRef = permissionsCollection.document(permissionId)
-                    batch.delete(permissionRef)
-                }
+                permissionRepository.deleteAllPermissions(itemId, type = Data.Type.ITEM)
             }
 
             // Занести до історії
@@ -384,14 +331,7 @@ class CategoryRepositoryImpl @Inject constructor(
             batch.delete(categoryRef)
 
             // Видалити дозволи на категорію
-            val permissionsQuery = permissionsCollection
-                .whereEqualTo("categoryId", categoryId)
-
-            for (permissionSnapshot in permissionsQuery.get().awaitCoroutine()) {
-                val permissionId = permissionSnapshot.id
-                val permissionRef = permissionsCollection.document(permissionId)
-                batch.delete(permissionRef)
-            }
+            permissionRepository.deleteAllPermissions(categoryId, type = Data.Type.CATEGORY)
 
             // Застосувати зміни
             batch.commit().awaitCoroutine()
@@ -414,7 +354,8 @@ class CategoryRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCategories(categoriesIds: List<String>): Results<List<Category>> =
-        safetyResultWrapper({
+        if (categoriesIds.isEmpty()) Results.Success(emptyList())
+        else safetyResultWrapper({
             collection
                 .whereIn("id", categoriesIds)
                 .get()

@@ -83,26 +83,28 @@
                 android:text="Командир"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toTopOf="@id/user_login"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@id/user_name"
-                app:layout_constraintTop_toBottomOf="@id/user_name" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/user_login"
-                style="@style/TextAppearance.Material3.BodySmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.small.extra"
-                android:text="\@Vasil1990"
-                android:textColor="?attr/colorPrimarySurface"
-                app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@id/inNetwork"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/user_name"
-                app:layout_constraintTop_toBottomOf="@id/user_rank" />
+                app:layout_constraintTop_toBottomOf="@id/user_name" />
+            <!--
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/user_login"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/margin.small.extra"
+                            android:text="\@Vasil1990"
+                            android:textColor="?attr/colorPrimarySurface"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toTopOf="@id/inNetwork"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="@id/user_name"
+                            app:layout_constraintTop_toBottomOf="@id/user_rank" />
+            -->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/inNetwork"
@@ -117,7 +119,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/user_name"
-                app:layout_constraintTop_toBottomOf="@id/user_login" />
+                app:layout_constraintTop_toBottomOf="@id/user_rank" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/details_layout"
@@ -208,30 +210,30 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <!-- Items -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/items_label"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
-                android:layout_width="wrap_content"
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/Widget.Material3.MaterialDivider"
+                android:layout_width="match_parent"
+                android:id="@+id/divider_content"
+                android:layout_marginVertical="@dimen/margin.large.extra.double"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.large.extra"
-                android:text="@string/profile.items.title"
+                android:layout_marginHorizontal="@dimen/margin.standard"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_layout" />
+
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/rv_items_container"
                 android:name="com.example.militaryaccountingapp.presenter.fragment.filter.TreeViewUserFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin.small"
+                android:layout_marginVertical="@dimen/margin.large.extra.double"
                 android:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/items_label"
+                app:layout_constraintTop_toBottomOf="@id/divider_content"
                 tools:layout="@layout/fragment_tree_view" />
+
 
             <!-- History -->
             <com.google.android.material.textview.MaterialTextView

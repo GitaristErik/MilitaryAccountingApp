@@ -11,7 +11,8 @@ import com.example.militaryaccountingapp.presenter.model.CategoryUi
 import com.example.militaryaccountingapp.presenter.model.ItemUi
 
 class TabsViewPagerAdapter(
-    private val parentId:String,
+    private val parentId: String,
+    private val otherIds: List<String> = emptyList(),
     private val getItemDetailsDirections: (ItemUi) -> NavDirections,
 //    private val getItemAddDirections: () -> NavDirections,
     private val getCategoryDetailsDirections: (CategoryUi) -> NavDirections,
@@ -24,8 +25,16 @@ class TabsViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> CategoriesFragment(parentId, getCategoryDetailsDirections)//, getCategoryAddDirections)
-            else -> ItemsFragment(parentId, getItemDetailsDirections)//, getItemAddDirections)
+            0 -> CategoriesFragment(
+                parentId,
+                getCategoryDetailsDirections,
+                otherIds = otherIds
+            )//, getCategoryAddDirections)
+            else -> ItemsFragment(
+                parentId,
+                getItemDetailsDirections,
+                otherIds = otherIds
+            )//, getItemAddDirections)
         }
     }
 

@@ -167,6 +167,7 @@
     <string name="profile.phone.hint">Введіть телефонний номер</string>
     <string name="profile.phone.add.hint">Додати номер</string>
     <string name="profile.items.title">Елементи</string>
+    <string name="profile.items.self.title">Для мене</string>
     <string name="profile.history.title">Історія</string>
     <string name="profile.network.delete.button">Видалити з моєї мережі</string>
     <string name="profile.network.add.button">Додати до моєї мережі</string>

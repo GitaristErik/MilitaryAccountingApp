@@ -6,6 +6,7 @@ import com.example.militaryaccountingapp.domain.entity.data.Barcode
 import com.example.militaryaccountingapp.domain.entity.data.Category
 import com.example.militaryaccountingapp.domain.entity.data.Data
 import com.example.militaryaccountingapp.domain.entity.data.Item
+import com.example.militaryaccountingapp.domain.entity.user.User
 import com.example.militaryaccountingapp.domain.helper.Results
 import com.example.militaryaccountingapp.domain.repository.CategoryRepository
 import com.example.militaryaccountingapp.domain.repository.ItemRepository
@@ -51,17 +52,18 @@ class AddOrEditViewModel @Inject constructor(
      }*/
     var elementType: Data.Type = Data.Type.CATEGORY
     var parentId: String? = null
-
-    private suspend fun getParentId(): String? {
-        if (parentId == null) {
-            parentId = if (elementId == null) {
-                currentUserUseCase()?.rootCategoryId
-            } else {
-                (data.value.loadedData as Results.Success).data!!.parentId
+        get() {
+            if (field == null) {
+                field = if (elementId == null) {
+                    currentUser?.rootCategoryId
+                } else {
+                    (data.value.loadedData as Results.Success).data!!.parentId
+                }
             }
+            return field
         }
-        return parentId
-    }
+
+    private var currentUser: User? = null
 
     fun save() {
         if (data.value.title !is Results.Success) return
@@ -78,19 +80,20 @@ class AddOrEditViewModel @Inject constructor(
                     Category(
                         name = (data.value.title as Results.Success<String>).data,
                         description = data.value.description.trim(),
-                        parentId = getParentId(),
+                        parentId = parentId,
+                        userId = currentUser!!.id,
                         barCodes = data.value.codes.toList()
 //                        imagesUrls = dataImages.value, TODO add images push
-                    ), userId = currentUserUseCase()!!.id
+                    )
                 )
             } else {
                 categoryRepository.updateCategory(
                     id = elementId!!,
-                    userId = currentUserUseCase()!!.id,
+                    userId = currentUser!!.id,
                     query = mapOf(
                         "name" to (data.value.title as Results.Success<String>).data,
                         "description" to data.value.description.trim(),
-                        "parentId" to getParentId(),
+                        "parentId" to parentId,
                         "barCodes" to data.value.codes.toList()
                         // - TODO save images
                     )
@@ -108,7 +111,8 @@ class AddOrEditViewModel @Inject constructor(
                         name = (data.value.title as Results.Success<String>).data,
                         description = data.value.description,
                         count = data.value.count,
-                        parentId = getParentId(),
+                        parentId = parentId,
+                        userId = currentUser!!.id,
                         barCodes = data.value.codes.toList()
 //                        imagesUrls = dataImages.value, TODO add images push
                     )
@@ -120,7 +124,7 @@ class AddOrEditViewModel @Inject constructor(
                         "name" to (data.value.title as Results.Success<String>).data,
                         "description" to data.value.description,
                         "count" to data.value.count,
-                        "parentId" to getParentId(),
+                        "parentId" to parentId,
                         "barCodes" to data.value.codes.toList()
                         // - TODO save images
                     )
@@ -224,22 +228,29 @@ class AddOrEditViewModel @Inject constructor(
         addImages(listOf(uri))
     }
 
+
+    private var saveRenderJob: Job? = null
     fun onSaveRendered() {
-        viewModelScope.launch(Dispatchers.IO) {
+        stopRunningJob(saveRenderJob)
+        saveRenderJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(3000)
             _data.update {
                 it.copy(
                     saveState = Results.Loading(null),
-                    codes = emptySet(),
-                    title = Results.Loading(""),
-                    description = "",
-                    count = 0,
+//                    codes = emptySet(),
+//                    title = Results.Loading(""),
+//                    description = "",
+//                    count = 0,
                 )
             }
-            _dataImages.update { emptySet() }
+//            _dataImages.update { emptySet() }
         }
     }
 
     fun fetchData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            currentUser = currentUserUseCase()
+        }
         if (elementId == null) return
         viewModelScope.launch(Dispatchers.IO) {
             when (elementType) {

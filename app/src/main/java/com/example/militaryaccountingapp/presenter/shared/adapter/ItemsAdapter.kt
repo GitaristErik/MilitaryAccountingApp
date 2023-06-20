@@ -111,7 +111,20 @@ class ItemsAdapter(
             loadingDrawable: Drawable,
             thumbnailImage: RequestBuilder<Drawable>,
             onCLickListener: (ItemUi, View) -> Unit
-        ) = Unit
+        ) = binding.run {
+            itemTitle.text = data.name
+
+            itemImage.transitionName = TransitionUtils.imageTransitionName(data.id)
+            if (data.imageUrl.isNotEmpty()) {
+                itemImage.load(data.imageUrl) {
+                    thumbnail = thumbnailImage
+                    imageOnLoadingDrawable = loadingDrawable
+                }
+            }
+
+            root.setOnClickListener { onCLickListener.invoke(data, itemImage) }
+        }
+
 
         fun updateSpacing(position: Int) {
             val spacing16 = binding.root.resources.getDimension(R.dimen.margin_standard).toInt()

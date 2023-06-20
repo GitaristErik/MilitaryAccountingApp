@@ -31,7 +31,6 @@ class RegisterViewModel @Inject constructor(
         val email: Results<String> = Results.Loading(""),
         val password: Results<String> = Results.Loading(""),
         val repassword: Results<String> = Results.Loading(""),
-        val login: Results<String> = Results.Loading(""),
         val name: Results<String> = Results.Success(""),
         val fullName: Results<String> = Results.Success(""),
         val rank: Results<String> = Results.Success(""),
@@ -44,7 +43,6 @@ class RegisterViewModel @Inject constructor(
         email: String,
         password: String,
         repassword: String,
-        login: String,
         name: String,
         fullName: String,
         rank: String,
@@ -53,7 +51,6 @@ class RegisterViewModel @Inject constructor(
         val emailResult = AuthValidator.EmailValidator.validate(email)
         val passwordResult = AuthValidator.PasswordValidator.validate(password)
         val repasswordResult = AuthValidator.RepasswordValidator.validate(repassword)
-        val loginResult = AuthValidator.LoginValidator.validate(login)
         val nameResult = AuthValidator.NameValidator.validate(name)
         val fullNameResult = AuthValidator.FullNameValidator.validate(fullName)
         val rankResult = AuthValidator.RankValidator.validate(rank)
@@ -64,7 +61,6 @@ class RegisterViewModel @Inject constructor(
                 email = emailResult,
                 password = passwordResult,
                 repassword = repasswordResult,
-                login = loginResult,
                 name = nameResult,
                 fullName = fullNameResult,
                 rank = rankResult,
@@ -77,7 +73,6 @@ class RegisterViewModel @Inject constructor(
             emailResult,
             passwordResult,
             repasswordResult,
-            loginResult,
             nameResult,
             fullNameResult,
             rankResult,
@@ -89,7 +84,6 @@ class RegisterViewModel @Inject constructor(
                     registerUseCase(
                         email = email,
                         password = password,
-                        login = login,
                         name = name,
                         fullName = fullName,
                         rank = rank,
