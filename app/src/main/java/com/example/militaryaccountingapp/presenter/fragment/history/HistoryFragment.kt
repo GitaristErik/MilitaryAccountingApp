@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -22,6 +23,7 @@ import com.example.militaryaccountingapp.presenter.fragment.history.HistoryViewM
 import com.example.militaryaccountingapp.presenter.shared.ScrollableTopScreen
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimeLineAdapter
 import com.example.militaryaccountingapp.presenter.shared.adapter.TimelineDecorator
+import com.example.militaryaccountingapp.presenter.shared.delegation.ToolbarScreen
 import com.example.militaryaccountingapp.presenter.utils.common.constant.FilterDate
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -55,7 +57,14 @@ class HistoryFragment :
         setupChips()
         setupDateButtons()
         setupDateModal()
+        setupSettings()
         log.d("viewModel link $filterViewModel")
+    }
+
+    private fun setupSettings() {
+        (requireActivity() as? ToolbarScreen)?.setOnSettingsClickListener {
+            findNavController().navigate(HistoryFragmentDirections.actionNavigationHistoryToSettingsFragment())
+        }
     }
 
     override fun render(data: ViewData) {
@@ -75,7 +84,7 @@ class HistoryFragment :
                 categoriesIds = data.selectedCategoriesIds.toList()
             )
         } else {
-            
+
         }
     }
 

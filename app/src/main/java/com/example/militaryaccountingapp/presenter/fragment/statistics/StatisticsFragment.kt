@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.FragmentStatisticsBinding
 import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragment
@@ -27,6 +28,7 @@ import com.example.militaryaccountingapp.presenter.shared.chart.history.MonthDat
 import com.example.militaryaccountingapp.presenter.shared.chart.history.WeekData
 import com.example.militaryaccountingapp.presenter.shared.chart.items.ChartBubbleBinder
 import com.example.militaryaccountingapp.presenter.shared.chart.items.TestData
+import com.example.militaryaccountingapp.presenter.shared.delegation.ToolbarScreen
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
@@ -49,9 +51,17 @@ class StatisticsFragment :
 //        setupFilterFragment()
         setupCountButtons()
         setupHistorySpinner()
+        setupSettings()
         observeCustomData2()
         log.d("viewModel link $filterViewModel")
     }
+
+    private fun setupSettings() {
+        (requireActivity() as? ToolbarScreen)?.setOnSettingsClickListener {
+            findNavController().navigate(StatisticsFragmentDirections.actionNavigationStatisticsToSettingsFragment())
+        }
+    }
+
 
     override fun render(data: ViewData) {
         log.d("render")

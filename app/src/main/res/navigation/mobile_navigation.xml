@@ -25,6 +25,9 @@
             app:destination="@id/navigation_auth"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_home_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -120,13 +123,21 @@
         android:id="@+id/navigation_history"
         android:name="com.example.militaryaccountingapp.presenter.fragment.history.HistoryFragment"
         android:label="@string/history.title"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_navigation_history_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_statistics"
         android:name="com.example.militaryaccountingapp.presenter.fragment.statistics.StatisticsFragment"
         android:label="@string/statistics.title"
-        tools:layout="@layout/fragment_statistics" />
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_navigation_statistics_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -147,6 +158,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_usersListFragment"
             app:destination="@id/usersListFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
 
     </fragment>
 
@@ -356,5 +370,10 @@
             android:name="grantedUserId"
             app:argType="string" />
     </dialog>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.militaryaccountingapp.presenter.fragment.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

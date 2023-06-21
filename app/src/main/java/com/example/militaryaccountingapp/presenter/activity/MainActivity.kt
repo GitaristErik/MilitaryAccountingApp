@@ -17,10 +17,11 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.militaryaccountingapp.R
 import com.example.militaryaccountingapp.databinding.ActivityMainBinding
+import com.example.militaryaccountingapp.presenter.fragment.settings.ThemeService
 import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
 import com.example.militaryaccountingapp.presenter.shared.delegation.SearchableScreenContract
+import com.example.militaryaccountingapp.presenter.shared.delegation.ToolbarScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.color.DynamicColors
 import com.google.android.material.internal.ToolbarUtils
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
@@ -31,7 +32,7 @@ import timber.log.Timber
 import java.time.Duration
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
+class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract, ToolbarScreen {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -50,9 +51,16 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
     }
 
     private fun startThemeJob() {
+     /*   lifecycleScope.launch {
+            DynamicColors.applyToActivityIfAvailable(this@MainActivity)
+        }*/
         lifecycleScope.launch {
             installSplashScreen()
-            DynamicColors.applyToActivityIfAvailable(this@MainActivity)
+            ThemeService.loadAndSetTheme(this@MainActivity)
+//            ThemeService.theme.collect {
+//                if (it == ThemeS/**/ervice.ThemeType.MONET)
+//                    window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
+//            }
         }
     }
 
@@ -282,5 +290,10 @@ class MainActivity : AppCompatActivity(), FabScreen, SearchableScreenContract {
     override fun getSearchView(): SearchView = binding.searchView
     override fun getSearchBar(): SearchBar = binding.searchBar
     override fun searchViewList(): RecyclerView = binding.rvSuggestion
+    override fun setOnSettingsClickListener(onSettingsClick: (View) -> Unit) {
+        binding.btnSetting.setOnClickListener {
+            onSettingsClick(it)
+        }
+    }
 }
 

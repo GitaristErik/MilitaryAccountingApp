@@ -188,4 +188,9 @@
     <string name="share.check.edit">Може редагувати цей елемент</string>
     <string name="share.check.edit.share">Може ділитись цим елементом з іншими користувачами</string>
     <string name="share.check.read.share">Може ділитись для редагування</string>
+    <string name="settings.title">Налаштування</string>
+    <string name="settings.category.theme">Тема</string>
+    <string name="settings.category.other">Інше</string>
+    <string name="settings.theme.title">Обрати тему</string>
+    <string name="settings.language.title">Обрати мову</string>
 </resources>

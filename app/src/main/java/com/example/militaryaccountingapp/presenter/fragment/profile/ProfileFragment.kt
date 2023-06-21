@@ -13,6 +13,7 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.profile.ProfileViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.model.UserNetworkUi
 import com.example.militaryaccountingapp.presenter.shared.adapter.UsersNetworkAdapter
+import com.example.militaryaccountingapp.presenter.shared.delegation.ToolbarScreen
 import com.example.militaryaccountingapp.presenter.utils.image.AvatarHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,9 +30,17 @@ class ProfileFragment() :
         setupAddMember()
         setupLogout()
         setupUsersNetwork()
+        setupSettings()
         viewModel.fetchUserData()
         log.d("viewModel link $viewModel")
     }
+
+    private fun setupSettings() {
+        (requireActivity() as? ToolbarScreen)?.setOnSettingsClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionNavigationProfileToSettingsFragment())
+        }
+    }
+
 
     private val usersAdapter by lazy {
         UsersNetworkAdapter {
@@ -116,7 +125,7 @@ class ProfileFragment() :
         AvatarHelper.setupAvatarWithIntent(
             requireActivity(),
             binding.avatar,
-            Uri.parse(user.imageUrl)
+            if(user.imageUrl.isNullOrEmpty()) null else Uri.parse(user.imageUrl)
         )
 /*        if (!user.imageUrl.isNullOrEmpty()) {
             Glide.with(this)

@@ -1,0 +1,30 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/settings.category.theme"
+        app:icon="@drawable/ic_customization_24dp">
+
+        <ListPreference
+            app:key="theme"
+            app:title="@string/settings.theme.title"
+            app:iconSpaceReserved="false"
+            app:icon="@drawable/ic_theme_24dp"
+            app:useSimpleSummaryProvider="false" />
+        <!--
+                app:useSimpleSummaryProvider="true"-->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:icon="@drawable/ic_other_24dp"
+        app:title="@string/settings.category.other">
+
+        <ListPreference
+            app:key="language"
+            app:iconSpaceReserved="false"
+            app:title="@string/settings.language.title"
+            app:useSimpleSummaryProvider="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

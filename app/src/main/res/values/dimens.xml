@@ -25,6 +25,7 @@
     <dimen name="corner.default">12dp</dimen>
     <dimen name="corner.rectangle">20dp</dimen>
     <dimen name="corner.chip">8dp</dimen>
+    <dimen name="rounded_corners">16dp</dimen>
     <dimen name="height.tabs">32dp</dimen>
     <dimen name="size.code.item">96dp</dimen>
     <dimen name="height.tabs.addition">48dp</dimen>

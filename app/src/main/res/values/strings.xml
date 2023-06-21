@@ -311,4 +311,10 @@
     <string name="share.check.read.share">Can share with another users</string>
 
 
+    <string name="settings.title">Settings</string>
+    <string name="settings.category.theme">Theme</string>
+    <string name="settings.category.other">Other</string>
+    <string name="settings.theme.title">Select theme</string>
+    <string name="settings.language.title">Select language</string>
+
 </resources>

@@ -103,6 +103,22 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 //            .whereGreaterThanOrEqualTo("name", cleanText)
 //            .whereLessThanOrEqualTo("name", cleanText)
 
+        val query4 = collection
+            .orderBy("fullName")
+//            .endAt("\uf8ff")
+            .startAt(cleanText)
+            .endAt("$cleanText\uf8ff")
+//            .whereGreaterThanOrEqualTo("name", cleanText)
+//            .whereLessThanOrEqualTo("name", cleanText)
+
+        val query3 = collection
+            .orderBy("rank")
+//            .endAt("\uf8ff")
+            .startAt(cleanText)
+            .endAt("$cleanText\uf8ff")
+//            .whereGreaterThanOrEqualTo("name", cleanText)
+//            .whereLessThanOrEqualTo("name", cleanText)
+
         val query2 = collection
             .orderBy("email")
             .startAt(cleanText)
@@ -112,6 +128,8 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
         val snapshot1 = query1.get().awaitCoroutine()
         val snapshot2 = query2.get().awaitCoroutine()
+        val snapshot3 = query3.get().awaitCoroutine()
+        val snapshot4 = query4.get().awaitCoroutine()
         val results = mutableListOf<User>()
 
         for (document in snapshot1.documents) {
@@ -120,6 +138,20 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
         }
 
         for (document in snapshot2.documents) {
+            val user = document.toObject(User::class.java)
+            if (!results.contains(user)) {
+                user?.let { results.add(it) }
+            }
+        }
+
+        for (document in snapshot3.documents) {
+            val user = document.toObject(User::class.java)
+            if (!results.contains(user)) {
+                user?.let { results.add(it) }
+            }
+        }
+
+        for (document in snapshot4.documents) {
             val user = document.toObject(User::class.java)
             if (!results.contains(user)) {
                 user?.let { results.add(it) }

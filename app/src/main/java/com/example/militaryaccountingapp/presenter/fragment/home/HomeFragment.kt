@@ -14,6 +14,7 @@ import com.example.militaryaccountingapp.presenter.fragment.BaseViewModelFragmen
 import com.example.militaryaccountingapp.presenter.fragment.home.HomeViewModel.ViewData
 import com.example.militaryaccountingapp.presenter.shared.adapter.TabsViewPagerAdapter
 import com.example.militaryaccountingapp.presenter.shared.delegation.FabScreen
+import com.example.militaryaccountingapp.presenter.shared.delegation.ToolbarScreen
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,7 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
 
     override fun initializeView() {
         setupFab()
+        setupSettings()
     }
 
     private fun setupFab() {
@@ -35,6 +37,14 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, ViewData, HomeVi
             )
         }
     }
+
+
+    private fun setupSettings() {
+        (requireActivity() as? ToolbarScreen)?.setOnSettingsClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment())
+        }
+    }
+
 
 
     private fun setupViewPager(currentUser: User) {
