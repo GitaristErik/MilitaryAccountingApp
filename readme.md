@@ -39,7 +39,7 @@
 * [👇 `Download`](#point_down-download)
 * [🛠️ `Project Setup`](#hammer_and_wrench-project-setup)
 * [🛠️ `Architecture`](#hammer_and_wrench-architecture)
-* [🛠️ `Tech stack & Open-source libraries`](#[building_construction-tech-stack-&-open-source-libraries)
+* [🛠️ `Tech stack & Open-source libraries`](#building_construction-tech-stack--open-source-libraries)
 * [🤝 `Join the team`](#handshake-join-the-team)
 * [✍️ `Author`](#pencil2-author)
 * [⭐️ `Stats`](#star-Stats)
