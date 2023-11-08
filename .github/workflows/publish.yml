@@ -7,14 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 1
-      - uses: dawidd6/action-download-artifact@v2
-        name: Download artifact
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: release.yml
           workflow_conclusion: success
-          branch: floss
-          name: app-debug.apk
+          name: release
           path: downloads
           if_no_artifact_found: fail
 
@@ -31,4 +30,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
-          files: downloads/release-signed.apk
+          files: downloads/app-debug.apk
