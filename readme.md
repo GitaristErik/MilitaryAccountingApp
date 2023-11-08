@@ -12,7 +12,7 @@
         <img alt="GitHub release" src="https://img.shields.io/github/release/GitaristErik/MilitaryAccountingApp?color=c3e7ff&style=flat-square">
     </a>
     <a href="https://github.com/GitaristErik/MilitaryAccountingApp/releases">
-        <img alt="Downloads" src="https://img.shields.io/github/downloads/GitaristErik/MilitaryAccountingApp/total.svg?color=c3e7ff&style=flat-square">
+        <img alt="Downloads" src="https://img.shields.io/github/downloads/GitaristErik/MilitaryAccountingApp/total?color=c3e7ff&style=flat-square">
     </a>
     <img alt="Repo size" src="https://img.shields.io/github/repo-size/GitaristErik/MilitaryAccountingApp?color=c3e7ff&style=flat-square">
     <a href="https://github.com/GitaristErik/MilitaryAccountingApp/issues">
@@ -85,9 +85,8 @@ This development was created to support the military in the performance of their
 
 ***Download and test latest version***
 
-[![NewsBuzz](https://img.shields.io/badge/Download-apk-blue.svg?style=for-the-badge&logo=android)](https://github.com/Aksx73/NewsBuzz/raw/master/app/release/app-release.apk)
-
-<a href="https://github.com/wewewe718/QrAndBarcodeScanner/releases">
+[![NewsBuzz](https://img.shields.io/badge/Download-apk-blue.svg?style=for-the-badge&logo=android)](https://github.com/GitaristErik/MilitaryAccountingApp/releases)
+<a href="https://github.com/GitaristErik/MilitaryAccountingApp/releases">
     <img alt="Get it on Github" src="https://github.com/wewewe718/QrAndBarcodeScanner/blob/develop/images/get-it-on-github.png" height="60"/>
 </a>
 
