@@ -21,7 +21,9 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - uses: gradle/gradle-build-action@v2
-      - run: gradle assembleRelease
+        with:
+          gradle-version: wrapper
+      - run: gradle assembleDebug
 
       - uses: ilharp/sign-android-release@v1
         name: Sign app APK
